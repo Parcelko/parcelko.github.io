@@ -204,6 +204,8 @@ body.bez-mapy .hero { background: radial-gradient(900px 500px at 75% 35%, rgba(2
   background: linear-gradient(90deg, #0E6B4F, #0b5a43); color: #fff; }
 .sprava-pruh p { margin: 0; font-size: clamp(1.02rem, 1.7vw, 1.25rem); max-width: 70ch; }
 .sprava-pruh strong { color: var(--c); }
+.sprava-pruh .export-riadok { display: block; margin-top: 6px; font-size: .92em; color: rgba(255,255,255,.88); }
+.sprava-pruh b { color: #fff; }
 .sprava-pruh .ikona { background: rgba(255,255,255,.12); color: var(--c); margin: 0; flex: 0 0 auto; }
 @media (max-width: 560px) { .sprava-pruh { align-items: flex-start; } }
 
