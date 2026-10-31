@@ -6,6 +6,7 @@
 <title>Parcelko – aplikácia na kataster, parcely a meranie pozemkov v mobile</title>
 <meta name="description" content="Kataster v mobile: nájdite parcelu C aj E podľa čísla, vlastníkov z listu vlastníctva, rozmery a výmeru pozemku ako v geometrickom pláne, lesné porasty a offline mapy. Aplikácia pre Android.">
 <meta name="robots" content="index, follow">
+<meta name="keywords" content="kataster, kataster nehnuteľností, katastrálna mapa, aplikácia na kataster, parcela, parcely C a E, register E, číslo parcely, hľadanie parcely, list vlastníctva, výpis z LV, vlastník pozemku, výmera pozemku, meranie pozemku, zmerať pozemok mobilom, hranice pozemku, lomové body, súradnice S-JTSK, geometrický plán, lesné porasty, porastová mapa, urbariát, offline mapa, GPS, ortofotomapa, ZBGIS, export KMZ DXF">
 <link rel="canonical" href="https://parcelko.github.io/">
 <!-- Google Search Console: overovací kód sem (ako pri kubikovači) -->
 <meta name="theme-color" content="#0a2e24">
@@ -89,7 +90,7 @@
     "Offline mapy bez signálu",
     "Export KMZ, KML, GPX, GeoJSON, DXF, CSV"
    ],
-   "keywords": "kataster, aplikácia na kataster, katastrálna mapa, kataster nehnuteľností, parcela, parcely C a E, register E, hľadanie parcely, list vlastníctva, výpis z LV, vlastník pozemku, výmera pozemku, meranie pozemku, geometrický plán, súradnice S-JTSK, lesné porasty, porastová mapa, urbariát, offline mapa, GPS, ZBGIS, ortofoto",
+   "keywords": "kataster, kataster nehnuteľností, katastrálna mapa, aplikácia na kataster, parcela, parcely C a E, register E, číslo parcely, hľadanie parcely, list vlastníctva, výpis z LV, vlastník pozemku, výmera pozemku, meranie pozemku, zmerať pozemok mobilom, hranice pozemku, lomové body, súradnice S-JTSK, geometrický plán, lesné porasty, porastová mapa, urbariát, offline mapa, GPS, ortofotomapa, ZBGIS, export KMZ DXF",
    "offers": {
     "@type": "AggregateOffer",
     "priceCurrency": "EUR",
@@ -106,6 +107,70 @@
    "@type": "FAQPage",
    "@id": "https://parcelko.github.io/#otazky",
    "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "Ako zistiť vlastníka pozemku?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Ťuknite na parcelu a zvoľte „Zistiť vlastníkov“ – otvorí sa oficiálny katastrálny portál ÚGKK s predvyplneným katastrálnym územím a číslom parcely. Výpis z listu vlastníctva (LV), ktorý si stiahnete, sa v aplikácii načíta sám: vlastníci, podiely a ťarchy sú hneď pri parcele."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Ako nájsť parcelu podľa čísla?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "V hľadaní zadajte katastrálne územie, register (C alebo E) a číslo parcely. Parcela sa ukáže na mape celá, s výmerou a hranicami, a podľa polohy z GPS vás aplikácia navedie až na pozemok."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Ako zistím, kde presne je môj pozemok v teréne?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Na mape vidíte parcelu aj svoju polohu z GPS. Aplikácia ukáže, či stojíte na pozemku, a vzdialenosť k najbližšej hranici. Funguje to aj v lese a na lúke, a so stiahnutou offline mapou aj bez signálu. Presné vytýčenie hraníc robí geodet."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Ako zmerať pozemok mobilom a zistiť výmeru?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Výmeru parcely z katastra uvidíte ťuknutím na ňu – spolu s dĺžkami strán, obvodom a súradnicami lomových bodov. Vlastnú plochu zmeriate ťukaním do mapy, bodmi z GPS alebo chôdzou okolo pozemku; obsah, obvod aj dĺžky sa počítajú priebežne."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Čo je parcela registra C a registra E?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Register C sú súčasné parcely katastrálnej mapy. Register E sú pôvodné parcely podľa pozemkovej knihy (mapa určeného operátu) – najmä na poliach, lúkach a v lesoch, kde súčasné parcely C nemajú vlastníkov rozdelených. Parcelko ukáže oba registre naraz."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Ukazuje Parcelko rozmery ako geometrický plán?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Ukazuje dĺžky strán medzi lomovými bodmi, výmeru, obvod a súradnice bodov v S-JTSK podľa katastrálnej mapy – v rovnakej podobe ako geometrický plán. Geometrický plán na právne úkony však vyhotovuje autorizovaný geodet."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Funguje to aj v lese a pri ťažbe dreva?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Áno. Porastová mapa NLC a hranice lesných porastov s číslami dielcov sa zobrazia spolu s parcelami C a E, takže pri ťažbe vidíte, či porast nezasahuje do cudzích parciel. Užitočné pre lesníkov, urbariáty a pozemkové spoločenstvá."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Aké súradnice a formáty vie aplikácia exportovať?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Súradnice v S-JTSK (JTSK), JTSK03, WGS84 a UTM 34N a formáty KMZ a KML (Google Earth), GPX (GPS prístroje), GeoJSON (GIS), DXF (CAD), CSV (Excel) a TXT."
+     }
+    },
     {
      "@type": "Question",
      "name": "Funguje Parcelko bez internetu?",
@@ -558,11 +623,47 @@
   <p class="poznamka stred">Vždy najnovšia verzia (súbor Parcelko.apk, približne 58 MB). Nové verzie aplikácia oznámi sama. iPhone zatiaľ nepodporujeme.</p>
 </section>
 
+<!-- ============================================================ slovník pojmov -->
+<section class="sekcia jemna" id="pojmy">
+  <p class="nadtitul">Pojmy</p>
+  <h2>Kataster, parcely a merania – stručne</h2>
+  <dl class="pojmy">
+    <div class="pojem odhal"><dt>Kataster nehnuteľností</dt><dd>Štátna evidencia pozemkov a stavieb na Slovensku – parcely, vlastníci, výmery a katastrálna mapa (ÚGKK SR).</dd></div>
+    <div class="pojem odhal"><dt>Parcela registra C</dt><dd>Súčasná parcela katastrálnej mapy s číslom, výmerou a hranicami.</dd></div>
+    <div class="pojem odhal"><dt>Parcela registra E</dt><dd>Pôvodná parcela podľa pozemkovej knihy (mapa určeného operátu) – časté na poliach, lúkach a v lesoch.</dd></div>
+    <div class="pojem odhal"><dt>List vlastníctva (LV)</dt><dd>Verejná listina s vlastníkmi nehnuteľností, ich podielmi a ťarchami; výpis z LV získate na katastrálnom portáli.</dd></div>
+    <div class="pojem odhal"><dt>Katastrálne územie</dt><dd>Územná jednotka katastra (zvyčajne obec alebo jej časť), v ktorej sa parcely číslujú.</dd></div>
+    <div class="pojem odhal"><dt>Výmera parcely</dt><dd>Plocha parcely zapísaná v katastri, počítaná v rovine S-JTSK.</dd></div>
+    <div class="pojem odhal"><dt>Lomový bod</dt><dd>Bod, v ktorom sa láme hranica parcely; má súradnice a medzi bodmi sa merajú dĺžky strán.</dd></div>
+    <div class="pojem odhal"><dt>S-JTSK</dt><dd>Súradnicový systém slovenského katastra (Křovákovo zobrazenie); súradnice Y a X v metroch.</dd></div>
+    <div class="pojem odhal"><dt>Geometrický plán</dt><dd>Technický podklad geodeta s rozmermi a súradnicami parcely, potrebný napr. pri delení pozemku.</dd></div>
+    <div class="pojem odhal"><dt>Lesný porast a dielec</dt><dd>Jednotky lesného hospodárskeho plánu (JPRL) Národného lesníckeho centra – číslo dielca a porastu, výmera, kategória lesa.</dd></div>
+    <div class="pojem odhal"><dt>Urbariát</dt><dd>Pozemkové spoločenstvo vlastníkov spoločnej nehnuteľnosti – lesov a pasienkov.</dd></div>
+    <div class="pojem odhal"><dt>Ortofotomapa</dt><dd>Letecká snímka zarovnaná do mapy – vidíte skutočný terén, budovy, lesy a cesty.</dd></div>
+  </dl>
+</section>
+
 <!-- ============================================================ otázky -->
 <section class="sekcia" id="otazky">
   <p class="nadtitul">Otázky</p>
   <h2>Časté otázky</h2>
   <div class="faq">
+    <details><summary>Ako zistiť vlastníka pozemku?</summary>
+      <p>Ťuknite na parcelu a zvoľte „Zistiť vlastníkov“ – otvorí sa oficiálny katastrálny portál ÚGKK s predvyplneným katastrálnym územím a číslom parcely. Výpis z listu vlastníctva (LV), ktorý si stiahnete, sa v aplikácii načíta sám: vlastníci, podiely a ťarchy sú hneď pri parcele.</p></details>
+    <details><summary>Ako nájsť parcelu podľa čísla?</summary>
+      <p>V hľadaní zadajte katastrálne územie, register (C alebo E) a číslo parcely. Parcela sa ukáže na mape celá, s výmerou a hranicami, a podľa polohy z GPS vás aplikácia navedie až na pozemok.</p></details>
+    <details><summary>Ako zistím, kde presne je môj pozemok v teréne?</summary>
+      <p>Na mape vidíte parcelu aj svoju polohu z GPS. Aplikácia ukáže, či stojíte na pozemku, a vzdialenosť k najbližšej hranici. Funguje to aj v lese a na lúke, a so stiahnutou offline mapou aj bez signálu. Presné vytýčenie hraníc robí geodet.</p></details>
+    <details><summary>Ako zmerať pozemok mobilom a zistiť výmeru?</summary>
+      <p>Výmeru parcely z katastra uvidíte ťuknutím na ňu – spolu s dĺžkami strán, obvodom a súradnicami lomových bodov. Vlastnú plochu zmeriate ťukaním do mapy, bodmi z GPS alebo chôdzou okolo pozemku; obsah, obvod aj dĺžky sa počítajú priebežne.</p></details>
+    <details><summary>Čo je parcela registra C a registra E?</summary>
+      <p>Register C sú súčasné parcely katastrálnej mapy. Register E sú pôvodné parcely podľa pozemkovej knihy (mapa určeného operátu) – najmä na poliach, lúkach a v lesoch, kde súčasné parcely C nemajú vlastníkov rozdelených. Parcelko ukáže oba registre naraz.</p></details>
+    <details><summary>Ukazuje Parcelko rozmery ako geometrický plán?</summary>
+      <p>Ukazuje dĺžky strán medzi lomovými bodmi, výmeru, obvod a súradnice bodov v S-JTSK podľa katastrálnej mapy – v rovnakej podobe ako geometrický plán. Geometrický plán na právne úkony však vyhotovuje autorizovaný geodet.</p></details>
+    <details><summary>Funguje to aj v lese a pri ťažbe dreva?</summary>
+      <p>Áno. Porastová mapa NLC a hranice lesných porastov s číslami dielcov sa zobrazia spolu s parcelami C a E, takže pri ťažbe vidíte, či porast nezasahuje do cudzích parciel. Užitočné pre lesníkov, urbariáty a pozemkové spoločenstvá.</p></details>
+    <details><summary>Aké súradnice a formáty vie aplikácia exportovať?</summary>
+      <p>Súradnice v S-JTSK (JTSK), JTSK03, WGS84 a UTM 34N a formáty KMZ a KML (Google Earth), GPX (GPS prístroje), GeoJSON (GIS), DXF (CAD), CSV (Excel) a TXT.</p></details>
     <details><summary>Funguje Parcelko bez internetu?</summary>
       <p>Áno. Vyznačte územie a stiahnite si mapy aj parcely vopred – v lese bez signálu potom vidíte hranice, čísla parciel,
         výmery aj svoju polohu. Bez internetu nefunguje len hľadanie v oblastiach, ktoré nemáte stiahnuté, a portál katastra.</p></details>
