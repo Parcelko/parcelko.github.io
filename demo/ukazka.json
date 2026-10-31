@@ -1,0 +1,36 @@
+{
+ "nazov": "Brezno – Zadné Halny",
+ "obalka": [
+  19.6467,
+  48.8152,
+  19.6828,
+  48.8351
+ ],
+ "stred": [
+  19.667,
+  48.8188
+ ],
+ "stiahnute": "2026-10-31",
+ "pocty": {
+  "C": 1677,
+  "E": 1162,
+  "porasty": 138
+ },
+ "mojeParcely": [
+  "5401",
+  "5575/6",
+  "5575/5"
+ ],
+ "parcelaEvLese": {
+  "c": "15750/21",
+  "lat": 48.835582,
+  "lon": 19.650692
+ },
+ "eVLese": 115,
+ "zdroje": [
+  "Parcely: © ÚGKK SR, INSPIRE (CC BY 4.0)",
+  "Lesné porasty: © NLC Zvolen (CC BY-SA 4.0)",
+  "Terén: Mapzen/Tilezen, SRTM, EU-DEM © Copernicus",
+  "Ortofoto: © GKÚ Bratislava, NLC (služba WMS)"
+ ]
+}

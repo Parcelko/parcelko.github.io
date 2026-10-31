@@ -2,47 +2,488 @@
 <html lang="sk">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Parcelko – kataster a merania v mobile</title>
-<meta name="description" content="Parcelko – aplikácia pre Android: katastrálna mapa, parcely C a E, výpisy z listov vlastníctva, meranie plôch a vzdialeností, offline mapy a lesné porasty.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Parcelko – parcely, hranice a vlastníci v mobile</title>
+<meta name="description" content="Parcelko pre Android: nájdite parcelu v lese aj na lúke, register C aj E, lesné porasty, meranie obsahu a obvodu, súradnice S-JTSK, vlastníci z listu vlastníctva, offline mapy a export.">
+<meta name="theme-color" content="#0a2e24">
+<link rel="icon" href="obrazky/ikona.svg" type="image/svg+xml">
+<meta property="og:title" content="Parcelko – parcely, hranice a vlastníci v mobile">
+<meta property="og:description" content="Kataster, lesy a merania v teréne – aj bez signálu. Aplikácia pre Android.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://parcelko.github.io/">
+<link rel="stylesheet" href="vendor/maplibre-gl-5.6.0.css">
 <link rel="stylesheet" href="styl.css">
 </head>
 <body>
+
+<header class="lista" id="lista">
+  <a class="znacka" href="#" aria-label="Parcelko – úvod"><img src="obrazky/ikona.svg" alt="" width="34" height="34"><span>Parcelko</span></a>
+  <nav aria-label="Hlavná ponuka">
+    <a href="#funkcie">Funkcie</a>
+    <a href="#les">Les</a>
+    <a href="#pre-koho">Pre koho</a>
+    <a href="#cennik">Cenník</a>
+    <a href="#otazky">Otázky</a>
+    <a href="#kontakt">Kontakt</a>
+  </nav>
+  <a class="tlacidlo male" href="#stiahnut">Stiahnuť</a>
+</header>
+
 <main>
-<h1>Parcelko</h1>
-<p class="tlmeny">Kataster, parcely a merania v teréne – aplikácia pre Android od LUBERIT s.r.o.</p>
+<!-- ============================================================ 3D mapa: skutočné údaje Brezno – Zadné Halny -->
+<section class="hero" aria-label="Interaktívna 3D mapa">
+  <div id="mapa3d" class="mapa3d" role="application" aria-label="3D mapa katastra – Brezno, Zadné Halny. Ťuknite na parcelu."></div>
+  <div class="hero-zatienenie" aria-hidden="true"></div>
 
-<ul>
-  <li>katastrálna mapa, mapa určeného operátu, ortofoto, ZBGIS a tieňovaný reliéf (ÚGKK SR, GKÚ)</li>
-  <li>parcely registra C aj E na ťuknutie – hranice, výmery, lomové body v S-JTSK</li>
-  <li>výpisy z listov vlastníctva priamo pri parcele</li>
-  <li>meranie plôch a vzdialeností chôdzou s GPS, značenie bodov s fotkami</li>
-  <li>offline mapy na miesta bez signálu, prenos územia na ďalší mobil</li>
-  <li>lesné porasty NLC (čísla porastov, porastová mapa)</li>
-  <li>import a export KMZ, KML, GPX, GeoJSON, DXF, CSV</li>
-</ul>
+  <div class="hero-text">
+    <p class="nadtitul"><span class="bodka"></span> Skutočné údaje katastra · Brezno – Zadné Halny</p>
+    <h1>Každá parcela.<br><span class="zvyraznene">V teréne aj bez signálu.</span></h1>
+    <p class="podtitul">Parcelko ukáže hranice parciel registra C aj E, lesné porasty, vlastníkov z listu vlastníctva
+      a vašu polohu priamo na pozemku. <strong>Stačí ťuknúť na parcelu</strong> – dĺžky strán, výmeru, obvod aj súradnice
+      lomových bodov máte hneď, bez merania. Mapy a parcely si vopred stiahnete – v lese bez signálu ich máte stále.</p>
+    <div class="akcie">
+      <a class="tlacidlo" href="#stiahnut">Stiahnuť pre Android</a>
+      <a class="tlacidlo obrys" href="#funkcie">Čo všetko vie</a>
+    </div>
+    <p class="napoveda" id="napoveda">Toto je živá mapa – ťuknite na parcelu a hneď uvidíte jej rozmery a súradnice.</p>
+    <form class="hladaj" id="hladaj" role="search" aria-label="Hľadať parcelu v ukážke">
+      <select id="h-reg" aria-label="Register"><option value="C">C</option><option value="E" selected>E</option></select>
+      <input id="h-cislo" placeholder="číslo parcely, napr. 15635" aria-label="Číslo parcely" autocomplete="off" spellcheck="false">
+      <button class="cip" type="submit">Nájsť</button>
+    </form>
+    <div class="ukazky" role="group" aria-label="Ukážky">
+      <button type="button" class="cip" data-ukazka="les">Les a parcely E</button>
+      <button type="button" class="cip" data-ukazka="moje">Moje parcely</button>
+      <button type="button" class="cip" data-ukazka="celok">Celé Zadné Halny</button>
+    </div>
+  </div>
 
-<h2 id="stiahnut">Stiahnutie</h2>
-<div class="karta">
-  <p><a class="tlacidlo" href="https://github.com/Parcelko/parcelko.github.io/releases/latest">Stiahnuť Parcelko pre Android</a></p>
-  <p class="tlmeny">Súbor <code>Parcelko-….apk</code>. Pri prvej inštalácii Android požiada o povolenie inštalovať aplikácie z prehliadača
-  alebo zo Súborov – povoľte ho len pre túto inštaláciu. Aplikácia potrebuje Android 8 alebo novší.
-  Nové verzie aplikácia oznámi sama (ponuka O aplikácii).</p>
-</div>
+  <div class="ovladanie" role="group" aria-label="Vrstvy a nástroje mapy">
+    <button type="button" class="cip zap" data-vrstva="c" aria-pressed="true"><i class="farba c"></i>Register C</button>
+    <button type="button" class="cip zap" data-vrstva="e" aria-pressed="true"><i class="farba e"></i>Register E</button>
+    <button type="button" class="cip zap" data-vrstva="lesy" aria-pressed="true"><i class="farba les"></i>Lesné porasty</button>
+    <button type="button" class="cip zap" data-vrstva="moje" aria-pressed="true"><i class="farba moje"></i>Moje parcely</button>
+    <button type="button" class="cip zap" data-podklad="orto" aria-pressed="true"><i class="farba orto"></i>Ortofoto</button>
+    <button type="button" class="cip" data-podklad="porastova" aria-pressed="false"><i class="farba porastova"></i>Porastová mapa NLC</button>
+    <span class="oddelovac" aria-hidden="true"></span>
+    <button type="button" class="cip nastroj" id="meranie" aria-pressed="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17 17 3l4 4L7 21H3z"/><path d="m14 6 2 2M11 9l2 2M8 12l2 2"/></svg>Zmerať</button>
+    <button type="button" class="cip nastroj" id="pohlad" aria-pressed="false" title="3D terén (ukážka na webe)">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/></svg><span>3D</span></button>
+  </div>
 
-<h2>Licencia</h2>
-<p>Parcelko sa používa s licenciou viazanou na mobil. Po inštalácii aplikácia ukáže <b>kód zariadenia</b> – pošlite ho
-predajcovi (tlačidlo „Poslať kód predajcovi“). Dostanete odkaz, ktorým sa aplikácia aktivuje. Na vyskúšanie vydávame
-<b>skúšobnú licenciu</b> na 14 dní.</p>
-<p>Kontakt: <!-- DOPLNIŤ pred zverejnením: e-mail, telefón --> LUBERIT s.r.o.</p>
+  <div class="prehliadka" id="prehliadka" aria-live="polite">
+    <div class="sc-text"><strong id="sc-nazov">Ukážka Parcelka</strong><span id="sc-popis">Brezno – Zadné Halny</span></div>
+    <div class="sc-spodok"><span class="bodky" id="sc-bodky" aria-hidden="true"></span>
+      <button type="button" class="cip" id="sc-tlacidlo" aria-pressed="true">Prezerať sám</button></div>
+  </div>
+  <aside class="karta-mapy" id="karta" hidden aria-live="polite">
+    <button type="button" class="zavriet" id="zavriet" aria-label="Zavrieť">×</button>
+    <div id="obsah-karty"></div>
+  </aside>
+  <div class="meranie-panel" id="meranie-panel" hidden aria-live="polite">
+    <div><span class="popis">Obsah</span><strong id="m-obsah">–</strong></div>
+    <div><span class="popis">Obvod</span><strong id="m-obvod">–</strong></div>
+    <button type="button" class="cip" id="m-zmazat">Zmazať</button>
+  </div>
+  <p class="mapa-zdroje">Parcely © ÚGKK SR (INSPIRE, CC BY 4.0) · Lesné porasty a porastová mapa © NLC Zvolen · Ortofoto © GKÚ Bratislava, NLC ·
+    Terén: Mapzen, SRTM, EU-DEM © Copernicus</p>
+</section>
 
-<h2>Zdroje údajov</h2>
-<p class="tlmeny">Mapové a katastrálne údaje pochádzajú z verejných služieb ÚGKK SR a GKÚ Bratislava (licencia CC BY 4.0) a Národného
-lesníckeho centra. Parcelko nie je oficiálnou aplikáciou ÚGKK SR ani GKÚ; údaje katastra majú informatívny charakter.</p>
+<!-- ============================================================ hlavná správa -->
+<section class="sprava-pruh" aria-label="Hlavná výhoda">
+  <span class="ikona"><svg viewBox="0 0 24 24"><path d="M5 19 8 5l11 3-3 11z"/><circle cx="5" cy="19" r="1.6"/><circle cx="8" cy="5" r="1.6"/><circle cx="19" cy="8" r="1.6"/><circle cx="16" cy="19" r="1.6"/></svg></span>
+  <p><strong>Nič nemerajte – ťuknite na parcelu.</strong> Dĺžky strán, výmera, obvod aj súradnice lomových bodov v S-JTSK sú hneď na displeji,
+    ako v geometrickom pláne.</p>
+</section>
 
-<footer>
-  © LUBERIT s.r.o. · <a href="sukromie.html">Ochrana osobných údajov</a>
-</footer>
+<!-- ============================================================ funkcie -->
+<section class="sekcia" id="funkcie">
+  <p class="nadtitul">Funkcie</p>
+  <h2>Všetko, čo potrebujete o pozemku, v jednom mobile</h2>
+  <h3 class="skupina odhal">Nájdite a uvidíte</h3>
+  <div class="mriezka funkcie">
+      <article class="funkcia odhal">
+        <span class="ikona"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-5-5"/></svg></span>
+        <h3>Nájdite parcelu</h3>
+        <p>Ťuknutím do mapy alebo podľa katastrálneho územia a čísla – registra C aj E. Parcela sa ukáže celá s výmerou a hranicami.</p>
+      </article>
+      <article class="funkcia odhal">
+        <span class="ikona"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/><circle cx="12" cy="12" r="8"/></svg></span>
+        <h3>Uvidíte ju naživo v teréne</h3>
+        <p>Vaša poloha z GPS priamo na mape: aplikácia povie, či stojíte na pozemku, ako ďaleko je hranica a s akou presnosťou.</p>
+      </article>
+      <article class="funkcia odhal">
+        <span class="ikona"><svg viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/></svg></span>
+        <h3>Celé vlastníctvo na jednej mape</h3>
+        <p>Parcely C aj E, lesné porasty, vaše vlastné parcely a vlastníci z listu vlastníctva – všetko naraz, presne na sebe.</p>
+      </article>
+      <article class="funkcia odhal">
+        <span class="ikona"><svg viewBox="0 0 24 24"><path d="m12 3 5 7h-3l4 6H6l4-6H7z"/><path d="M12 16v5"/></svg></span>
+        <h3>Lesy a porastová mapa NLC</h3>
+        <p>Farebná porastová mapa s číslami dielcov a hranice porastov spolu s parcelami C a E – v lese hneď viete, kde ste aj čie to je.</p>
+      </article>
+      <article class="funkcia odhal">
+        <span class="ikona"><svg viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Z"/><path d="M9 4v14M15 6v14"/></svg></span>
+        <h3>Mapy a podklady</h3>
+        <p>Ortofoto, katastrálna mapa, mapa určeného operátu, základná mapa ZBGIS, tieňovaný reliéf a porastová mapa – prepnete jedným ťuknutím.</p>
+      </article>
+      <article class="funkcia odhal">
+        <span class="ikona"><svg viewBox="0 0 24 24"><path d="M4 4h6M4 4v6M20 4h-6M20 4v6M4 20h6M4 20v-6M20 20h-6M20 20v-6"/></svg></span>
+        <h3>Celá obrazovka a naklonenie</h3>
+        <p>Mapa cez celý displej bez ponúk, naklonený pohľad a mapa sa otvorí tam, kde ste skončili.</p>
+      </article>
+  </div>
+  <h3 class="skupina odhal">Merajte a počítajte</h3>
+  <div class="mriezka funkcie">
+      <article class="funkcia odhal">
+        <span class="ikona"><svg viewBox="0 0 24 24"><path d="M5 19 8 5l11 3-3 11z"/><circle cx="5" cy="19" r="1.6"/><circle cx="8" cy="5" r="1.6"/><circle cx="19" cy="8" r="1.6"/><circle cx="16" cy="19" r="1.6"/></svg></span>
+        <h3>Rozmery ako v geometrickom pláne</h3>
+        <p>Nemusíte nič merať: ťuknete na parcelu a hneď máte dĺžku každej strany medzi lomovými bodmi, výmeru, obvod aj súradnice
+        bodov v S-JTSK. Výmera v rovine S-JTSK sedí s katastrom – napr. 3 565,38 m² pri výmere 3 565 m².</p>
+      </article>
+      <article class="funkcia odhal">
+        <span class="ikona"><svg viewBox="0 0 24 24"><path d="M3 17 17 3l4 4L7 21H3z"/><path d="m14 6 2 2M11 9l2 2M8 12l2 2"/></svg></span>
+        <h3>Vzdialenosť aj plocha</h3>
+        <p>Ťukajte do mapy: dĺžka trasy alebo obsah a obvod plochy sa počítajú hneď. Bod chytíte a posuniete – obsah, obvod aj dĺžky
+        strán sa okamžite prepočítajú. Body vložíte, zmažete, kroky vrátite späť a zámkom ich chránite pred náhodným posunom.</p>
+      </article>
+      <article class="funkcia odhal">
+        <span class="ikona"><svg viewBox="0 0 24 24"><circle cx="13" cy="4" r="2"/><path d="m9 21 2-6 3 3v3M8 12l3-4 3 2 3 3M11 8l-3 1-2 3"/></svg></span>
+        <h3>Meranie chôdzou</h3>
+        <p>Obídete pozemok a aplikácia sama zaznamenáva body z GPS – priebežne počíta prejdenú dĺžku, obvod aj obsah. Meranie môžete pozastaviť.</p>
+      </article>
+      <article class="funkcia odhal">
+        <span class="ikona"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+        <h3>Body z GPS s priemerovaním</h3>
+        <p>Bod zapíšete priamo z polohy, presnejšie s priemerovaním. Podpora externého GPS prijímača pre vyššiu presnosť.</p>
+      </article>
+      <article class="funkcia odhal">
+        <span class="ikona"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 12h16M12 4v16"/><circle cx="12" cy="12" r="2"/></svg></span>
+        <h3>Súradnice každého bodu</h3>
+        <p>Dlhým stlačením mapy súradnice v S-JTSK, JTSK03, WGS84 a UTM a výška nad morom (Bpv). Pri parcele zoznam všetkých lomových
+        bodov v S-JTSK na skopírovanie.</p>
+      </article>
+      <article class="funkcia odhal">
+        <span class="ikona"><svg viewBox="0 0 24 24"><path d="M3 3h8v8H3zM13 13h8v8h-8z"/><path d="M11 7h6v6"/></svg></span>
+        <h3>Výber viacerých parciel</h3>
+        <p>Ťuknutím alebo rámikom vyberiete viac parciel naraz – aplikácia spočíta ich celkovú výmeru.</p>
+      </article>
+  </div>
+  <h3 class="skupina odhal">Vaše parcely a dokumentácia</h3>
+  <div class="mriezka funkcie">
+      <article class="funkcia odhal">
+        <span class="ikona"><svg viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/></svg></span>
+        <h3>Vlastné vrstvy</h3>
+        <p>Zlúčené parcely, merania a body si uložíte do vlastných vrstiev s menom, farbou a výplňou – napr. „Moje lesy“, „Urbár“, „Na predaj“.</p>
+      </article>
+      <article class="funkcia odhal">
+        <span class="ikona"><svg viewBox="0 0 24 24"><path d="M12 15V3m-4 8 4 4 4-4"/><path d="M4 17v3h16v-3"/></svg></span>
+        <h3>Import KMZ, KML, GPX</h3>
+        <p>Načítate parcely a body z Google Earth, GPS prístrojov alebo od geodeta – aj viac súborov naraz, so štýlmi.</p>
+      </article>
+      <article class="funkcia odhal">
+        <span class="ikona"><svg viewBox="0 0 24 24"><path d="M4 7h3l2-3h6l2 3h3v13H4z"/><circle cx="12" cy="13" r="4"/></svg></span>
+        <h3>Body s fotodokumentáciou</h3>
+        <p>Číslované body s poznámkou a fotkami s polohou – hraničníky, poškodenia, stromy na ťažbu. Fotky majú odtlačok proti úpravám.</p>
+      </article>
+      <article class="funkcia odhal">
+        <span class="ikona"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6"/><path d="M17 11h5M19.5 8.5v5"/></svg></span>
+        <h3>Vlastníci z listu vlastníctva</h3>
+        <p>Výpis otvoríte na oficiálnom portáli katastra priamo v aplikácii – stiahnuté PDF sa načíta samo: vlastníci, podiely a ťarchy sú pri parcele.</p>
+      </article>
+  </div>
+  <h3 class="skupina odhal">Offline a export</h3>
+  <div class="mriezka funkcie">
+      <article class="funkcia odhal">
+        <span class="ikona"><svg viewBox="0 0 24 24"><path d="M7 18a5 5 0 1 1 1-9.9A6 6 0 0 1 19 10a4 4 0 0 1-1 8z"/><path d="M12 11v6m-3-3 3 3 3-3"/></svg></span>
+        <h3>Offline mapy bez signálu</h3>
+        <p>Rámikom si vyznačíte výsek mapy podľa seba – od pár parciel po celý chotár, les či obec – a stiahnete ho: mapy, parcely
+        aj lesy. Území môžete mať, koľko potrebujete, a v teréne bez signálu všetko funguje.</p>
+      </article>
+      <article class="funkcia odhal">
+        <span class="ikona"><svg viewBox="0 0 24 24"><path d="M7 7h11l-3-3M17 17H6l3 3"/></svg></span>
+        <h3>Prenos územia na ďalší mobil</h3>
+        <p>Stiahnuté územie pošlete kolegovi jedným súborom – bez nového sťahovania.</p>
+      </article>
+      <article class="funkcia odhal">
+        <span class="ikona"><svg viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4"/><path d="M4 17v3h16v-3"/></svg></span>
+        <h3>Export pre každého</h3>
+        <p>KMZ (aj s fotkami), KML, GPX, GeoJSON, DXF pre CAD, CSV pre Excel a TXT – so súradnicami v S-JTSK, JTSK03, WGS84 alebo UTM.</p>
+      </article>
+  </div>
+</section>
+
+<!-- ============================================================ les -->
+<section class="sekcia tmava" id="les">
+  <div class="dve-stlpce">
+    <div class="odhal">
+      <p class="nadtitul">Les a ťažba</p>
+      <h2>V lese vidíte aj parcely E – pôvodných vlastníkov</h2>
+      <p>V lesoch je veľa parciel registra E, ktoré patria iným vlastníkom než lesný celok okolo. Parcelko ukáže
+        naraz hranice lesných porastov NLC, parcely C aj E a vašu polohu z GPS. Pri ťažbe tak hneď vidíte, či porast,
+        v ktorom pracujete, nezasahuje do cudzej parcely – a vlastníka si overíte z listu vlastníctva.</p>
+      <ul class="zoznam">
+        <li>farebná porastová mapa NLC s číslami dielcov ako v lesníckej mape</li>
+        <li>číslo porastu, lesný celok, výmera a kategória lesa po ťuknutí</li>
+        <li>parcely E oranžovou, C žltou – aj s číslami priamo v mape</li>
+        <li>offline aj tam, kde nie je signál</li>
+      </ul>
+      <p class="poznamka">Orientačne podľa údajov katastra a NLC – hranice v teréne vytyčuje geodet.</p>
+    </div>
+    <figure class="mobil odhal naklon-vpravo" data-snimka="les"><img src="obrazky/app-porastova.webp" alt="Parcelko: porastová mapa NLC s parcelami C a E – Brezno" loading="lazy" width="720" height="1600"></figure>
+  </div>
+</section>
+
+
+<!-- ============================================================ porovnanie: len lesná mapa ↔ s parcelami C a E -->
+<section class="sekcia" id="porovnanie">
+  <div class="dve-stlpce">
+    <div class="odhal">
+      <p class="nadtitul">Rozdiel na prvý pohľad</p>
+      <h2>Les na mape – a ten istý les s parcelami</h2>
+      <p>Vľavo samotná porastová mapa NLC, ako ju poznáte. Vpravo to isté miesto v Parcelku so zapnutými parcelami registra C
+        (čierne), registra E (zelené) a hranicami porastov – hneď vidíte, koľko pozemkov a vlastníkov je v lese a pri obci.
+        Potiahnite posúvač.</p>
+      <p class="poznamka">Brezno – Zadné Halny, skutočné obrazovky aplikácie.</p>
+    </div>
+    <div class="porovnanie odhal" id="porovnanie-obr" style="--p: 50">
+      <img src="obrazky/app-porovnanie-s.webp" alt="Porastová mapa s parcelami C a E a hranicami porastov" width="720" height="1600" loading="lazy">
+      <img class="pred" src="obrazky/app-porovnanie-bez.webp" alt="Len porastová mapa NLC" width="720" height="1600" loading="lazy">
+      <span class="ciara" aria-hidden="true"><span class="uchop">⟷</span></span>
+      <span class="stitok-obr vlavo">len lesná mapa</span><span class="stitok-obr vpravo">+ parcely C a E</span>
+      <input type="range" min="0" max="100" value="50" aria-label="Posúvač porovnania – vľavo len lesná mapa, vpravo s parcelami">
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ pre koho -->
+<section class="sekcia" id="pre-koho">
+  <p class="nadtitul">Pre koho</p>
+  <h2>Pre každého, kto potrebuje vedieť, kde presne je pozemok</h2>
+  <div class="mriezka pouzitia">
+    <article class="pouzitie odhal">
+      <h3>Lesníci a urbariáty</h3>
+      <p>Porasty, parcely E v lese, body ťažby s fotkami, offline mapy celého lesného celku a prenos územia na mobily kolegov.</p>
+    </article>
+    <article class="pouzitie odhal">
+      <h3>Realitní makléri</h3>
+      <p>Nájdite parcelu a zistite výmeru, obvod aj dĺžku každej strany medzi lomovými bodmi – ako v geometrickom pláne. K tomu vlastníkov
+        z listu vlastníctva, body s fotkami a pre klienta KMZ alebo PDF z katastra.</p>
+    </article>
+    <article class="pouzitie odhal">
+      <h3>Dedičia</h3>
+      <p>Zdedili ste les, lúku či záhradu a neviete, kde presne sú? Zadajte čísla parciel z dedičského rozhodnutia alebo
+        listu vlastníctva – Parcelko ich ukáže na mape, označíte si ich ako svoje a polohou vás navedie až na pozemok.</p>
+    </article>
+    <article class="pouzitie odhal">
+      <h3>Hľadáte parcelu v lese či na lúke?</h3>
+      <p>Bez hraníc v teréne sa ťažko hľadá. Na mape vidíte parcelu aj svoju polohu a aplikácia povie, či už ste na pozemku.</p>
+    </article>
+    <article class="pouzitie odhal">
+      <h3>Vlastníci a kupujúci</h3>
+      <p>Pred kúpou si prejdite hranice v teréne, zmerajte plochu a porovnajte ju s výmerou v katastri.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ============================================================ v mobile -->
+<section class="sekcia jemna" id="v-mobile">
+  <p class="nadtitul">V mobile</p>
+  <h2>Takto vyzerá Parcelko v teréne</h2>
+  <p class="uvod">Skutočné obrazovky aplikácie – Brezno, Zadné Halny. Ukážky sa posúvajú samy, môžete ich posúvať aj vy.</p>
+  <div class="galeria-obal">
+    <button type="button" class="galeria-sipka vlavo" aria-label="Predchádzajúce">‹</button>
+    <div class="galeria" tabindex="0" aria-label="Ukážky obrazoviek aplikácie – Brezno">
+      <figure class="mobil odhal" data-snimka="hladanie"><img src="obrazky/app-hladanie.webp" alt="Hľadanie parcely podľa čísla" loading="lazy" width="720" height="1600"><figcaption>Nájdete parcelu podľa čísla – aj registra E</figcaption></figure>
+      <figure class="mobil odhal" data-snimka="porastova"><img src="obrazky/app-porastova.webp" alt="Porastová mapa NLC s parcelami" loading="lazy" width="720" height="1600"><figcaption>Porastová mapa NLC s parcelami</figcaption></figure>
+      <figure class="mobil odhal" data-snimka="rozmery"><img src="obrazky/app-rozmery.webp" alt="Rozmery parcely – dĺžky strán, výmera, obvod" loading="lazy" width="720" height="1600"><figcaption>Rozmery ako v geometrickom pláne</figcaption></figure>
+      <figure class="mobil odhal" data-snimka="parcela-e-tmava"><img src="obrazky/app-parcela-e-tmava.webp" alt="Parcela E v tmavom režime" loading="lazy" width="720" height="1600"><figcaption>Parcela E – výmera a „ste na pozemku“</figcaption></figure>
+      <figure class="mobil odhal" data-snimka="posun-bodu"><img src="obrazky/app-posun-bodu.webp" alt="Posun bodu – plocha a obvod sa prepočítajú" loading="lazy" width="720" height="1600"><figcaption>Posuniete bod – všetko sa prepočíta</figcaption></figure>
+      <figure class="mobil odhal" data-snimka="vyber"><img src="obrazky/app-vyber.webp" alt="Výber troch parciel so súčtom výmery" loading="lazy" width="720" height="1600"><figcaption>Výber viacerých parciel a súčet výmer</figcaption></figure>
+      <figure class="mobil odhal" data-snimka="cela-obrazovka"><img src="obrazky/app-cela-obrazovka.webp" alt="Celá obrazovka – len mapa a ikonka" loading="lazy" width="720" height="1600"><figcaption>Celá obrazovka – len mapa</figcaption></figure>
+      <figure class="mobil odhal" data-snimka="lomove-body"><img src="obrazky/app-lomove-body.webp" alt="Lomové body so súradnicami S-JTSK" loading="lazy" width="720" height="1600"><figcaption>Lomové body v S-JTSK na skopírovanie</figcaption></figure>
+      <figure class="mobil odhal" data-snimka="porastova-tmava"><img src="obrazky/app-porastova-tmava.webp" alt="Porastová mapa v tmavom režime" loading="lazy" width="720" height="1600"><figcaption>Tmavý režim – porastová mapa</figcaption></figure>
+      <figure class="mobil odhal" data-snimka="suradnice"><img src="obrazky/app-suradnice.webp" alt="Súradnice bodu v S-JTSK, JTSK03, WGS84 a UTM" loading="lazy" width="720" height="1600"><figcaption>Súradnice bodu dlhým stlačením</figcaption></figure>
+      <figure class="mobil odhal" data-snimka="parcela"><img src="obrazky/app-parcela.webp" alt="Parcela C pri dome" loading="lazy" width="720" height="1600"><figcaption>Parcela C pri dome – na ortofote</figcaption></figure>
+      <figure class="mobil odhal" data-snimka="rozmery-tmava"><img src="obrazky/app-rozmery-tmava.webp" alt="Rozmery v tmavom režime" loading="lazy" width="720" height="1600"><figcaption>Tmavý režim – meranie</figcaption></figure>
+      <figure class="mobil odhal" data-snimka="vrstvy"><img src="obrazky/app-vrstvy.webp" alt="Moje parcely a podklady" loading="lazy" width="720" height="1600"><figcaption>Moje parcely z KMZ a podklady</figcaption></figure>
+      <figure class="mobil odhal" data-snimka="les-e"><img src="obrazky/app-les-e.webp" alt="Parcela E na okraji lesa" loading="lazy" width="720" height="1600"><figcaption>Parcely C a E pri lese</figcaption></figure>
+      <figure class="mobil odhal" data-snimka="offline"><img src="obrazky/app-offline.webp" alt="Offline mapy" loading="lazy" width="720" height="1600"><figcaption>Offline mapy bez signálu</figcaption></figure>
+      <figure class="mobil odhal" data-snimka="export"><img src="obrazky/app-export.webp" alt="Export súradníc" loading="lazy" width="720" height="1600"><figcaption>Export – S-JTSK, KMZ, DXF…</figcaption></figure>
+    </div>
+    <button type="button" class="galeria-sipka vpravo" aria-label="Ďalšie">›</button>
+  </div>
+</section>
+
+<!-- ============================================================ list vlastníctva (ilustrácia s vymyslenými údajmi) -->
+<section class="sekcia" id="vlastnici">
+  <div class="dve-stlpce">
+    <div class="odhal">
+      <p class="nadtitul">List vlastníctva</p>
+      <h2>Vlastníci pri parcele – bez prepisovania</h2>
+      <p>Z panelu parcely otvoríte oficiálny katastrálny portál ÚGKK s predvyplneným územím a číslom parcely. Výpis z listu
+        vlastníctva, ktorý si na portáli stiahnete, sa v aplikácii načíta sám: vlastníci, podiely a ťarchy sú hneď pri
+        parcele – aj offline. Pri starom výpise vás aplikácia upozorní.</p>
+      <p class="poznamka">Výpisy ostávajú len vo vašom mobile. Údaje katastra majú informatívny charakter.</p>
+    </div>
+    <div class="lv-karta odhal" aria-label="Ilustrácia – vymyslené údaje">
+      <p class="lv-hlavicka"><strong>LV č. 1234</strong> · k. ú. Ukážkovo <span class="stitok">ilustrácia</span></p>
+      <p class="lv-parcela">Parcela C 512/3 · záhrada · 812 m²</p>
+      <ol>
+        <li><span>Ján Vzorový</span><span>1/2</span></li>
+        <li><span>Mária Vzorová</span><span>1/4</span></li>
+        <li><span>Peter Ukážka</span><span>1/4</span></li>
+      </ol>
+      <p class="lv-paticka">Výpis stiahnutý 31. 10. 2026 · ťarchy: bez zápisu</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ presnosť -->
+<section class="sekcia jemna" id="presnost">
+  <div class="dve-stlpce">
+    <div class="odhal">
+      <p class="nadtitul">Presnosť</p>
+      <h2>Súradnice presne podľa katastrálnej mapy</h2>
+      <p>Súradnice lomových bodov sa prevádzajú oficiálnym postupom ÚGKK – 7-parametrová transformácia ETRS89 ⇄ JTSK03
+        a opravná sieť JTSK03 ⇄ JTSK. Prevod je overený voči serveru katastra na 12 miestach Slovenska s odchýlkou najviac 6 milimetrov (0,006 m).
+        Presnosť polohy z GPS mobilu je iná vec – spravidla 2 až 10 metrov.
+        Výmera sa počíta v rovine S-JTSK rovnako ako v katastri, plocha na elipsoide je uvedená samostatne.</p>
+    </div>
+    <div class="odhal">
+      <ul class="zoznam fajky">
+        <li>S-JTSK (Křovák), JTSK03, WGS84/ETRS89, UTM 34N</li>
+        <li>výška nad morom Bpv (kvázigeoid DVRM05)</li>
+        <li>originál a prepočet vždy odlíšené</li>
+        <li>poloha z GPS mobilu spravidla 2 – 10 m, s priemerovaním presnejšie</li>
+      </ul>
+      <p class="poznamka">Parcelko nie je oficiálnou aplikáciou ÚGKK SR ani GKÚ. Údaje katastra majú informatívny charakter
+        (§ 68 ods. 4 zákona č. 162/1995 Z. z.) a aplikácia nie je určená na vytyčovanie hraníc – to robí oprávnený geodet.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ cenník -->
+<section class="sekcia" id="cennik">
+  <p class="nadtitul">Cenník</p>
+  <h2>Platíte len vtedy, keď Parcelko potrebujete</h2>
+  <p class="uvod">Licencia pre jeden mobil, bez automatického predlžovania. Platí odo dňa vydania. Ceny sú konečné.</p>
+  <div class="mriezka styri ceny">
+    <article class="cena odhal">
+      <h3>Týždeň</h3>
+      <p class="suma">4,90 €</p>
+      <p class="za">7 dní</p>
+      <p>Nájdete svoju parcelu v lese či na lúke, prezriete pozemok pred kúpou.</p>
+    </article>
+    <article class="cena odhal">
+      <h3>Mesiac</h3>
+      <p class="suma">9,90 €</p>
+      <p class="za">30 dní</p>
+      <p>Na projekt, predaj nehnuteľnosti alebo jednu sezónu prác.</p>
+    </article>
+    <article class="cena odhal">
+      <h3>Polrok</h3>
+      <p class="suma">34,90 €</p>
+      <p class="za">182 dní · 5,82 € mesačne</p>
+      <p>Celá sezóna ťažby alebo poľnohospodárskych prác.</p>
+    </article>
+    <article class="cena odhal odporucane">
+      <span class="stuha">Najvýhodnejšie</span>
+      <h3>Rok</h3>
+      <p class="suma">49,90 €</p>
+      <p class="za">365 dní · 4,16 € mesačne</p>
+      <p>Pre lesníkov, urbariáty, maklérov a všetkých, ktorí sú v teréne často.</p>
+    </article>
+  </div>
+  <p class="uvod mensie">Firmy, urbariáty a spoločenstvá: od 3 mobilov zľava 20 %, faktúra – <a href="#kontakt">napíšte nám</a>.</p>
+</section>
+
+<!-- ============================================================ ako začať -->
+<section class="sekcia tmava" id="stiahnut">
+  <p class="nadtitul">Ako začať</p>
+  <h2>Za pár minút v teréne</h2>
+  <ol class="kroky">
+    <li class="odhal"><strong>Stiahnite aplikáciu</strong><span>Súbor APK pre Android 8 a novší. Android sa pri prvej inštalácii opýta na povolenie – povoľte ho len pre túto inštaláciu.</span></li>
+    <li class="odhal"><strong>Pošlite kód zariadenia</strong><span>Aplikácia ho ukáže po spustení – tlačidlom „Poslať kód predajcovi“ ho pošlete e-mailom alebo hocijakou aplikáciou (WhatsApp, Viber, Messenger, SMS…).</span></li>
+    <li class="odhal"><strong>Zaplaťte zvolený tarif</strong><span>Prevodom na účet alebo na faktúru.</span></li>
+    <li class="odhal"><strong>Ťuknite na aktivačný odkaz</strong><span>Dostanete odkaz – aplikácia sa aktivuje sama (stačí byť pripojený na internet).</span></li>
+  </ol>
+  <p class="akcie stred"><a class="tlacidlo velke" href="https://github.com/Parcelko/parcelko.github.io/releases/latest">Stiahnuť Parcelko pre Android</a></p>
+  <p class="poznamka stred">Nové verzie aplikácia oznámi sama. iPhone zatiaľ nepodporujeme.</p>
+</section>
+
+<!-- ============================================================ otázky -->
+<section class="sekcia" id="otazky">
+  <p class="nadtitul">Otázky</p>
+  <h2>Časté otázky</h2>
+  <div class="faq">
+    <details><summary>Funguje Parcelko bez internetu?</summary>
+      <p>Áno. Vyznačte územie a stiahnite si mapy aj parcely vopred – v lese bez signálu potom vidíte hranice, čísla parciel,
+        výmery aj svoju polohu. Bez internetu nefunguje len hľadanie v oblastiach, ktoré nemáte stiahnuté, a portál katastra.</p></details>
+    <details><summary>Ako presné sú súradnice a merania?</summary>
+      <p>Súradnice lomových bodov zodpovedajú katastrálnej mape – prevod súradníc je overený s odchýlkou najviac 6 milimetrov
+        (0,006 m) a výmera sa počíta rovnako ako v katastri. Presnosť polohy z GPS mobilu je spravidla 2 až 10 metrov. Na vytýčenie hraníc v teréne potrebujete geodeta.</p></details>
+    <details><summary>Je to oficiálna aplikácia katastra?</summary>
+      <p>Nie. Parcelko vyvíja slovenská firma LUBERIT s. r. o.</p></details>
+    <details><summary>Čo keď vymením mobil?</summary>
+      <p>Licencia je viazaná na jeden mobil. Pri výmene nám pošlite nový kód zariadenia a pošleme nový aktivačný odkaz.
+        Vrstvy a merania si prenesiete exportom (KMZ), stiahnuté územie tlačidlom „Poslať“.</p></details>
+    <details><summary>Ukladáte moje údaje?</summary>
+      <p>Nie. Všetko, čo v aplikácii vytvoríte – parcely, merania, fotky, výpisy – je len vo vašom mobile.
+        Podrobnosti v <a href="sukromie.html">zásadách ochrany osobných údajov</a>.</p></details>
+  </div>
+</section>
+<!-- ============================================================ kontakt (formulár ako pri kubikovači – FormSubmit; po zverejnení treba raz potvrdiť e-mail od FormSubmit) -->
+<section class="sekcia jemna" id="kontakt">
+  <div class="dve-stlpce kontakt">
+    <div class="odhal">
+      <p class="nadtitul">Kontakt</p>
+      <h2>Chcete Parcelko alebo máte otázku?</h2>
+      <p>Napíšte nám – pošleme licenciu, faktúru pre firmu či urbariát, alebo poradíme s parcelou. Odpovedáme spravidla do 24 hodín.</p>
+      <p class="kontakt-email"><a href="mailto:luberit@proton.me?subject=Parcelko">luberit@proton.me</a></p>
+      <p class="poznamka">Kód zariadenia ukáže aplikácia po spustení (alebo v ponuke O aplikácii) – stačí ho skopírovať do správy.</p>
+    </div>
+    <form class="formular odhal" id="formular" action="https://formsubmit.co/luberit@proton.me" method="POST">
+      <input type="hidden" name="_subject" value="Dopyt z webu – Parcelko">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="text" name="_honey" class="medovnik" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <label>Meno / firma<input name="Meno / firma" required autocomplete="name" placeholder="Ján Novák – Urbariát Halny"></label>
+      <label>E-mail<input type="email" name="E-mail" required autocomplete="email" placeholder="jan@priklad.sk"></label>
+      <label>Telefón <small>(nepovinné)</small><input type="tel" name="Telefón" autocomplete="tel" placeholder="+421 …"></label>
+      <label>Záujem<select name="Záujem">
+        <option>Týždeň</option><option>Mesiac</option><option>Polrok</option><option selected>Rok</option>
+        <option>Firma / urbariát – viac mobilov</option><option>Skúšobná licencia</option><option>Otázka</option></select></label>
+      <label class="cely">Kód zariadenia <small>(nepovinné – z aplikácie)</small><input name="Kód zariadenia" placeholder="XXXX-XXXX-XXXX-XXXX" autocomplete="off" spellcheck="false"></label>
+      <label class="cely">Správa<textarea name="Správa" rows="4" required placeholder="Dobrý deň, mám záujem o…"></textarea></label>
+      <div class="cely odoslat"><button class="tlacidlo" type="submit">Odoslať správu</button><p class="stav-formulara" id="stav-formulara" role="status"></p></div>
+      <p class="cely poznamka">Údaje zo správy použijeme len na odpoveď a vybavenie objednávky – <a href="sukromie.html">ochrana osobných údajov</a>.</p>
+    </form>
+  </div>
+</section>
 </main>
+
+<footer class="paticka">
+  <div class="paticka-mriezka">
+    <div>
+      <a class="znacka" href="#"><img src="obrazky/ikona.svg" alt="" width="30" height="30"><span>Parcelko</span></a>
+      <p>Kataster, lesy a merania v teréne.</p>
+      <p class="firma">LUBERIT s. r. o., Pongrácovce 59, 053 05 Pongrácovce<br>IČO 56 274 483 · DIČ 2122267917<br>
+        <a href="mailto:luberit@proton.me">luberit@proton.me</a></p>
+      <!-- DOPLNIŤ pred zverejnením: kontaktný e-mail (aj v aplikácii – tlačidlo „Poslať kód predajcovi“) -->
+    </div>
+    <div>
+      <h4>Odkazy</h4>
+      <a href="#cennik">Cenník</a><a href="#kontakt">Kontakt</a><a href="aktivacia.html">Aktivácia licencie</a><a href="sukromie.html">Ochrana osobných údajov</a>
+    </div>
+  </div>
+</footer>
+
+<script src="vendor/maplibre-gl-5.6.0.js" defer></script>
+<script src="app.js" defer></script>
+<!-- Cloudflare Web Analytics (bez cookies, ako pri kubikovači) – po vytvorení stránky v Cloudflare doplniť token a odkomentovať:
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "DOPLNIŤ"}'></script>
+-->
 </body>
 </html>
