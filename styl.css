@@ -259,7 +259,7 @@ body.bez-mapy .hero { background: radial-gradient(900px 500px at 75% 35%, rgba(2
 .mobil figcaption { position: absolute; left: 0; right: 0; top: calc(100% + 16px); text-align: center; font-size: .92rem; color: var(--tlmeny); font-weight: 600; }
 .mobil.chyba-snimky img { visibility: hidden; }
 .mobil.chyba-snimky::before { content: "snímka sa pripravuje"; position: absolute; inset: 10px; border-radius: 31px; display: grid; place-items: center; color: #7d918a; background: repeating-linear-gradient(135deg, #15241f 0 12px, #18291f 12px 24px); font-size: .9rem; }
-.galeria { display: flex; gap: clamp(28px, 4vw, 56px); overflow-x: auto; padding: 40px 8px 72px; margin: 0 -8px; scroll-snap-type: x mandatory; scrollbar-width: thin; }
+.galeria { position: relative; display: flex; gap: clamp(28px, 4vw, 56px); overflow-x: auto; padding: 40px 8px 72px; margin: 0 -8px; scroll-snap-type: x mandatory; scrollbar-width: thin; }
 .galeria .mobil { flex: 0 0 auto; width: 250px; scroll-snap-align: center; transform: perspective(1400px) rotateY(-10deg); }
 .galeria .mobil:nth-child(even) { transform: perspective(1400px) rotateY(10deg) translateY(28px); }
 .galeria .mobil:hover { transform: perspective(1400px) rotateY(0) translateY(-6px); }

@@ -49,22 +49,35 @@
     }
   });
 
-  // galéria obrazoviek: posúva sa sama (vidno, že je tam viac); dotyk, šípky alebo myš ju na chvíľu zastavia
+  // galéria obrazoviek: posúva sa sama (vidno, že je tam viac); zastaví ju len skutočné ťahanie alebo šípky, nie myš nad ňou
   const galeria = document.querySelector('.galeria');
   if (galeria) {
-    const krok = () => (galeria.querySelector('.mobil')?.getBoundingClientRect().width || 250) + 48;
-    let pauzaDo = 0, viditelna = false;
     const plynulo = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
-    const posun = (smer) => {
-      const koniec = galeria.scrollLeft + galeria.clientWidth >= galeria.scrollWidth - 8;
-      if (smer > 0 && koniec) galeria.scrollTo({ left: 0, behavior: plynulo });
-      else galeria.scrollBy({ left: smer * krok(), behavior: plynulo });
+    const obrazky = () => [...galeria.querySelectorAll('.mobil')];
+    const aktualny = () => {
+      const stred = galeria.scrollLeft + galeria.clientWidth / 2;
+      let naj = 0, vzd = Infinity;
+      obrazky().forEach((f, i) => { const d = Math.abs(f.offsetLeft + f.offsetWidth / 2 - stred); if (d < vzd) { vzd = d; naj = i; } });
+      return naj;
     };
-    const zastavGaleriu = () => { pauzaDo = Date.now() + 9000; };
-    ['pointerdown', 'wheel', 'touchstart', 'mouseenter', 'focusin'].forEach((ev) => galeria.addEventListener(ev, zastavGaleriu, { passive: true }));
+    const naObrazok = (i) => {
+      const f = obrazky()[i];
+      if (f) galeria.scrollTo({ left: f.offsetLeft + f.offsetWidth / 2 - galeria.clientWidth / 2, behavior: plynulo });
+    };
+    const posun = (smer) => {
+      const n = obrazky().length, i = aktualny();
+      const koniec = galeria.scrollLeft + galeria.clientWidth >= galeria.scrollWidth - 8;
+      naObrazok(smer > 0 && koniec ? 0 : Math.max(0, Math.min(n - 1, i + smer)));
+    };
+    let pauzaDo = 0, viditelna = false;
+    const zastavGaleriu = () => { pauzaDo = Date.now() + 8000; };
+    galeria.addEventListener('pointerdown', zastavGaleriu, { passive: true });
+    galeria.addEventListener('touchstart', zastavGaleriu, { passive: true });
+    galeria.addEventListener('wheel', (e) => { if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) zastavGaleriu(); }, { passive: true });
     document.querySelectorAll('.galeria-sipka').forEach((b) => b.addEventListener('click', () => { zastavGaleriu(); posun(b.classList.contains('vpravo') ? 1 : -1); }));
     if ('IntersectionObserver' in window) new IntersectionObserver((z) => { viditelna = z[0].isIntersecting; }).observe(galeria);
-    setInterval(() => { if (viditelna && !document.hidden && Date.now() > pauzaDo) posun(1); }, 2800);
+    else viditelna = true;
+    setInterval(() => { if (viditelna && !document.hidden && Date.now() > pauzaDo) posun(1); }, 2600);
   }
 
   // porovnanie: posúvač medzi „len lesná mapa“ a „s parcelami“

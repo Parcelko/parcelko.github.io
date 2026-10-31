@@ -45,7 +45,7 @@
       <a class="tlacidlo" href="#stiahnut">Stiahnuť pre Android</a>
       <a class="tlacidlo obrys" href="#funkcie">Čo všetko vie</a>
     </div>
-    <p class="napoveda" id="napoveda">Toto je živá mapa – ťuknite na parcelu a hneď uvidíte jej rozmery a súradnice.</p>
+    <p class="napoveda" id="napoveda">Toto je živá mapa – ťuknite na parcelu a hneď uvidíte jej rozmery (v aplikácii aj súradnice lomových bodov).</p>
     <form class="hladaj" id="hladaj" role="search" aria-label="Hľadať parcelu v ukážke">
       <select id="h-reg" aria-label="Register"><option value="C">C</option><option value="E" selected>E</option></select>
       <input id="h-cislo" placeholder="číslo parcely, napr. 15635" aria-label="Číslo parcely" autocomplete="off" spellcheck="false">
@@ -157,7 +157,7 @@
       <article class="funkcia odhal">
         <span class="ikona"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
         <h3>Body z GPS s priemerovaním</h3>
-        <p>Bod zapíšete priamo z polohy, presnejšie s priemerovaním. Podpora externého GPS prijímača pre vyššiu presnosť.</p>
+        <p>Bod zapíšete priamo z polohy, presnejšie s priemerovaním. Externý GPS prijímač (napr. RTK) pripojíte cez simulovanú polohu Androidu.</p>
       </article>
       <article class="funkcia odhal">
         <span class="ikona"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 12h16M12 4v16"/><circle cx="12" cy="12" r="2"/></svg></span>
@@ -186,7 +186,7 @@
       <article class="funkcia odhal">
         <span class="ikona"><svg viewBox="0 0 24 24"><path d="M4 7h3l2-3h6l2 3h3v13H4z"/><circle cx="12" cy="13" r="4"/></svg></span>
         <h3>Body s fotodokumentáciou</h3>
-        <p>Číslované body s poznámkou a fotkami s polohou – hraničníky, poškodenia, stromy na ťažbu. Fotky majú odtlačok proti úpravám.</p>
+        <p>Číslované body s poznámkou a fotkami s polohou – hraničníky, poškodenia, stromy na ťažbu. Každá fotka dostane odtlačok SHA-256, ktorým sa dá neskôr preukázať, že sa nezmenila.</p>
       </article>
       <article class="funkcia odhal">
         <span class="ikona"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6"/><path d="M17 11h5M19.5 8.5v5"/></svg></span>
@@ -297,12 +297,12 @@
     <button type="button" class="galeria-sipka vlavo" aria-label="Predchádzajúce">‹</button>
     <div class="galeria" tabindex="0" aria-label="Ukážky obrazoviek aplikácie – Brezno">
       <figure class="mobil odhal" data-snimka="hladanie"><img src="obrazky/app-hladanie.webp" alt="Hľadanie parcely podľa čísla" loading="lazy" width="720" height="1600"><figcaption>Nájdete parcelu podľa čísla – aj registra E</figcaption></figure>
+      <figure class="mobil odhal" data-snimka="cela-obrazovka"><img src="obrazky/app-cela-obrazovka.webp" alt="Celá obrazovka – len mapa a ikonka" loading="lazy" width="720" height="1600"><figcaption>Celá obrazovka – len mapa a zelená ikonka</figcaption></figure>
       <figure class="mobil odhal" data-snimka="porastova"><img src="obrazky/app-porastova.webp" alt="Porastová mapa NLC s parcelami" loading="lazy" width="720" height="1600"><figcaption>Porastová mapa NLC s parcelami</figcaption></figure>
       <figure class="mobil odhal" data-snimka="rozmery"><img src="obrazky/app-rozmery.webp" alt="Rozmery parcely – dĺžky strán, výmera, obvod" loading="lazy" width="720" height="1600"><figcaption>Rozmery ako v geometrickom pláne</figcaption></figure>
       <figure class="mobil odhal" data-snimka="parcela-e-tmava"><img src="obrazky/app-parcela-e-tmava.webp" alt="Parcela E v tmavom režime" loading="lazy" width="720" height="1600"><figcaption>Parcela E – výmera a „ste na pozemku“</figcaption></figure>
       <figure class="mobil odhal" data-snimka="posun-bodu"><img src="obrazky/app-posun-bodu.webp" alt="Posun bodu – plocha a obvod sa prepočítajú" loading="lazy" width="720" height="1600"><figcaption>Posuniete bod – všetko sa prepočíta</figcaption></figure>
       <figure class="mobil odhal" data-snimka="vyber"><img src="obrazky/app-vyber.webp" alt="Výber troch parciel so súčtom výmery" loading="lazy" width="720" height="1600"><figcaption>Výber viacerých parciel a súčet výmer</figcaption></figure>
-      <figure class="mobil odhal" data-snimka="cela-obrazovka"><img src="obrazky/app-cela-obrazovka.webp" alt="Celá obrazovka – len mapa a ikonka" loading="lazy" width="720" height="1600"><figcaption>Celá obrazovka – len mapa</figcaption></figure>
       <figure class="mobil odhal" data-snimka="lomove-body"><img src="obrazky/app-lomove-body.webp" alt="Lomové body so súradnicami S-JTSK" loading="lazy" width="720" height="1600"><figcaption>Lomové body v S-JTSK na skopírovanie</figcaption></figure>
       <figure class="mobil odhal" data-snimka="porastova-tmava"><img src="obrazky/app-porastova-tmava.webp" alt="Porastová mapa v tmavom režime" loading="lazy" width="720" height="1600"><figcaption>Tmavý režim – porastová mapa</figcaption></figure>
       <figure class="mobil odhal" data-snimka="suradnice"><img src="obrazky/app-suradnice.webp" alt="Súradnice bodu v S-JTSK, JTSK03, WGS84 a UTM" loading="lazy" width="720" height="1600"><figcaption>Súradnice bodu dlhým stlačením</figcaption></figure>
