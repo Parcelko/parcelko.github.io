@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Aktivácia Parcelka</title>
+<link rel="stylesheet" href="styl.css">
+</head>
+<body>
+<main>
+<h1>Aktivácia licencie</h1>
+<!-- Licenčný kód je v časti odkazu za „#“ – prehliadač ju na server neposiela, stránka ju len odovzdá aplikácii. -->
+<div id="s-kodom" hidden>
+  <p>Ťuknite na tlačidlo – otvorí sa aplikácia Parcelko a licenciu aktivuje (mobil musí byť pripojený na internet).</p>
+  <p><a id="otvorit" class="tlacidlo" href="#">Otvoriť v aplikácii Parcelko</a></p>
+  <div class="karta">
+    <p>Ak sa aplikácia neotvorí, skopírujte licenčný kód a v aplikácii ťuknite na <b>Vložiť</b> a <b>Aktivovať</b>:</p>
+    <span id="kod" class="kod"></span>
+    <p><button id="kopirovat" class="tlacidlo druhe" type="button">Kopírovať kód</button> <span id="skopirovane" class="tlmeny" hidden>Skopírované</span></p>
+  </div>
+  <p class="tlmeny">Aplikáciu ešte nemáte? <a href="index.html#stiahnut">Stiahnite si ju</a> a potom znova ťuknite na odkaz od predajcu.</p>
+</div>
+<div id="bez-kodu" hidden>
+  <p>Táto stránka aktivuje aplikáciu Parcelko odkazom od predajcu. V odkaze chýba licenčný kód – otvorte celý odkaz
+  zo správy (alebo kód vložte priamo v aplikácii).</p>
+  <p><a href="index.html">Parcelko – úvod</a></p>
+</div>
+<script>
+(function () {
+  var zdroj = decodeURIComponent((location.hash || "").slice(1) + " " + (new URLSearchParams(location.search).get("kod") || ""));
+  var m = zdroj.replace(/\s+/g, "").match(/P1\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{86}/);
+  if (!m) { document.getElementById("bez-kodu").hidden = false; return; }
+  var kod = m[0];
+  document.getElementById("s-kodom").hidden = false;
+  document.getElementById("kod").textContent = kod;
+  var android = /Android/i.test(navigator.userAgent);
+  document.getElementById("otvorit").href = android
+    ? "intent://aktivacia?kod=" + kod + "#Intent;scheme=parcelko;package=sk.luberit.parcelko;end"
+    : "parcelko://aktivacia?kod=" + kod;
+  document.getElementById("kopirovat").onclick = function () {
+    var hotovo = function () { document.getElementById("skopirovane").hidden = false; };
+    if (navigator.clipboard) { navigator.clipboard.writeText(kod).then(hotovo, function () {}); }
+  };
+})();
+</script>
+</main>
+</body>
+</html>

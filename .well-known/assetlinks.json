@@ -1,0 +1,10 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "sk.luberit.parcelko",
+      "sha256_cert_fingerprints": ["A5:9C:F1:D2:EC:A4:B6:0B:B9:A3:51:27:F1:16:73:96:4D:AF:FA:43:3B:ED:1D:9C:2B:35:D3:44:22:44:A2:06"]
+    }
+  }
+]
