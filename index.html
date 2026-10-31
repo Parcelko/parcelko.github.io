@@ -3,14 +3,154 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Parcelko – parcely, hranice a vlastníci v mobile</title>
-<meta name="description" content="Parcelko pre Android: nájdite parcelu v lese aj na lúke, register C aj E, lesné porasty, meranie obsahu a obvodu, súradnice S-JTSK, vlastníci z listu vlastníctva, offline mapy a export.">
+<title>Parcelko – aplikácia na kataster, parcely a meranie pozemkov v mobile</title>
+<meta name="description" content="Kataster v mobile: nájdite parcelu C aj E podľa čísla, vlastníkov z listu vlastníctva, rozmery a výmeru pozemku ako v geometrickom pláne, lesné porasty a offline mapy. Aplikácia pre Android.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://parcelko.github.io/">
+<!-- Google Search Console: overovací kód sem (ako pri kubikovači) -->
 <meta name="theme-color" content="#0a2e24">
-<link rel="icon" href="obrazky/ikona.svg" type="image/svg+xml">
-<meta property="og:title" content="Parcelko – parcely, hranice a vlastníci v mobile">
-<meta property="og:description" content="Kataster, lesy a merania v teréne – aj bez signálu. Aplikácia pre Android.">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+<link rel="icon" type="image/png" sizes="144x144" href="/favicon-144.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="icon" type="image/svg+xml" href="/obrazky/ikona.svg">
+<link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="Parcelko">
+<meta property="og:locale" content="sk_SK">
+<meta property="og:title" content="Parcelko – kataster v mobile, každá parcela aj v lese">
+<meta property="og:description" content="Parcely C a E, rozmery ako v geometrickom pláne, vlastníci z listu vlastníctva, lesné porasty a offline mapy. Aplikácia pre Android.">
 <meta property="og:url" content="https://parcelko.github.io/">
+<meta property="og:image" content="https://parcelko.github.io/obrazky/nahlad-zdielanie.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "WebSite",
+   "@id": "https://parcelko.github.io/#web",
+   "name": "Parcelko",
+   "url": "https://parcelko.github.io/",
+   "inLanguage": "sk"
+  },
+  {
+   "@type": "Organization",
+   "@id": "https://parcelko.github.io/#luberit",
+   "name": "LUBERIT s. r. o.",
+   "url": "https://parcelko.github.io/",
+   "email": "luberit@proton.me",
+   "logo": "https://parcelko.github.io/favicon-512.png",
+   "taxID": "2122267917",
+   "identifier": "IČO 56 274 483",
+   "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Pongrácovce 59",
+    "postalCode": "053 05",
+    "addressLocality": "Pongrácovce",
+    "addressCountry": "SK"
+   }
+  },
+  {
+   "@type": "SoftwareApplication",
+   "@id": "https://parcelko.github.io/#aplikacia",
+   "name": "Parcelko",
+   "alternateName": [
+    "Parcelko – kataster v mobile",
+    "aplikácia na kataster"
+   ],
+   "description": "Kataster v mobile: nájdite parcelu C aj E podľa čísla, vlastníkov z listu vlastníctva, rozmery a výmeru pozemku ako v geometrickom pláne, lesné porasty a offline mapy. Aplikácia pre Android.",
+   "url": "https://parcelko.github.io/",
+   "inLanguage": "sk",
+   "operatingSystem": "Android 8 a novší",
+   "applicationCategory": "UtilitiesApplication",
+   "applicationSubCategory": "Kataster nehnuteľností, mapy a meranie pozemkov",
+   "downloadUrl": "https://github.com/Parcelko/parcelko.github.io/releases/latest/download/Parcelko.apk",
+   "image": "https://parcelko.github.io/obrazky/nahlad-zdielanie.jpg",
+   "screenshot": [
+    "https://parcelko.github.io/obrazky/app-hladanie.webp",
+    "https://parcelko.github.io/obrazky/app-rozmery.webp",
+    "https://parcelko.github.io/obrazky/app-porastova.webp",
+    "https://parcelko.github.io/obrazky/app-parcela-e-tmava.webp",
+    "https://parcelko.github.io/obrazky/app-vyber.webp",
+    "https://parcelko.github.io/obrazky/app-lomove-body.webp"
+   ],
+   "featureList": [
+    "Katastrálna mapa a parcely registra C aj E",
+    "Hľadanie parcely podľa čísla a katastrálneho územia",
+    "Rozmery parcely ako v geometrickom pláne – dĺžky strán, výmera, obvod",
+    "Súradnice lomových bodov v S-JTSK, JTSK03, WGS84 a UTM",
+    "Vlastníci z listu vlastníctva (výpis z LV)",
+    "Meranie plochy, vzdialenosti a meranie chôdzou s GPS",
+    "Lesné porasty a porastová mapa NLC",
+    "Offline mapy bez signálu",
+    "Export KMZ, KML, GPX, GeoJSON, DXF, CSV"
+   ],
+   "keywords": "kataster, aplikácia na kataster, katastrálna mapa, kataster nehnuteľností, parcela, parcely C a E, register E, hľadanie parcely, list vlastníctva, výpis z LV, vlastník pozemku, výmera pozemku, meranie pozemku, geometrický plán, súradnice S-JTSK, lesné porasty, porastová mapa, urbariát, offline mapa, GPS, ZBGIS, ortofoto",
+   "offers": {
+    "@type": "AggregateOffer",
+    "priceCurrency": "EUR",
+    "lowPrice": "4.90",
+    "highPrice": "49.90",
+    "offerCount": "4",
+    "url": "https://parcelko.github.io/#cennik"
+   },
+   "publisher": {
+    "@id": "https://parcelko.github.io/#luberit"
+   }
+  },
+  {
+   "@type": "FAQPage",
+   "@id": "https://parcelko.github.io/#otazky",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "Funguje Parcelko bez internetu?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Áno. Vyznačte územie a stiahnite si mapy aj parcely vopred – v lese bez signálu potom vidíte hranice, čísla parciel, výmery aj svoju polohu. Bez internetu nefunguje len hľadanie v oblastiach, ktoré nemáte stiahnuté, a portál katastra."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Ako presné sú súradnice a merania?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Súradnice lomových bodov zodpovedajú katastrálnej mape – prevod súradníc je overený s odchýlkou najviac 6 milimetrov (0,006 m) a výmera sa počíta rovnako ako v katastri. Presnosť polohy z GPS mobilu je spravidla 2 až 10 metrov. Na vytýčenie hraníc v teréne potrebujete geodeta."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Je to oficiálna aplikácia katastra?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Nie. Parcelko vyvíja slovenská firma LUBERIT s. r. o."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Čo keď vymením mobil?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Licencia je viazaná na jeden mobil. Pri výmene nám pošlite nový kód zariadenia a pošleme nový aktivačný odkaz. Vrstvy a merania si prenesiete exportom (KMZ), stiahnuté územie tlačidlom „Poslať“."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Ukladáte moje údaje?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Nie. Všetko, čo v aplikácii vytvoríte – parcely, merania, fotky, výpisy – je len vo vašom mobile. Podrobnosti v zásadách ochrany osobných údajov."
+     }
+    }
+   ]
+  }
+ ]
+}
+</script>
 <link rel="stylesheet" href="vendor/maplibre-gl-5.6.0.css">
 <link rel="stylesheet" href="styl.css">
 </head>
@@ -102,6 +242,10 @@
 <section class="sekcia" id="funkcie">
   <p class="nadtitul">Funkcie</p>
   <h2>Všetko, čo potrebujete o pozemku, v jednom mobile</h2>
+  <p class="uvod">Parcelko je aplikácia na kataster nehnuteľností pre Android: katastrálna mapa a parcely registra C aj E, hľadanie
+    parcely podľa čísla a katastrálneho územia, vlastníci z listu vlastníctva (výpis z LV), rozmery a výmera pozemku, súradnice
+    v S-JTSK, lesné porasty a porastová mapa NLC a offline mapy bez signálu – pre vlastníkov pozemkov, dedičov, lesníkov,
+    urbariáty aj realitných maklérov.</p>
   <h3 class="skupina odhal">Nájdite a uvidíte</h3>
   <div class="mriezka funkcie">
       <article class="funkcia odhal">

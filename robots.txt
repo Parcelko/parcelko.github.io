@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /aktivacia.html
+Sitemap: https://parcelko.github.io/sitemap.xml
