@@ -11,9 +11,9 @@
 <header class="lista plna"><a class="znacka" href="index.html" aria-label="Parcelko – úvod"><img src="obrazky/ikona.svg" alt="" width="34" height="34"><span>Parcelko</span></a>
   <a class="tlacidlo male" href="index.html#stiahnut">Stiahnuť</a></header>
 <main>
-<!-- NÁVRH – pred zverejnením dať skontrolovať (GDPR); doplniť kontaktný e-mail -->
 <h1>Ochrana osobných údajov</h1>
-<p class="tlmeny">Aplikácia Parcelko pre Android · prevádzkovateľ: LUBERIT s. r. o., Pongrácovce 59, 053 05 Pongrácovce · IČO 56 274 483 · DIČ 2122267917</p>
+<p class="tlmeny">Aplikácia Parcelko pre Android · prevádzkovateľ: LUBERIT s.&nbsp;r.&nbsp;o., Pongrácovce 59, 053 05 Pongrácovce · IČO 56 274 483 · DIČ 2122267917</p>
+<p class="tlmeny">Platné od 1. 11. 2026</p>
 
 <h2>Údaje v mobile</h2>
 <p>Všetko, čo v aplikácii vytvoríte alebo načítate – vrstvy, merania, body s fotkami, výpisy z listov vlastníctva, offline mapy –
@@ -26,17 +26,22 @@ a meranie.</p>
   lesné porasty z Národného lesníckeho centra. Pri hľadaní parcely sa týmto službám odošle katastrálne územie a číslo parcely,
   pri ťuknutí do mapy súradnice miesta.</li>
   <li><b>Výpis z listu vlastníctva</b> sa preberá na katastrálnom portáli ÚGKK (eskn-portal.skgeodesy.sk), ktorý sa otvára v aplikácii;
-  platia pre neho podmienky ÚGKK.</li>
-  <li><b>Licencia a aktualizácie</b> – pri spustení aplikácia overí presný čas (api.github.com, www.cloudflare.com), raz denne stiahne
+  platia pre neho podmienky ÚGKK. Aplikácia prečíta výpis zobrazený na portáli priamo v mobile a uloží ho do mobilu celý, tak ako ho
+  vydal portál (stránka alebo PDF, teda aj s údajmi o vlastníkoch, ktoré výpis obsahuje); pri parcele potom ukazuje mená vlastníkov,
+  podiely a ťarchy. Výpis sa nikam neodosiela a kedykoľvek ho zmažete v ponuke Listy vlastníctva. Ak výpisy používate pri podnikaní
+  (napr. ako maklér), za tieto údaje zodpovedáte vy.</li>
+  <li><b>Licencia a aktualizácie</b> – pri spustení aplikácia overí presný čas (api.github.com), raz denne stiahne
   zoznam zrušených licencií (parcelko.github.io) a zistí, či je nová verzia (api.github.com). Neposielajú sa pritom žiadne osobné
   údaje ani kód zariadenia; servery vidia len IP adresu, ako pri každom spojení.</li>
 </ul>
 
 <h2>Táto webová stránka</h2>
-<p>Web nepoužíva cookies. Návštevnosť meriame službou Cloudflare Web Analytics, ktorá nepoužíva cookies ani iné ukladanie
-v prehliadači a nesleduje jednotlivých návštevníkov podľa IP adresy – vidíme len súhrnné štatistiky (napr. počet zobrazení stránky,
-krajina, typ zariadenia). Interaktívna mapa načítava ortofoto priamo zo služby GKÚ
-Bratislava (zbgisws.skgeodesy.sk); ostatné údaje mapy (parcely, lesné porasty, terén) sú uložené na tomto webe.</p>
+<p>Web nepoužíva cookies. Návštevnosť meriame službou anonymnej štatistiky návštevnosti, ktorá nepoužíva cookies ani iné ukladanie
+v prehliadači a nesleduje jednotlivých návštevníkov – vidíme len súhrnné štatistiky (napr. počet zobrazení stránky, krajina, typ
+zariadenia). Jej poskytovateľ (spracovateľ) sídli v USA.</p>
+<p>Interaktívna mapa načítava ortofoto zo služby GKÚ Bratislava (zbgisws.skgeodesy.sk) a porastovú mapu zo servera NLC
+(gis.nlcsk.org) – tieto servery vidia IP adresu návštevníka. Ostatné údaje mapy (parcely, lesné porasty, terén) sú uložené na tomto
+webe (hosting GitHub Pages, GitHub, Inc., USA).</p>
 
 <h2>Kontaktný formulár a e-mail</h2>
 <p>Správy z kontaktného formulára (meno alebo firma, e-mail, telefón, kód zariadenia, text správy) nám doručuje e-mailom služba
@@ -44,19 +49,38 @@ FormSubmit (formsubmit.co). Použijeme ich len na odpoveď a vybavenie objednáv
 najviac 2 roky od poslednej komunikácie, faktúry podľa zákona o účtovníctve.</p>
 
 <h2>Licencia</h2>
-<p>Kód zariadenia je odtlačok identifikátora, ktorý Android pridelí aplikácii (ANDROID_ID); z kódu sa nedá zistiť identita
-zariadenia ani majiteľa. Kód posielate predajcovi sami. Predajca eviduje meno alebo názov zákazníka, kód zariadenia, číslo
+<p>Kód zariadenia je odtlačok identifikátora, ktorý Android pridelí aplikácii (ANDROID_ID). Kód zariadenia sám osebe neprezrádza,
+komu mobil patrí; s vaším menom ho spája len naša evidencia licencií. Kód posielate predajcovi sami. Predajca eviduje meno alebo názov zákazníka, kód zariadenia, číslo
 a platnosť licencie – na plnenie zmluvy (čl. 6 ods. 1 písm. b GDPR) a vedenie účtovníctva (čl. 6 ods. 1 písm. c GDPR) počas
 platnosti licencie a lehôt podľa zákona o účtovníctve.</p>
 <p>Ak predajca licenciu zruší (napr. pri zneužití), zverejní sa jej číslo, prípadne kód zariadenia, v podpísanom zozname
-odvolaných licencií na parcelko.github.io – bez mena zákazníka a bez iných údajov.</p>
+odvolaných licencií na parcelko.github.io – bez mena zákazníka a bez iných údajov (oprávnený záujem – ochrana pred zneužitím
+licencií, čl. 6 ods. 1 písm. f GDPR).</p>
+
+<h2>Služba Portfólio pozemkov na mieru</h2>
+<p>Pri tejto službe sme prevádzkovateľom my. Spracúvame údaje, ktoré nám na prípravu portfólia poskytnete (meno, kontakt,
+katastrálne územia, pri dedičstve údaje poručiteľa – zosnulého), a údaje z verejného katastra (výpisy z listov vlastníctva – mená
+spoluvlastníkov, ich podiely a ťarchy). Právnym základom je plnenie zmluvy (čl. 6 ods. 1 písm. b GDPR), pri údajoch
+spoluvlastníkov oprávnený záujem na prehľade o spoluvlastnenom majetku (čl. 6 ods. 1 písm. f GDPR). Dátumy narodenia ani adresy
+spoluvlastníkov do portfólia nedávame. Portfólio vám pošleme e-mailom. Podklady po odovzdaní vymažeme v lehote dohodnutej s vami,
+faktúry uchovávame podľa zákona o účtovníctve.</p>
+
+<h2>Príjemcovia</h2>
+<ul>
+  <li><b>FormSubmit</b> (USA) – kontaktný formulár</li>
+  <li><b>Poskytovateľ anonymnej štatistiky návštevnosti</b> (USA, bez cookies)</li>
+  <li><b>GitHub</b> (USA) – web, súbor aplikácie a zoznam odvolaných licencií</li>
+  <li><b>Proton</b> (Švajčiarsko) – e-mail</li>
+</ul>
+<p>Prenos údajov do tretích krajín prebieha na základe záruk podľa GDPR (rozhodnutie o primeranosti alebo štandardné zmluvné doložky).</p>
 
 <h2>Vaše práva</h2>
-<p>Máte právo na prístup k údajom, ich opravu, vymazanie, obmedzenie spracúvania a prenosnosť, ako aj podať návrh na Úrad
-na ochranu osobných údajov SR. Kontakt: LUBERIT s. r. o., <a href="mailto:luberit@proton.me">luberit@proton.me</a></p>
+<p>Máte právo na prístup k údajom, ich opravu, vymazanie, obmedzenie spracúvania a prenosnosť, právo namietať proti spracúvaniu
+založenému na oprávnenom záujme (čl. 21 GDPR), ako aj právo podať Úradu na ochranu osobných údajov SR návrh na začatie konania.
+Kontakt: LUBERIT s.&nbsp;r.&nbsp;o., <a href="mailto:luberit@proton.me">luberit@proton.me</a></p>
 
-<footer><a href="index.html">Parcelko</a> · © LUBERIT s. r. o.</footer>
+<footer><a href="index.html">Parcelko</a> · © LUBERIT s.&nbsp;r.&nbsp;o.</footer>
 </main>
-<!-- Cloudflare Web Analytics (bez cookies) --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "5befee70c21341d8a613d317995ac473"}'></script><!-- End Cloudflare Web Analytics -->
+<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "5befee70c21341d8a613d317995ac473"}'></script>
 </body>
 </html>

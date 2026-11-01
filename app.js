@@ -7,6 +7,17 @@
   window.addEventListener('scroll', naPosun, { passive: true });
   naPosun();
 
+  // ponuka na mobile (pod 860 px): tlačidlo ☰ ukáže odkazy pod lištou; odkaz, Escape alebo ťuknutie mimo ju zavrie
+  const tlPonuky = document.getElementById('ponuka-tlacidlo');
+  if (tlPonuky) {
+    const otvorena = () => lista.classList.contains('ponuka-otvorena');
+    const ponuka = (zap) => { lista.classList.toggle('ponuka-otvorena', zap); tlPonuky.setAttribute('aria-expanded', String(zap)); };
+    tlPonuky.addEventListener('click', () => ponuka(!otvorena()));
+    lista.querySelectorAll('nav a').forEach((a) => a.addEventListener('click', () => ponuka(false)));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && otvorena()) { ponuka(false); tlPonuky.focus(); } });
+    document.addEventListener('click', (e) => { if (otvorena() && !lista.contains(e.target)) ponuka(false); });
+  }
+
   // sekcie sa plynulo ukážu pri posúvaní
   const odhal = document.querySelectorAll('.odhal');
   if ('IntersectionObserver' in window) {
@@ -154,13 +165,13 @@
     }, 250);
   });
 
-  // služba: „Chcem portfólio na mieru“ predvyplní záujem a správu vo formulári
+  // služba: „Chcem portfólio pozemkov na mieru“ predvyplní záujem a správu vo formulári
   document.querySelectorAll('[data-zaujem]').forEach((a) => a.addEventListener('click', () => {
     const vyber = document.querySelector('#formular select[name="Záujem"]');
     if (vyber) vyber.value = a.dataset.zaujem;
     const sprava = document.querySelector('#formular textarea[name="Správa"]');
     if (sprava && !sprava.value.trim()) {
-      sprava.value = 'Dobrý deň, mám záujem o portfólio pozemkov na mieru.\nKatastrálne územia: \nČo potrebujem (farby, podiely, spoluvlastníci…): ';
+      sprava.value = 'Dobrý deň, mám záujem o portfólio pozemkov na mieru.\nLicencia (mesiac / polrok / rok): \nMeno vlastníka (pri dedičstve poručiteľa): \nKatastrálne územia: \nČo potrebujem (farby, podiely, spoluvlastníci…): ';
     }
   }));
 
@@ -326,7 +337,10 @@ async function mapa() {
   function nastavPohlad(tri, kamera) {
     pohlad.setAttribute('aria-pressed', String(tri));
     pohlad.querySelector('span').textContent = tri ? '2D' : '3D';
-    if (tri) { map.setTerrain(TEREN); map.easeTo({ pitch: 60, bearing: -20, duration: 1200, ...kamera }); }
+    if (tri) {
+      map.setTerrain(TEREN); map.easeTo({ pitch: 60, bearing: -20, duration: 1200, ...kamera });
+      napoveda.textContent = '3D terén je len ukážka na webe – v aplikácii tlačidlo 3D mapu iba nakloní.';
+    }
     else { map.easeTo({ pitch: 0, bearing: 0, duration: 1100, ...kamera }); map.setTerrain(null); }
   }
   pohlad.addEventListener('click', () => { zastav(); nastavPohlad(pohlad.getAttribute('aria-pressed') !== 'true'); });
@@ -473,9 +487,9 @@ async function mapa() {
   const SCENY = [
     { nazov: 'Ortofoto a parcely registra C', popis: 'Súčasný stav katastra – hranice a čísla parciel priamo na leteckej snímke.',
       podklad: 'orto', vrstvy: { c: true, e: false, lesy: false, moje: false }, kamera: { center: info.stred, zoom: male ? 16 : 16.4 } },
-    { nazov: '+ parcely registra E', popis: 'Pôvodné vlastníctvo – aj na lúkach a v lesoch, kde sú hranice vidieť najťažšie.',
+    { nazov: '+ parcely registra E', popis: 'Pôvodné parcely – aj na lúkach a v lesoch, kde sú hranice vidieť najťažšie.',
       podklad: 'orto', vrstvy: { c: true, e: true, lesy: false, moje: false }, kamera: { center: okolieE, zoom: male ? 16 : 16.3 } },
-    { nazov: 'Porastová mapa NLC', popis: 'Lesné porasty s číslami dielcov spolu s parcelami C a E – orientácia v lese aj pri ťažbe.',
+    { nazov: 'Porastová mapa NLC', popis: 'Lesné porasty s číslami porastov spolu s parcelami C a E – orientácia v lese aj pri ťažbe.',
       podklad: 'porastova', vrstvy: { c: true, e: true, lesy: true, moje: false }, kamera: { center: okolieE, zoom: male ? 15.4 : 15.8 } },
     { nazov: 'Ťuknutie na parcelu = rozmery', popis: 'Bez merania: dĺžky strán, lomové body, výmera a obvod parcely E 15635 hneď – ako v geometrickom pláne.',
       podklad: 'orto', vrstvy: { c: true, e: true, lesy: false, moje: false }, akcia: () => najdiParcelu('E', '15635') },

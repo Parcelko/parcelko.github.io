@@ -45,6 +45,33 @@ p { margin: 0 0 1em; }
 .lista nav a { color: rgba(255,255,255,.86); text-decoration: none; font-weight: 550; font-size: .97rem; }
 .lista nav a:hover { color: #fff; }
 @media (max-width: 860px) { .lista nav { display: none; } .lista .tlacidlo { margin-left: auto; } }
+/* „Napíšte nám“ – stále hore v lište, na úzkom mobile len obálka */
+.lista .napiste svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; }
+@media (max-width: 860px) { .lista { gap: 10px; } .lista .napiste + .tlacidlo { margin-left: 0; } }
+@media (max-width: 520px) { .lista .napiste span { display: none; } .lista .tlacidlo.napiste { padding: 8px 12px; } }
+/* ponuka na mobile: tlačidlo ☰ (pod 860 px) otvorí odkazy ako panel pod lištou */
+.ponuka-tlacidlo { display: none; flex: 0 0 auto; align-items: center; justify-content: center; width: 44px; min-height: 40px; padding: 0; border: 0;
+  border-radius: 999px; cursor: pointer; background: rgba(255,255,255,.08); color: #fff; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.55); }
+.ponuka-tlacidlo svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+@media (max-width: 860px) {
+  .lista .ponuka-tlacidlo { display: inline-flex; margin-left: auto; }
+  .lista .ponuka-tlacidlo + .napiste { margin-left: 0; }
+  .lista.ponuka-otvorena { background: #072a20; }
+  .lista.ponuka-otvorena .ponuka-tlacidlo { background: rgba(255,255,255,.2); }
+  .lista.ponuka-otvorena nav { display: flex; flex-direction: column; gap: 0; position: absolute; top: 100%; left: 0; right: 0; margin: 0;
+    padding: 4px max(16px, env(safe-area-inset-right)) 14px max(16px, env(safe-area-inset-left)); max-height: calc(100vh - 64px); overflow-y: auto;
+    background: #072a20; box-shadow: 0 18px 30px rgba(0,0,0,.28); }
+  .lista.ponuka-otvorena nav a { display: flex; align-items: center; min-height: 52px; font-size: 1.08rem; border-top: 1px solid rgba(255,255,255,.12); }
+  .lista.ponuka-otvorena nav a:first-child { border-top: 0; }
+}
+/* úzky mobil (360 – 430 px): menšie medzery, aby sa lišta zmestila; pod 375 px len ikonka bez nápisu Parcelko */
+@media (max-width: 430px) {
+  .lista { gap: 8px; padding-left: max(12px, env(safe-area-inset-left)); padding-right: max(12px, env(safe-area-inset-right)); }
+  .lista .ponuka-tlacidlo { width: 40px; }
+  .lista .tlacidlo.napiste { padding: 8px 11px; }
+  .lista .napiste + .tlacidlo { padding: 8px 14px; }
+}
+@media (max-width: 374.98px) { #lista .znacka span { display: none; } }
 
 /* ------------------------------------------------------------ tlačidlá */
 .tlacidlo {
@@ -282,6 +309,13 @@ body.bez-mapy .hero { background: radial-gradient(900px 500px at 75% 35%, rgba(2
 .sluzba { background: radial-gradient(760px 420px at 8% 0%, rgba(255, 214, 10, .16), transparent 62%), var(--pozadie); }
 .sluzba .zoznam li { margin: 12px 0; }
 .sluzba-cena { font-weight: 650; }
+.sluzba-dedicstvo { margin: 2px 0 18px; padding: 14px 18px; border-radius: 16px; background: var(--karta); border: 1px solid var(--okraj);
+  border-left: 5px solid var(--jantar); box-shadow: var(--tien); }
+.sluzba-dedicstvo strong { display: block; margin-bottom: 4px; }
+.sluzba-dedicstvo p { margin: 0; color: var(--tlmeny); font-size: .98rem; }
+.cena .v-cene { margin: -6px 0 12px; font-size: .88rem; font-weight: 700; color: var(--zelena); }
+.cena .v-cene a { color: inherit; }
+.cena.odporucane .v-cene { color: var(--c); }
 .akcie-riadok { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; }
 .sluzba-ukazka { position: relative; display: grid; justify-items: center; padding-bottom: 24px; }
 .sluzba-ukazka .mobil { width: min(270px, 66vw); }
