@@ -111,6 +111,59 @@
     }
   }
 
+  // návod: kroky s obrazovkou v mobile – prepínajú sa samy (animácie bežia vždy), ťuknutím si vyberiete krok
+  document.querySelectorAll('[data-navod]').forEach((navod) => {
+    const kroky = [...navod.querySelectorAll('[data-krok]')];
+    const obrazky = [...navod.querySelectorAll('.navod-mobil img')];
+    // na mobile sa popis aktuálneho kroku ukáže priamo na obrazovke (zoznam krokov sú len bodky)
+    const popisok = document.createElement('div');
+    popisok.className = 'navod-popisok';
+    popisok.setAttribute('aria-hidden', 'true');
+    navod.querySelector('.navod-mobil').appendChild(popisok);
+    const trvanie = 4200;
+    navod.style.setProperty('--trvanie', `${trvanie}ms`);
+    let aktualny = 0, pauzaDo = 0, viditelny = false, poslednaZmena = 0;
+    const ukaz = (i) => {
+      aktualny = (i + obrazky.length) % obrazky.length;
+      obrazky.forEach((o, j) => o.classList.toggle('aktivny', j === aktualny));
+      kroky.forEach((k, j) => k.setAttribute('aria-pressed', String(j === aktualny)));
+      const k = kroky[aktualny];
+      if (k) {
+        popisok.innerHTML = k.innerHTML;
+        popisok.classList.remove('novy'); void popisok.offsetWidth; popisok.classList.add('novy');
+      }
+      // ďalší obrázok sa načíta vopred, aby prechod nebol prázdny
+      const dalsi = obrazky[(aktualny + 1) % obrazky.length];
+      if (dalsi && dalsi.loading === 'lazy') dalsi.loading = 'eager';
+      poslednaZmena = Date.now();
+    };
+    ukaz(0);
+    kroky.forEach((k) => k.addEventListener('click', () => {
+      pauzaDo = Date.now() + 12000; navod.classList.add('pozastavene'); ukaz(+k.dataset.krok);
+    }));
+    if ('IntersectionObserver' in window) new IntersectionObserver((z) => {
+      const bol = viditelny; viditelny = z[0].isIntersecting;
+      if (viditelny && !bol && Date.now() > pauzaDo) ukaz(aktualny);       // po návrate do obrazu beží krok odznova
+    }, { threshold: 0.35 }).observe(navod);
+    else viditelny = true;
+    setInterval(() => {
+      if (!viditelny || document.hidden) return;
+      if (Date.now() < pauzaDo) return;
+      if (navod.classList.contains('pozastavene')) { navod.classList.remove('pozastavene'); ukaz(aktualny + 1); return; }
+      if (Date.now() - poslednaZmena >= trvanie) ukaz(aktualny + 1);
+    }, 250);
+  });
+
+  // služba: „Chcem portfólio na mieru“ predvyplní záujem a správu vo formulári
+  document.querySelectorAll('[data-zaujem]').forEach((a) => a.addEventListener('click', () => {
+    const vyber = document.querySelector('#formular select[name="Záujem"]');
+    if (vyber) vyber.value = a.dataset.zaujem;
+    const sprava = document.querySelector('#formular textarea[name="Správa"]');
+    if (sprava && !sprava.value.trim()) {
+      sprava.value = 'Dobrý deň, mám záujem o portfólio pozemkov na mieru.\nKatastrálne územia: \nČo potrebujem (farby, podiely, spoluvlastníci…): ';
+    }
+  }));
+
   mapa().catch((e) => { console.warn('mapa:', e); document.body.classList.add('bez-mapy'); });
 })();
 

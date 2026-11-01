@@ -56,6 +56,16 @@
    }
   },
   {
+   "@type": "Service",
+   "@id": "https://parcelko.github.io/#sluzba",
+   "name": "Portfólio pozemkov na mieru",
+   "serviceType": "Vyhľadanie parciel vlastníka a príprava portfólia pozemkov pre aplikáciu Parcelko",
+   "description": "Podľa požiadaviek klienta vyhľadáme všetky jeho parcely registra C a E vo vybraných katastrálnych územiach a pripravíme portfólio pre Parcelko: farebné rozlíšenie podľa druhu pozemku, podiely zlomkom aj v percentách, výmera na podiel, spoluvlastníci a súhrn ako tabuľka (Excel, PDF).",
+   "provider": { "@id": "https://parcelko.github.io/#luberit" },
+   "areaServed": { "@type": "Country", "name": "Slovensko" },
+   "url": "https://parcelko.github.io/#sluzba"
+  },
+  {
    "@type": "SoftwareApplication",
    "@id": "https://parcelko.github.io/#aplikacia",
    "name": "Parcelko",
@@ -113,6 +123,14 @@
      "acceptedAnswer": {
       "@type": "Answer",
       "text": "Ťuknite na parcelu a zvoľte „Zistiť vlastníkov“ – otvorí sa oficiálny katastrálny portál ÚGKK s predvyplneným katastrálnym územím a číslom parcely. Výpis z listu vlastníctva (LV), ktorý si stiahnete, sa v aplikácii načíta sám: vlastníci, podiely a ťarchy sú hneď pri parcele."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Pripravíte mi prehľad všetkých mojich pozemkov?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Áno – službou Portfólio na mieru. Podľa vašich požiadaviek vyhľadáme všetky vaše parcely vo vybraných katastrálnych územiach (register C aj E), farebne ich rozlíšime podľa druhu pozemku alebo vašich kritérií a pri každej uvedieme váš podiel zlomkom aj v percentách, výmeru, ktorá naň pripadá, a spoluvlastníkov. Portfólio otvoríte v Parcelku v mobile, súhrn dostanete aj ako tabuľku (Excel, PDF). Cenu podľa rozsahu vám pošleme vopred."
      }
     },
     {
@@ -224,6 +242,7 @@
 <header class="lista" id="lista">
   <a class="znacka" href="#" aria-label="Parcelko – úvod"><img src="obrazky/ikona.svg" alt="" width="34" height="34"><span>Parcelko</span></a>
   <nav aria-label="Hlavná ponuka">
+    <a href="#sluzba">Služba</a>
     <a href="#funkcie">Funkcie</a>
     <a href="#les">Les</a>
     <a href="#pre-koho">Pre koho</a>
@@ -301,6 +320,119 @@
   <p><strong>Nič nemerajte – ťuknite na parcelu.</strong> Dĺžky strán, výmera, obvod aj súradnice lomových bodov v S-JTSK sú hneď na displeji,
     ako v geometrickom pláne. <span class="export-riadok">Presne ich exportujete v súradniciach <b>S-JTSK, JTSK03, WGS84 aj UTM</b> –
     ako KMZ a KML (Google Earth), GPX (GPS prístroje), GeoJSON (GIS), DXF (CAD), CSV (Excel) či TXT.</span></p>
+</section>
+
+<!-- ============================================================ služba: portfólio pozemkov na mieru -->
+<section class="sekcia sluzba" id="sluzba">
+  <div class="dve-stlpce">
+    <div class="odhal">
+      <p class="nadtitul">Nová služba · Portfólio na mieru</p>
+      <h2>Portfólio vašich pozemkov pripravíme za vás</h2>
+      <p class="uvod">Zdedili ste pozemky alebo ich máte roztrúsené po viacerých katastroch? Podľa vašich požiadaviek vyhľadáme
+        všetky vaše parcely vo vybraných katastrálnych územiach a pripravíme z nich presné portfólio pre Parcelko. Otvoríte ho
+        v mobile a máte všetko po ruke – kde sú vaše pozemky, čo na nich je a s kým ich vlastníte.</p>
+      <ul class="zoznam fajky">
+        <li><strong>Všetky vaše parcely</strong> vo zvolených katastrálnych územiach – v registri C aj E, podľa listov vlastníctva.</li>
+        <li><strong>Farebne podľa vašich požiadaviek</strong> – orná pôda, lúky a pasienky, lesy, záhrady… alebo podľa nájomcu,
+          listu vlastníctva či dediča.</li>
+        <li><strong>Podiely a spoluvlastníci</strong> – váš podiel zlomkom aj v percentách, výmera, ktorá na váš podiel pripadá,
+          a všetci spoluvlastníci s ich podielmi.</li>
+        <li><strong>Prehľadný súhrn</strong> – počet parciel a výmera podľa druhu pozemku, katastrálneho územia a listu vlastníctva,
+          aj ako tabuľka (Excel, PDF).</li>
+        <li><strong>Pripravené do terénu</strong> – mapy a parcely vášho územia aj na použitie bez signálu; k pozemku vás dovedie
+          poloha z GPS.</li>
+      </ul>
+      <p class="sluzba-cena">Cena podľa rozsahu – počtu katastrálnych území a parciel. Presnú ponuku vám pošleme vopred, nezáväzne.</p>
+      <div class="akcie-riadok">
+        <a class="tlacidlo" href="#kontakt" data-zaujem="Portfólio pozemkov na mieru">Chcem portfólio na mieru</a>
+        <a class="tlacidlo druhe" href="#navod">Pozrieť ukážku</a>
+      </div>
+    </div>
+    <div class="sluzba-ukazka odhal">
+      <figure class="mobil naklon-vpravo"><img src="obrazky/navod-portfolio-3.webp" alt="Portfólio pozemkov jedného vlastníka na mape – farebne vyznačené parcely s číslami" width="720" height="1600" loading="lazy"></figure>
+      <div class="sluzba-tabulka">
+        <p class="sluzba-tabulka-nadpis">Súhrn portfólia <span class="stitok">ukážka</span></p>
+        <table>
+          <thead><tr><th>Druh pozemku</th><th>Parciel</th><th>Na váš podiel</th></tr></thead>
+          <tbody>
+            <tr><td><i class="bod orna"></i>Orná pôda</td><td>12</td><td>3,42 ha</td></tr>
+            <tr><td><i class="bod trava"></i>Trvalý trávny porast</td><td>9</td><td>2,18 ha</td></tr>
+            <tr><td><i class="bod les"></i>Lesný pozemok</td><td>16</td><td>6,05 ha</td></tr>
+          </tbody>
+        </table>
+        <p class="sluzba-tabulka-pata">Parcela E 1204: podiel 1/6 (16,67 %), na vás 1 120 m², ďalších 5 spoluvlastníkov.<br>
+          <small>Údaje v ukážke sú vymyslené.</small></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ návod na skutočnom príklade (k. ú. Pongrácovce) -->
+<section class="sekcia jemna" id="navod">
+  <p class="nadtitul">Návod na skutočnom príklade</p>
+  <h2>Od mapy až k vlastnému pozemku – krok za krokom</h2>
+  <p class="uvod">Pozemky jedného vlastníka v katastrálnom území Pongrácovce: lúky, orná pôda aj les, roztrúsené po celom katastri.
+    Skutočné obrazovky aplikácie – kroky sa prepínajú samy, ťuknutím si vyberiete ktorýkoľvek.</p>
+
+  <div class="navod odhal" data-navod>
+    <div class="navod-text">
+      <p class="navod-kapitola"><span>1</span>Celé portfólio na jednej mape</p>
+      <p class="navod-popis">Všetky pozemky jedného vlastníka naraz – nič nemusíte hľadať po listoch vlastníctva.</p>
+      <ol class="navod-kroky">
+        <li><button type="button" data-krok="0" aria-pressed="true"><strong>Ortofotomapa</strong><span>Lúky, polia a les – z leteckej snímky však nezistíte, ktoré pozemky sú vaše.</span></button></li>
+        <li><button type="button" data-krok="1" aria-pressed="false"><strong>Vaše pozemky farebne</strong><span>Parcelko vyznačí všetky vaše parcely, každú skupinu inou farbou – napríklad lúky, ornú pôdu a les.</span></button></li>
+        <li><button type="button" data-krok="2" aria-pressed="false"><strong>Každá parcela s číslom</strong><span>Pri parcelách sú čísla z katastra, aj v registri E. Hneď viete, čo kde máte.</span></button></li>
+      </ol>
+    </div>
+    <div class="navod-mobil">
+      <img class="aktivny" src="obrazky/navod-portfolio-1.webp" alt="Ortofotomapa okolia Pongrácoviec bez vyznačených pozemkov" width="720" height="1600" loading="lazy">
+      <img src="obrazky/navod-portfolio-2.webp" alt="Pozemky jedného vlastníka farebne vyznačené na ortofotomape" width="720" height="1600" loading="lazy">
+      <img src="obrazky/navod-portfolio-3.webp" alt="Vyznačené pozemky s číslami parciel registra E" width="720" height="1600" loading="lazy">
+    </div>
+  </div>
+
+  <div class="navod obratene odhal" data-navod>
+    <div class="navod-text">
+      <p class="navod-kapitola"><span>2</span>Nájdete ich aj v teréne</p>
+      <p class="navod-popis">Priblížte si pozemok a choďte za polohou z GPS – aplikácia povie, kedy stojíte na svojom.</p>
+      <ol class="navod-kroky">
+        <li><button type="button" data-krok="0" aria-pressed="true"><strong>Priblížte sa k pozemku</strong><span>Úzke pásy lesa medzi susedmi – na mape presne, v lese by ste ich hľadali ťažko.</span></button></li>
+        <li><button type="button" data-krok="1" aria-pressed="false"><strong>Zmerajte si hranicu</strong><span>Body a dĺžky strán v metroch – ťuknutím do mapy alebo chôdzou po hranici.</span></button></li>
+        <li><button type="button" data-krok="2" aria-pressed="false"><strong>Hranice susedov</strong><span>Vidíte, kde končí váš pás a kde začína pozemok suseda.</span></button></li>
+        <li><button type="button" data-krok="3" aria-pressed="false"><strong>Pás po páse</strong><span>Hranice parciel rozdelia les na pásy – aj tam, kde ich v teréne nikto nevyznačil.</span></button></li>
+      </ol>
+    </div>
+    <div class="navod-mobil">
+      <img class="aktivny" src="obrazky/navod-teren-1.webp" alt="Priblížené pásy lesa s vyznačenými pozemkami" width="720" height="1600" loading="lazy">
+      <img src="obrazky/navod-teren-2.webp" alt="Meranie hranice – očíslované body a dĺžky strán v metroch" width="720" height="1600" loading="lazy">
+      <img src="obrazky/navod-teren-3.webp" alt="Susedné pásy lesa a ich hranice" width="720" height="1600" loading="lazy">
+      <img src="obrazky/navod-teren-4.webp" alt="Les rozdelený hranicami parciel na úzke pásy" width="720" height="1600" loading="lazy">
+    </div>
+  </div>
+
+  <div class="navod odhal" data-navod>
+    <div class="navod-text">
+      <p class="navod-kapitola"><span>3</span>Lesná mapa sama nestačí</p>
+      <p class="navod-popis">Porastová mapa je pre les základ. Parcelko k nej pridá to, čo na nej chýba – parcely, vaše pozemky a meranie.</p>
+      <ol class="navod-kroky">
+        <li><button type="button" data-krok="0" aria-pressed="true"><strong>Len lesná mapa</strong><span>Porasty a ich čísla – ale nie parcely, vlastníci ani to, čo je vaše.</span></button></li>
+        <li><button type="button" data-krok="1" aria-pressed="false"><strong>Všetko na jednej mape</strong><span>Lesné porasty (JPRL), parcely registra C a E a vaše portfólio naraz.</span></button></li>
+        <li><button type="button" data-krok="2" aria-pressed="false"><strong>Porasty aj parcely</strong><span>Čísla porastov, hranice parciel a vaše pásy prehľadne pod sebou.</span></button></li>
+        <li><button type="button" data-krok="3" aria-pressed="false"><strong>Pás po páse</strong><span>Každý váš pás lesa s hranicami parciel E a porastov.</span></button></li>
+        <li><button type="button" data-krok="4" aria-pressed="false"><strong>Až na meter</strong><span>Pri najväčšom priblížení čísla parciel C a E aj porastov.</span></button></li>
+        <li><button type="button" data-krok="5" aria-pressed="false"><strong>Zmerajte si pás</strong><span>Šírka 22,6 – 24,7 m, dĺžka 353 – 358 m – priamo v mobile.</span></button></li>
+      </ol>
+    </div>
+    <div class="navod-mobil">
+      <img class="aktivny" src="obrazky/navod-les-1.webp" alt="Porastová mapa NLC bez ďalších údajov" width="720" height="1600" loading="lazy">
+      <img src="obrazky/navod-les-2.webp" alt="Porastová mapa s lesnými porastmi, parcelami C a E a vlastným portfóliom" width="720" height="1600" loading="lazy">
+      <img src="obrazky/navod-les-3.webp" alt="Priblížené porasty, parcely a vyznačené pásy lesa" width="720" height="1600" loading="lazy">
+      <img src="obrazky/navod-les-4.webp" alt="Pásy lesa s hranicami parciel E a porastov" width="720" height="1600" loading="lazy">
+      <img src="obrazky/navod-les-5.webp" alt="Najväčšie priblíženie – čísla parciel a porastov" width="720" height="1600" loading="lazy">
+      <img src="obrazky/navod-les-6.webp" alt="Meranie šírky a dĺžky pásu lesa v metroch" width="720" height="1600" loading="lazy">
+    </div>
+  </div>
+  <p class="poznamka stred navod-zdroj">Skutočné obrazovky aplikácie Parcelko, k. ú. Pongrácovce · mapové podklady © ÚGKK SR, GKÚ Bratislava, NLC Zvolen.</p>
 </section>
 
 <!-- ============================================================ funkcie -->
@@ -650,6 +782,8 @@
   <div class="faq">
     <details><summary>Ako zistiť vlastníka pozemku?</summary>
       <p>Ťuknite na parcelu a zvoľte „Zistiť vlastníkov“ – otvorí sa oficiálny katastrálny portál ÚGKK s predvyplneným katastrálnym územím a číslom parcely. Výpis z listu vlastníctva (LV), ktorý si stiahnete, sa v aplikácii načíta sám: vlastníci, podiely a ťarchy sú hneď pri parcele.</p></details>
+    <details><summary>Pripravíte mi prehľad všetkých mojich pozemkov?</summary>
+      <p>Áno – službou Portfólio na mieru. Podľa vašich požiadaviek vyhľadáme všetky vaše parcely vo vybraných katastrálnych územiach (register C aj E), farebne ich rozlíšime podľa druhu pozemku alebo vašich kritérií a pri každej uvedieme váš podiel zlomkom aj v percentách, výmeru, ktorá naň pripadá, a spoluvlastníkov. Portfólio otvoríte v Parcelku v mobile, súhrn dostanete aj ako tabuľku (Excel, PDF). Cenu podľa rozsahu vám pošleme vopred.</p></details>
     <details><summary>Ako nájsť parcelu podľa čísla?</summary>
       <p>V hľadaní zadajte katastrálne územie, register (C alebo E) a číslo parcely. Parcela sa ukáže na mape celá, s výmerou a hranicami, a podľa polohy z GPS vás aplikácia navedie až na pozemok.</p></details>
     <details><summary>Ako zistím, kde presne je môj pozemok v teréne?</summary>
@@ -700,7 +834,7 @@
       <label>Telefón <small>(nepovinné)</small><input type="tel" name="Telefón" autocomplete="tel" placeholder="+421 …"></label>
       <label>Záujem<select name="Záujem">
         <option>Týždeň</option><option>Mesiac</option><option>Polrok</option><option selected>Rok</option>
-        <option>Firma / urbariát – viac mobilov</option><option>Skúšobná licencia</option><option>Otázka</option></select></label>
+        <option>Firma / urbariát – viac mobilov</option><option>Skúšobná licencia</option><option>Portfólio pozemkov na mieru</option><option>Otázka</option></select></label>
       <label class="cely">Kód zariadenia <small>(nepovinné – z aplikácie)</small><input name="Kód zariadenia" placeholder="XXXX-XXXX-XXXX-XXXX" autocomplete="off" spellcheck="false"></label>
       <label class="cely">Správa<textarea name="Správa" rows="4" required placeholder="Dobrý deň, mám záujem o…"></textarea></label>
       <div class="cely odoslat"><button class="tlacidlo" type="submit">Odoslať správu</button><p class="stav-formulara" id="stav-formulara" role="status"></p></div>

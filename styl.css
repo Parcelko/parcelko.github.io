@@ -278,6 +278,84 @@ body.bez-mapy .hero { background: radial-gradient(900px 500px at 75% 35%, rgba(2
   background: rgba(8, 26, 21, .78); color: #fff; pointer-events: none; }
 .stitok-obr.vlavo { left: 24px; } .stitok-obr.vpravo { right: 24px; background: var(--c); color: #1b1400; }
 
+/* ------------------------------------------------------------ služba: portfólio na mieru */
+.sluzba { background: radial-gradient(760px 420px at 8% 0%, rgba(255, 214, 10, .16), transparent 62%), var(--pozadie); }
+.sluzba .zoznam li { margin: 12px 0; }
+.sluzba-cena { font-weight: 650; }
+.akcie-riadok { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; }
+.sluzba-ukazka { position: relative; display: grid; justify-items: center; padding-bottom: 24px; }
+.sluzba-ukazka .mobil { width: min(270px, 66vw); }
+.sluzba-tabulka { position: absolute; left: 0; bottom: 0; width: min(310px, 86vw); background: var(--karta); border: 1px solid var(--okraj);
+  border-radius: 18px; padding: 14px 16px 12px; box-shadow: var(--tien-velky); font-size: .88rem; }
+.sluzba-tabulka-nadpis { display: flex; align-items: center; gap: 8px; font-weight: 800; margin: 0 0 8px; }
+.sluzba-tabulka table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.sluzba-tabulka th { text-align: left; font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--tlmeny); font-weight: 750; padding: 0 0 6px; }
+.sluzba-tabulka td { padding: 7px 0; border-top: 1px dashed var(--okraj); font-weight: 600; }
+.sluzba-tabulka th:not(:first-child), .sluzba-tabulka td:not(:first-child) { text-align: right; }
+.sluzba-tabulka .bod { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 8px; vertical-align: -1px; }
+.bod.orna { background: #F2A541; } .bod.trava { background: #FFD60A; } .bod.les { background: #8E5BD8; }
+.sluzba-tabulka-pata { margin: 8px 0 0; color: var(--tlmeny); font-size: .8rem; line-height: 1.45; }
+@media (max-width: 860px) {
+  .sluzba-ukazka { padding-bottom: 0; }
+  .sluzba-tabulka { position: relative; margin-top: -56px; }
+}
+
+/* ------------------------------------------------------------ návod (kroky a obrazovka v mobile) */
+.navod { display: grid; grid-template-columns: minmax(0, 1fr) minmax(250px, 330px); gap: clamp(32px, 6vw, 88px); align-items: center; margin-top: clamp(44px, 7vw, 84px); }
+.navod.obratene { grid-template-columns: minmax(250px, 330px) minmax(0, 1fr); }
+.navod.obratene .navod-text { order: 2; }
+.navod-kapitola { display: flex; align-items: center; gap: 12px; font-size: clamp(1.35rem, 2.6vw, 1.85rem); font-weight: 800; letter-spacing: -.015em; line-height: 1.15; margin: 0 0 .35em; }
+.navod-kapitola span { flex: 0 0 auto; width: 42px; height: 42px; border-radius: 13px; display: grid; place-items: center;
+  background: linear-gradient(135deg, var(--zelena), #19a079); color: #fff; font-size: 1.15rem; box-shadow: 0 8px 20px rgba(14, 107, 79, .28); }
+.navod-popis { color: var(--tlmeny); margin: 0 0 20px; max-width: 54ch; }
+.navod-kroky { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.navod-kroky button { position: relative; overflow: hidden; width: 100%; display: grid; gap: 3px; text-align: left; font: inherit; color: inherit; cursor: pointer;
+  padding: 13px 18px 15px; border-radius: 16px; border: 1px solid var(--okraj); background: var(--karta);
+  transition: border-color .25s, box-shadow .25s, transform .25s, background .25s; }
+.navod-kroky button strong { font-size: 1.02rem; }
+.navod-kroky button span { color: var(--tlmeny); font-size: .94rem; line-height: 1.45; }
+.navod-kroky button:hover { border-color: var(--zelena); }
+.navod-kroky button[aria-pressed="true"] { border-color: var(--zelena); box-shadow: var(--tien); transform: translateX(6px); }
+.navod.obratene .navod-kroky button[aria-pressed="true"] { transform: translateX(-6px); }
+.navod-kroky button::after { content: ""; position: absolute; left: 0; bottom: 0; height: 3px; width: 0; background: linear-gradient(90deg, var(--zelena), var(--c)); }
+.navod-kroky button[aria-pressed="true"]::after { animation: navod-postup var(--trvanie, 4.2s) linear forwards; }
+.navod.pozastavene .navod-kroky button[aria-pressed="true"]::after { animation: none; width: 100%; }
+@keyframes navod-postup { to { width: 100%; } }
+.navod-mobil { position: relative; justify-self: center; width: min(320px, 76vw); aspect-ratio: 720 / 1600; border-radius: 40px; padding: 10px;
+  background: linear-gradient(145deg, #2a2f2d, #0c0f0e); box-shadow: var(--tien-velky), inset 0 0 0 1.5px rgba(255,255,255,.12); }
+.navod-mobil::after { content: ""; position: absolute; top: 18px; left: 50%; width: 20px; height: 20px; margin-left: -10px; border-radius: 50%; background: #050706; box-shadow: inset 0 0 0 3px #161a19; z-index: 2; }
+.navod-mobil img { position: absolute; inset: 10px; width: calc(100% - 20px); height: calc(100% - 20px); object-fit: cover; border-radius: 31px;
+  background: #1b2b25; opacity: 0; transform: scale(1.04); transition: opacity .8s ease, transform 1.4s cubic-bezier(.2,.8,.2,1); }
+.navod-mobil img.aktivny { opacity: 1; transform: none; }
+.navod-zdroj { margin-top: clamp(36px, 5vw, 56px); }
+.navod-popisok { display: none; }
+@media (max-width: 860px) {
+  /* mobil: nadpis kapitoly, obrazovka s popisom aktuálneho kroku, pod ňou bodky krokov */
+  .navod, .navod.obratene { grid-template-columns: 1fr; gap: 18px; justify-items: center; }
+  .navod-text, .navod.obratene .navod-text { display: contents; }
+  .navod-kapitola { order: 0; justify-self: stretch; }
+  .navod-popis { order: 1; justify-self: stretch; margin: 0; }
+  .navod .navod-mobil { order: 2; width: min(300px, 80vw); margin-top: 6px; }
+  .navod-kroky { order: 3; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; counter-reset: krok; }
+  .navod-kroky button { counter-increment: krok; width: 38px; height: 38px; padding: 0; border-radius: 50%; place-items: center; font-size: 0; }
+  .navod-kroky button > * { display: none; }
+  .navod-kroky button::before { content: counter(krok); font-size: .95rem; font-weight: 800; color: var(--tlmeny); }
+  .navod-kroky button[aria-pressed="true"], .navod.obratene .navod-kroky button[aria-pressed="true"] { transform: none; background: var(--zelena); }
+  .navod-kroky button[aria-pressed="true"]::before { color: #fff; }
+  .navod-kroky button::after { display: none; }
+  .navod-popisok { display: block; position: absolute; left: 16px; right: 16px; bottom: 20px; z-index: 3; padding: 11px 14px 12px; border-radius: 16px;
+    background: rgba(8, 26, 21, .88); color: #fff; font-size: .86rem; line-height: 1.4; box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  .navod-popisok strong { display: block; font-size: .95rem; margin-bottom: 2px; color: var(--c); }
+  .navod-popisok::after { content: ""; position: absolute; left: 0; bottom: 0; height: 3px; width: 0; border-radius: 0 0 16px 16px;
+    background: linear-gradient(90deg, var(--zelena-svetla), var(--c)); }
+  .navod-popisok.novy::after { animation: navod-postup var(--trvanie, 4.2s) linear forwards; }
+  .navod.pozastavene .navod-popisok::after { animation: none; width: 100%; }
+  .navod-popisok.novy { animation: navod-popisok .45s ease; }
+  .sluzba-tabulka { width: min(340px, 92vw); }
+}
+@keyframes navod-popisok { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
 /* ------------------------------------------------------------ galéria – šípky */
 .galeria-obal { position: relative; }
 .galeria-sipka { position: absolute; top: 42%; z-index: 2; width: 48px; height: 48px; border-radius: 50%; border: 0; cursor: pointer;
