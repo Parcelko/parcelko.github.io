@@ -91,35 +91,42 @@
     setInterval(() => { if (viditelna && !document.hidden && Date.now() > pauzaDo) posun(1); }, 2600);
   }
 
-  // porovnanie: posúvač medzi „len lesná mapa“ a „s parcelami“
+  // porovnanie: posúvač medzi „len lesná mapa“ a „s parcelami“ – kým je na obrazovke, sám sa posúva tam a späť stále dokola;
+  // keď ho niekto potiahne, chvíľu počká a potom pokračuje
   const porovnanie = document.getElementById('porovnanie-obr');
   if (porovnanie) {
     const r = porovnanie.querySelector('input[type="range"]');
-    const nastav = (v) => { r.value = v; porovnanie.style.setProperty('--p', v); };
-    let dotknute = false;
-    r.addEventListener('input', () => { dotknute = true; porovnanie.style.setProperty('--p', r.value); });
-    // pri prvom zobrazení sa posúvač raz sám prejde tam a späť – vidno, že sa dá ťahať
-    if ('IntersectionObserver' in window) {
-      const io = new IntersectionObserver((z) => {
-        if (!z[0].isIntersecting) return;
-        io.disconnect();
-        const body = [50, 18, 82, 50], trvanie = 900;
-        let i = 0;
-        const dalsi = () => {
-          if (dotknute || i >= body.length - 1) return;
-          const od = body[i], po = body[i + 1], start = performance.now();
-          const krok = (t) => {
-            if (dotknute) return;
-            const k = Math.min(1, (t - start) / trvanie), e = k < .5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2;
-            nastav(Math.round(od + (po - od) * e));
-            if (k < 1) requestAnimationFrame(krok); else { i++; setTimeout(dalsi, 350); }
-          };
-          requestAnimationFrame(krok);
+    let poloha = 50, viditelne = false, pauzaDo = 0, beh = 0;
+    const nastav = (v) => { poloha = v; r.value = Math.round(v); porovnanie.style.setProperty('--p', v.toFixed(1)); };
+    const pauza = () => { pauzaDo = performance.now() + 6000; };
+    r.addEventListener('input', () => { pauza(); poloha = Number(r.value); porovnanie.style.setProperty('--p', r.value); });
+    r.addEventListener('pointerdown', pauza);
+    const ciele = [14, 86, 50];
+    const spusti = () => {
+      const id = ++beh;
+      let i = 0;
+      const dalsi = () => {
+        if (id !== beh || !viditelne) return;
+        if (performance.now() < pauzaDo) { setTimeout(dalsi, 400); return; }
+        const od = poloha, po = ciele[i % ciele.length];
+        const trvanie = 500 + 1300 * Math.abs(po - od) / 72, start = performance.now();
+        const krok = (t) => {
+          if (id !== beh || !viditelne) return;
+          if (performance.now() < pauzaDo) { setTimeout(dalsi, 400); return; }
+          const k = Math.min(1, (t - start) / trvanie), e = k < .5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2;
+          nastav(od + (po - od) * e);
+          if (k < 1) requestAnimationFrame(krok); else { i++; setTimeout(dalsi, po === 50 ? 1600 : 1100); }
         };
-        setTimeout(dalsi, 600);
-      }, { threshold: 0.6 });
-      io.observe(porovnanie);
-    }
+        requestAnimationFrame(krok);
+      };
+      setTimeout(dalsi, 500);
+    };
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((z) => {
+        if (z[0].isIntersecting && !viditelne) { viditelne = true; spusti(); }
+        else if (!z[0].isIntersecting) { viditelne = false; beh++; }
+      }, { threshold: 0.35 }).observe(porovnanie);
+    } else { viditelne = true; spusti(); }
   }
 
   // návod: kroky s obrazovkou v mobile – prepínajú sa samy (animácie bežia vždy), ťuknutím si vyberiete krok

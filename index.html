@@ -100,6 +100,7 @@
     "Pešia navigácia k parcele a k bodu s upozornením pri odchode z pozemku",
     "Obchôdzka hranice po lomových bodoch",
     "Zadanie súradníc a zoznamu bodov z geometrického plánu, navigácia na ne",
+    "Mapa pre klienta v mierke ako PDF alebo obrázok (A4, A3)",
     "Offline mapy bez signálu",
     "Export KMZ, KML, GPX, GeoJSON, DXF, CSV a TXT"
    ],
@@ -182,6 +183,14 @@
      "acceptedAnswer": {
       "@type": "Answer",
       "text": "Áno. Porastová mapa NLC a hranice lesných porastov s číslami porastov sa zobrazia spolu s parcelami C a E, takže pri ťažbe vidíte, či porast nezasahuje do cudzích parciel. Užitočné pre lesníkov, urbariáty a pozemkové spoločenstvá."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Dá sa vytlačiť mapa pozemku v mierke?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Áno. V Exporte alebo v ponuke zvoľte Obrázok / PDF mapy, vyberte papier A4 alebo A3, orientáciu a mierku (1 : 500 až 1 : 10 000) a posuňte mapu do rámika. Parcelko pripraví PDF alebo obrázok s hranicami parcely, dĺžkami strán, legendou, šípkou na sever a grafickou mierkou. Pri tlači nastavte skutočnú veľkosť (100 %). Je to informatívny výstup, nie geometrický plán."
      }
     },
     {
@@ -488,7 +497,23 @@
       <img src="obrazky/app-navigacia-po-bodoch.webp" alt="Navigácia po zadaných bodoch s číslami bodov na mape" width="720" height="1600" loading="lazy">
     </div>
   </div>
-  <p class="poznamka stred navod-zdroj">Skutočné obrazovky aplikácie Parcelko, k.&nbsp;ú. Pongrácovce · mapové podklady © ÚGKK SR, GKÚ Bratislava, NLC Zvolen.</p>
+  <div class="navod odhal" data-navod>
+    <div class="navod-text">
+      <p class="navod-kapitola"><span>5</span>Mapa pre klienta</p>
+      <p class="navod-popis">Pre maklérov, dedičov aj rokovanie so susedom: mapa pozemku v mierke na A4 alebo A3 – ako PDF na tlač alebo obrázok na e-mail.</p>
+      <ol class="navod-kroky">
+        <li><button type="button" data-krok="0" aria-pressed="true"><strong>Rámik v mierke</strong><span>V Exporte ťuknite na PDF / obrázok mapy – na mape je rámik strany A4 alebo A3. Mapu pod ním posuniete, mierku zvolíte jedným ťuknutím.</span></button></li>
+        <li><button type="button" data-krok="1" aria-pressed="false"><strong>Hotové PDF</strong><span>Parcela s dĺžkami strán, legenda s výmerou z katastra, šípka na sever a grafická mierka – na tlač v skutočnej veľkosti.</span></button></li>
+        <li><button type="button" data-krok="2" aria-pressed="false"><strong>Väčší výrez na A3</strong><span>Celé okolie v mierke 1 : 2 000 – ako PDF alebo obrázok JPEG na e-mail. Informatívne, nie geometrický plán.</span></button></li>
+      </ol>
+    </div>
+    <div class="navod-mobil">
+      <img class="aktivny" src="obrazky/app-tlac-ramik.webp" alt="Režim tlače – rámik strany A4 v mierke 1 : 500 nad parcelou C 5401 v Brezne" width="720" height="1600" loading="lazy">
+      <img src="obrazky/navod-pdf-a4.webp" alt="Hotové PDF na A4 – parcela C 5401, k. ú. Brezno, v mierke 1 : 500 s dĺžkami strán a legendou" width="720" height="1600" loading="lazy">
+      <img src="obrazky/navod-pdf-a3.webp" alt="Obrázok na A3 na šírku – okolie parcely v Brezne v mierke 1 : 2 000" width="720" height="1600" loading="lazy">
+    </div>
+  </div>
+  <p class="poznamka stred navod-zdroj">Skutočné obrazovky aplikácie Parcelko, k.&nbsp;ú. Pongrácovce a Brezno (mapa pre klienta) · mapové podklady © ÚGKK SR, GKÚ Bratislava, NLC Zvolen.</p>
 </section>
 
 <!-- ============================================================ funkcie -->
@@ -615,7 +640,13 @@
       <article class="funkcia odhal">
         <span class="ikona"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6"/><path d="M17 11h5M19.5 8.5v5"/></svg></span>
         <h3>Vlastníci z listu vlastníctva</h3>
-        <p>Výpis otvoríte na oficiálnom portáli katastra priamo v aplikácii a Parcelko si ho prečíta samo. Raz uložený je pri parcele vždy – vlastníci, podiely a ťarchy jedným ťuknutím.</p>
+        <p>Výpis otvoríte na oficiálnom portáli katastra priamo v aplikácii a Parcelko si ho prečíta samo – ako stránku aj PDF. Raz uložený je pri parcele vždy – vlastníci, podiely a ťarchy jedným ťuknutím.</p>
+      </article>
+      <article class="funkcia odhal">
+        <span class="ikona"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4"/><path d="M9 12h7M9 15h7M9 18h4"/></svg></span>
+        <h3>PDF mapy pre klienta</h3>
+        <p>Mapa v mierke na A4 alebo A3 – s hranicami parcely, dĺžkami strán, legendou, šípkou na sever a grafickou mierkou.
+        Na tlač aj e-mail: pre maklérov, dedičov či rokovanie so susedom. Informatívne, nie geometrický plán.</p>
       </article>
   </div>
   <h3 class="skupina odhal">Offline a export</h3>
@@ -894,6 +925,8 @@
       <p>Ukazuje dĺžky strán medzi lomovými bodmi, výmeru, obvod a súradnice bodov v S-JTSK podľa katastrálnej mapy – v rovnakej podobe ako geometrický plán. Geometrický plán na právne úkony však vyhotovuje autorizovaný geodet.</p></details>
     <details><summary>Funguje to aj v lese a pri ťažbe dreva?</summary>
       <p>Áno. Porastová mapa NLC a hranice lesných porastov s číslami porastov sa zobrazia spolu s parcelami C a E, takže pri ťažbe vidíte, či porast nezasahuje do cudzích parciel. Užitočné pre lesníkov, urbariáty a pozemkové spoločenstvá.</p></details>
+    <details><summary>Dá sa vytlačiť mapa pozemku v mierke?</summary>
+      <p>Áno. V Exporte alebo v ponuke zvoľte Obrázok / PDF mapy, vyberte papier A4 alebo A3, orientáciu a mierku (1 : 500 až 1 : 10 000) a posuňte mapu do rámika. Parcelko pripraví PDF alebo obrázok s hranicami parcely, dĺžkami strán, legendou, šípkou na sever a grafickou mierkou. Pri tlači nastavte skutočnú veľkosť (100 %). Je to informatívny výstup, nie geometrický plán.</p></details>
     <details><summary>Dovedie ma aplikácia k bodom z geometrického plánu?</summary>
       <p>Áno. V ponuke zvoľte Zadať súradnice a zadajte alebo vložte súradnice v S-JTSK, JTSK03, WGS84 či UTM – aj celý zoznam bodov z geometrického plánu (číslo bodu, Y a X na riadok). Parcelko body ukáže na mape, navigáciou vás k nim dovedie bod po bode a uloží ich ako vrstvu. Poloha je z GPS mobilu (spravidla 2 – 10 m), takže ide o orientačné hľadanie, nie o vytýčenie – to robí geodet.</p></details>
     <details><summary>Upozorní ma aplikácia, keď vyjdem zo svojho pozemku?</summary>
