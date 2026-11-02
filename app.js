@@ -18,6 +18,28 @@
     document.addEventListener('click', (e) => { if (otvorena() && !lista.contains(e.target)) ponuka(false); });
   }
 
+  // jedno miesto: snímky z aplikácie sa striedajú samy, riadok legendy vyberie snímku (potom sa po 10 s striedajú ďalej)
+  document.querySelectorAll('[data-striedaj]').forEach((m) => {
+    const riadky = [...m.querySelectorAll('.volby-legenda li[data-i]')];
+    const snimky = [...m.querySelectorAll('.telefon-snimky img')];
+    const popis = m.querySelector('.miesto-popis');
+    if (!riadky.length || riadky.length !== snimky.length) return;
+    let i = 0, pauza = 0, vidno = !('IntersectionObserver' in window);
+    const ukaz = (j) => {
+      i = j;
+      snimky.forEach((x, k) => x.classList.toggle('aktivna', k === j));
+      riadky.forEach((r, k) => r.setAttribute('aria-pressed', String(k === j)));
+      if (popis) popis.textContent = riadky[j].dataset.popis || '';
+    };
+    riadky.forEach((r, k) => {
+      const vyber = () => { pauza = Date.now(); ukaz(k); };
+      r.addEventListener('click', vyber);
+      r.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); vyber(); } });
+    });
+    if (!vidno) new IntersectionObserver((z) => { vidno = z[0].isIntersecting; }, { threshold: 0.2 }).observe(m);
+    setInterval(() => { if (vidno && !document.hidden && Date.now() - pauza > 10000) ukaz((i + 1) % snimky.length); }, 2800);
+  });
+
   // sekcie sa plynulo ukážu pri posúvaní
   const odhal = document.querySelectorAll('.odhal');
   if ('IntersectionObserver' in window) {
@@ -271,6 +293,8 @@ async function mapa() {
         portfolio: { type: 'geojson', data: prazdne() },
         'e-v-poraste': { type: 'geojson', data: prazdne() },
         navigacia: { type: 'geojson', data: prazdne() },
+        'offline-maska': { type: 'geojson', data: prazdne() },
+        'offline-ram': { type: 'geojson', data: prazdne() },
       },
       layers: [
         { id: 'pozadie', type: 'background', paint: { 'background-color': '#14241e' } },
@@ -338,11 +362,17 @@ async function mapa() {
         { id: 'rozmery-cisla', type: 'symbol', source: 'rozmery', filter: ['==', ['geometry-type'], 'Point'],
           layout: { 'text-field': ['get', 'n'], 'text-font': pismo, 'text-size': 11, 'text-offset': [0, -1.25], 'text-allow-overlap': true },
           paint: { 'text-color': '#c8ffe9', 'text-halo-color': '#03100b', 'text-halo-width': 1.6 } },
+        // offline územie: všetko mimo rámika stmavne, rámik s rohmi na potiahnutie – ako v aplikácii
+        { id: 'offline-maska', type: 'fill', source: 'offline-maska', paint: { 'fill-color': '#03110c', 'fill-opacity': 0.62 } },
+        { id: 'offline-ram', type: 'line', source: 'offline-ram', filter: ['==', ['geometry-type'], 'LineString'],
+          paint: { 'line-color': '#FFD60A', 'line-width': 3, 'line-dasharray': [2.4, 1.4] } },
+        { id: 'offline-rohy', type: 'circle', source: 'offline-ram', filter: ['==', ['geometry-type'], 'Point'],
+          paint: { 'circle-radius': 7, 'circle-color': '#FFD60A', 'circle-stroke-color': '#1b1400', 'circle-stroke-width': 2.4 } },
       ],
       sky: { 'sky-color': '#0b2a22', 'horizon-color': '#6f9e8e', 'fog-color': '#0b2a22', 'sky-horizon-blend': 0.55, 'horizon-fog-blend': 0.55, 'fog-ground-blend': 0.35 },
     },
     center: info.stred, zoom: male ? 15 : 15.6, pitch: 0, bearing: 0, maxPitch: 66,
-    minZoom: 13.4, maxZoom: 19.4, maxBounds: [[z - 0.03, j - 0.02], [v + 0.03, s + 0.02]],
+    minZoom: 13.4, maxZoom: 19.4, maxBounds: [[z - 0.06, j - 0.035], [v + 0.06, s + 0.035]],
     cooperativeGestures: true, attributionControl: false, dragRotate: true,
     locale: {
       'CooperativeGesturesHandler.WindowsHelpText': 'Mapu priblížite kolieskom so stlačeným Ctrl',
@@ -353,6 +383,7 @@ async function mapa() {
   });
   if (!male) map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-right');
   window.parcelkoMapa = map;                                  // pre automatické testy webu
+  window.parcelkoOkraj = () => okrajKarty();
 
   // ---------------------------------------------------------------- pomalé otáčanie, kým sa nikto nedotkne (a len keď je mapa vidieť)
   let zastav = () => {}, odloz = () => {};                   // prehliadku zastaví len „Prezerať sám“; dotyk ju len odloží (nižšie)
@@ -420,7 +451,12 @@ async function mapa() {
       if (map.isStyleLoaded()) nastav(); else map.once('load', nastav);
     }).catch(() => {});
   let navCas = 0;
-  const vycisti = () => { navCas = 0; ['vyber', 'rozmery', 'agro-vyber', 'agro-vyber-plocha', 'bod', 'navigacia', 'e-v-poraste'].forEach((z) => map.getSource(z).setData(prazdne())); };
+  let offlineCas = 0, offlineZnacka = null;
+  const vycisti = () => {
+    navCas = 0; offlineCas = 0;
+    if (offlineZnacka) { offlineZnacka.remove(); offlineZnacka = null; }
+    ['vyber', 'rozmery', 'agro-vyber', 'agro-vyber-plocha', 'bod', 'navigacia', 'e-v-poraste', 'offline-maska', 'offline-ram'].forEach((z) => map.getSource(z).setData(prazdne()));
+  };
   const zavri = () => { karta.hidden = true; hero.classList.remove('karta-otvorena'); vycisti(); };
   document.getElementById('zavriet').addEventListener('click', zavri);
 
@@ -472,7 +508,12 @@ async function mapa() {
   const UKAZKA_LV = {
     'E 15363': { lv: 2741, vlastnici: [['Ján Vzorový', 1, 2], ['Mária Vzorová, r. Ukážková', 1, 4], ['Peter Vzorový', 1, 4]] },
     'C 5669': { lv: 1906, vlastnici: [['Anna Príkladná', 3, 8], ['Jozef Príkladný', 3, 8], ['Eva Ukážková', 1, 4]] },
+    'E 5946': { lv: 3318, vlastnici: [['Jozef Ukážkový', 2, 3], ['Helena Ukážková', 1, 3]] },
   };
+  // export pre klienta a geodeta (scéna makléra) – formáty ako v aplikácii
+  let ukazExport = false;
+  const BLOK_EXPORT = `<div class="export-blok"><p class="lv-nadpis">Export pre klienta a geodeta</p><div class="export-cipy">
+    <span>PDF / obrázok v mierke · A4, A3</span><span>DXF v S-JTSK</span><span>KMZ · KML</span><span>CSV · TXT súradnice</span><span>GPX · GeoJSON</span></div></div>`;
   function blokLv(p) {
     const lv = UKAZKA_LV[`${p.r} ${p.c}`];
     if (!lv) return '';
@@ -494,17 +535,27 @@ async function mapa() {
       <dl>${p.v != null ? `<dt>Výmera v katastri</dt><dd>${textPlochy(p.v)}</dd>` : ''}
         <dt>Plocha z hraníc (elipsoid)</dt><dd>${textPlochy(kruhy.reduce((s, k) => s + plocha(k.slice(0, -1)), 0))}</dd>
         <dt>Obvod</dt><dd>${cislo(obvod, 2)} m</dd><dt>Lomové body</dt><dd>${body}</dd></dl>
-      <p class="strany">Strany ${cislo(Math.min(...strany), 2)} – ${cislo(Math.max(...strany), 2)} m · dĺžky a čísla bodov sú v mape</p>${blokLv(p)}`;
+      <p class="strany">Strany ${cislo(Math.min(...strany), 2)} – ${cislo(Math.max(...strany), 2)} m · dĺžky a čísla bodov sú v mape</p>${blokLv(p)}${ukazExport ? BLOK_EXPORT : ''}`;
   }
   // parcely E, ktorých stred leží v poraste – pri ťažbe môžu patriť inému vlastníkovi
   function eVPoraste(f) {
     if (!zapnuta('e')) return [];
     return parcely.features.filter((x) => x.properties.r === 'E' && vPrvku(x.stred || (x.stred = vnutornyBod(x)), f));
   }
+  // kto les obhospodaruje – ISLHP (NLC); na webe len právnické osoby, meno fyzickej osoby ukáže aplikácia
+  function blokObhospodarovatel(p) {
+    if (!p.obh || !p.obh.length) return '';
+    return `<div class="obh-blok"><p class="lv-nadpis">Kto les obhospodaruje</p>
+      <ul class="obh-zoznam">${p.obh.map((o) => `<li><span>${o.n ? esc(o.n) : 'fyzická osoba – meno v aplikácii'}</span><b>${o.p != null ? `${o.p} %` : ''}</b>
+        <small>${[o.ico && `IČO ${o.ico}`, o.od && `od roku ${o.od}`].filter(Boolean).join(' · ')}</small></li>`).join('')}</ul>
+      ${p.olh && p.olh.length ? `<p class="obh-olh">Odborný lesný hospodár: <b>${p.olh.map((o) => (o.n ? esc(o.n) : 'meno v aplikácii')).join(', ')}</b></p>` : ''}
+      <p class="obh-zdroj">ISLHP · © NLC Zvolen</p></div>`;
+  }
   function blokLesa(p, f) {
     return `<h3><span class="stitok-reg les">LES</span>${p.porast ? `Porast ${esc(p.porast)}` : 'Lesný pozemok'}</h3>
-      <p class="ku">${esc([p.lhc && `LHC ${p.lhc}`, p.kat].filter(Boolean).join(' · ') || 'lesný porast NLC')}</p>
-      <dl>${p.ha ? `<dt>Výmera porastu</dt><dd>${cislo(p.ha, 2)} ha</dd>` : ''}${riadok('Hlavná drevina', p.drevina)}</dl>${(() => {
+      <p class="ku">${esc([p.lhc && `LHC ${p.lhc}`, p.kat].filter(Boolean).join(' · ') || 'lesný porast NLC')}${p.lc ? `<br>lesný celok ${esc(p.lc)}` : ''}</p>
+      <dl>${p.ha ? `<dt>Výmera porastu</dt><dd>${cislo(p.ha, 2)} ha</dd>` : ''}${riadok('Druh pozemku', p.drevina)}${riadok('Lesný hosp. plán', p.lhp)}</dl>
+${blokObhospodarovatel(p)}${(() => {
         const e = f ? eVPoraste(f) : [];
         return e.length ? `<p class="pozor-e"><strong>V poraste ${e.length === 1 ? 'je 1 parcela' : `je ${e.length} ${e.length < 5 ? 'parcely' : 'parciel'}`} registra E</strong>
           – vyznačené oranžovou: ${e.map((x) => esc(x.properties.c)).join(', ')}. Môžu mať iného vlastníka než okolitý les – pred ťažbou ho overte
@@ -547,12 +598,12 @@ async function mapa() {
   const V_APLIKACII = {
     C: 'V aplikácii navyše: vlastníci z listu vlastníctva, súradnice lomových bodov v S-JTSK, navigácia až na pozemok a export.',
     E: 'V aplikácii navyše: vlastníci z listu vlastníctva, súradnice lomových bodov v S-JTSK, navigácia až na pozemok a export.',
-    BPEJ: 'V aplikácii pri každom ťuknutí – aj v stiahnutom území bez signálu.',
+    BPEJ: 'V aplikácii pri každom ťuknutí; v stiahnutom území vidíte kódy BPEJ v mape aj bez signálu.',
     DIEL: 'V aplikácii aj zlatá výplň dielov s nastaviteľnou priehľadnosťou a výber dielu priamo v teréne.',
     UZIVANIE: 'V aplikácii aj meno užívateľa, ktorý je fyzická osoba, a výber celého bloku, ktorý obhospodaruje.',
     PRVOK: 'V aplikácii aj medze, priekopy a stromoradia vynechané z výmery dielov.',
     REVIR: 'V aplikácii aj výplň vybraného revíru a hranice revírov v teréne – aj offline.',
-    LES: 'V aplikácii navyše: kategória lesa, platnosť LHP a porastová mapa offline.',
+    LES: 'V aplikácii navyše: meno odborného lesného hospodára, kategória lesa, lesný celok, platnosť LHP a porastová mapa aj offline.',
   };
 
   // voľné pásmo mapy – podľa toho, čo mapu práve prekrýva: text úvodu, karta, okno prehliadky, tlačidlá vrstiev
@@ -560,17 +611,28 @@ async function mapa() {
   const PREKRYVY = ['#karta', '.prehliadka', '.hero-text', '.ovladanie', '.meranie-panel'];
   function okrajKarty() {
     const m = el.getBoundingClientRect();
-    const o = { top: 14, bottom: 14, left: 14, right: 14 };
+    // na mobile väčší okraj: hore môže mapu pri posúvaní prekryť hlavička, po bokoch bod polohy s kruhom
+    const o = male ? { top: 56, bottom: 14, left: 28, right: 28 } : { top: 14, bottom: 14, left: 14, right: 14 };
     for (const sel of PREKRYVY) {
       const x = document.querySelector(sel);
-      if (!x || x.hidden || getComputedStyle(x).visibility === 'hidden' || +getComputedStyle(x).opacity === 0) continue;
-      const r = x.getBoundingClientRect();
+      if (!x || x.hidden) continue;
+      const st = getComputedStyle(x);
+      // display: contents = na mobile je text úvodu nad mapou a pod ňou, mapu neprekrýva
+      if (st.display === 'none' || st.display === 'contents' || st.visibility === 'hidden' || (+st.opacity === 0 && st.pointerEvents === 'none')) continue;
+      // pri texte úvodu aj písmená, ktoré presahujú jeho rámec (veľký nadpis)
+      let r = x.getBoundingClientRect();
+      if (sel === '.hero-text') {
+        const rozsah = document.createRange(); rozsah.selectNodeContents(x);
+        const t = rozsah.getBoundingClientRect();
+        if (t.width && t.height) r = { left: Math.min(r.left, t.left), right: Math.max(r.right, t.right), top: Math.min(r.top, t.top), bottom: Math.max(r.bottom, t.bottom) };
+      }
       const l = Math.max(r.left, m.left), p = Math.min(r.right, m.right), h = Math.max(r.top, m.top), d = Math.min(r.bottom, m.bottom);
       if (p - l < 4 || d - h < 4) continue;
       // už je v okraji mapy
       if (l >= m.right - o.right || p <= m.left + o.left || h >= m.bottom - o.bottom || d <= m.top + o.top) continue;
-      const moznosti = [['left', p - m.left], ['right', m.right - l], ['top', d - m.top], ['bottom', m.bottom - h]];
-      const [strana, hodnota] = moznosti.reduce((a, b) => (b[1] < a[1] ? b : a));
+      // strana, pri ktorej mapa stratí najmenej plochy (text vľavo, karta vpravo, tlačidlá dole, okno prehliadky na mobile hore)
+      const moznosti = [['left', p - m.left, m.height], ['right', m.right - l, m.height], ['top', d - m.top, m.width], ['bottom', m.bottom - h, m.width]];
+      const [strana, hodnota] = moznosti.reduce((a, b) => (b[1] * b[2] < a[1] * a[2] ? b : a));
       o[strana] = Math.max(o[strana], Math.round(hodnota + 14));
     }
     // vždy ostane aspoň 220 × 150 px – inak sa okraje pomerne zmenšia
@@ -616,9 +678,13 @@ async function mapa() {
     if (kamera === 'ukazka') {
       // samočinné prepínanie volieb: mapa sa pohne, keď vybraná plocha nie je celá vidieť alebo je na obrazovke primalá
       const o = obal(x.f), hr = map.getBounds();
-      const vidno = o[0] >= hr.getWest() && o[2] <= hr.getEast() && o[1] >= hr.getSouth() && o[3] <= hr.getNorth();
-      const drobna = (o[2] - o[0]) < (hr.getEast() - hr.getWest()) / 10 && (o[3] - o[1]) < (hr.getNorth() - hr.getSouth()) / 10;
-      if (!vidno || drobna) { const k = kameraPre(x.f, 19); if (k) nastavPohlad(false, { ...k, duration: pokojne ? 0 : 900 }); }
+      const sirkaV = hr.getEast() - hr.getWest(), vyskaV = hr.getNorth() - hr.getSouth();
+      const cela = o[0] >= hr.getWest() && o[2] <= hr.getEast() && o[1] >= hr.getSouth() && o[3] <= hr.getNorth();
+      const nic = o[2] < hr.getWest() || o[0] > hr.getEast() || o[3] < hr.getSouth() || o[1] > hr.getNorth();
+      const drobna = (o[2] - o[0]) < sirkaV / 10 && (o[3] - o[1]) < vyskaV / 10;
+      // časť plochy je vidieť: celú ukáže, len keď sa zmestí bez veľkého oddialenia (revír či veľký diel ostanú vybrané na mieste)
+      const zmesti = (o[2] - o[0]) * (o[3] - o[1]) <= 4 * sirkaV * vyskaV;
+      if (nic || drobna || (!cela && zmesti)) { const k = kameraPre(x.f, 19); if (k) nastavPohlad(false, { ...k, duration: pokojne ? 0 : 900 }); }
     } else if (kamera === 'ak-treba') {
       // pri prepnutí voľby sa mapa pohne, len keď vybraná plocha nie je celá vidieť
       const o = obal(x.f), hr = map.getBounds();
@@ -666,8 +732,12 @@ async function mapa() {
       g.f.map((f) => ({ type: 'Feature', properties: { farba: g.farba, skupina: g.nazov }, geometry: f.geometry }))) });
     if (map.isStyleLoaded()) nastav(); else map.once('load', nastav);
   }
-  function kameraNaObal(o, maxZoom = 18) {
-    const k = map.cameraForBounds([[o[0], o[1]], [o[2], o[3]]], { padding: okrajKarty(), bearing: 0, maxZoom });
+  function kameraNaObal(o, maxZoom = 18, naStred = false) {
+    const okraj = okrajKarty();
+    // naStred: na počítači zvislo v strede výšky mapy (rovnaký okraj hore aj dole); na mobile v strede voľného miesta nad kartou
+    if (naStred && !male) { const v = Math.max(okraj.top, okraj.bottom); okraj.top = v; okraj.bottom = v; }
+    const k = map.cameraForBounds([[o[0], o[1]], [o[2], o[3]]], { padding: okraj, bearing: 0, maxZoom })
+      || map.cameraForBounds([[o[0], o[1]], [o[2], o[3]]], { padding: 14, bearing: 0, maxZoom });
     if (k) nastavPohlad(false, { center: k.center, zoom: Math.max(k.zoom, 13.4), duration: pokojne ? 0 : 1000 });
   }
   const spojObal = (zoz) => zoz.reduce((b, c) => [Math.min(b[0], c[0]), Math.min(b[1], c[1]), Math.max(b[2], c[2]), Math.max(b[3], c[3])], [180, 90, -180, -90]);
@@ -731,6 +801,92 @@ async function mapa() {
     kameraNaObal([Math.min(o[0], odkial[0]), Math.min(o[1], odkial[1]), Math.max(o[2], odkial[0]), Math.max(o[3], odkial[1])], 17.6);
   }
 
+  // ---------------------------------------------------------------- offline územie – ľubovoľné územie a vrstvy do mobilu (ako v aplikácii)
+  // priemerná veľkosť dlaždice a rozsah priblížení podľa aplikácie (MapoveVrstvy.kt, sťahuje sa od priblíženia 12 po zvolenú podrobnosť)
+  const OFFLINE_VRSTVY = [
+    ['Ortofotomapa ZBGIS', null, 26000, 0, 19], ['Katastrálna mapa – parcely C', 'c', 14000, 0, 18], ['Mapa určeného operátu – parcely E', 'e', 9000, 0, 18],
+    ['Porastová mapa NLC', null, 8000, 0, 18], ['Lesné porasty NLC', 'lesy', 6000, 13, 19], ['Poľovné revíry', 'reviry', 5000, 10, 19],
+    ['Bonita pôdy – BPEJ', 'bpej', 12000, 14, 19], ['Kultúrne diely LPIS', 'diely', 27000, 13, 19], ['Hranice užívania', 'uzivanie', 10000, 13, 19],
+  ];
+  const OFFLINE_RAM = [19.6585, 48.8160, 19.6730, 48.8238];
+  const OFFLINE_ZOOM = 18;
+  const dlazdicX = (lon, z) => Math.floor((lon + 180) / 360 * 2 ** z);
+  const dlazdicY = (lat, z) => { const r = lat * Math.PI / 180; return Math.floor((1 - Math.log(Math.tan(r) + 1 / Math.cos(r)) / Math.PI) / 2 * 2 ** z); };
+  function pocetDlazdic(o, z0, z1) {
+    let n = 0;
+    for (let z = z0; z <= z1; z++) n += (dlazdicX(o[2], z) - dlazdicX(o[0], z) + 1) * (dlazdicY(o[1], z) - dlazdicY(o[3], z) + 1);
+    return n;
+  }
+  const odhadVrstvy = ([, , priemer, minZ, maxZ]) => { const n = pocetDlazdic(OFFLINE_RAM, Math.max(12, minZ), Math.min(OFFLINE_ZOOM, maxZ)); return [n, n * priemer]; };
+  const velkost = (b) => (b >= 1e9 ? `${cislo(b / 1e9, 1)} GB` : `${cislo(b / 1e6, b < 1e7 ? 1 : 0)} MB`);
+  function ukazOffline() {
+    vycisti(); bodMiesta = null;
+    const t0 = performance.now();
+    offlineCas = t0;
+    const ide = () => offlineCas === t0;
+    const [z0, j0, v0, s0] = OFFLINE_RAM;
+    const sirkaM = dlzka([[z0, (j0 + s0) / 2], [v0, (j0 + s0) / 2]]), vyskaM = dlzka([[z0, j0], [z0, s0]]);
+    const km = (m) => `${cislo(m / 1000, 1)} km`;
+    obsahKarty.innerHTML = `<p class="na-mieste">Offline územie</p><h3>Zadné Halny – do mobilu</h3>
+      <p class="ku">Rohy rámika potiahnete prstom – stiahne sa všetko vo vnútri</p>
+      <dl><dt>Vyznačené územie</dt><dd>${km(sirkaM)} × ${km(vyskaM)}</dd><dt>Odhad</dt><dd class="off-odhad">–</dd></dl>
+      <ul class="off-vrstvy">${OFFLINE_VRSTVY.map(([n]) => `<li><i aria-hidden="true"></i>${esc(n)}</li>`).join('')}</ul>
+      <div class="off-priebeh" hidden><b></b></div><p class="off-stav">Podrobnosť 18 – detail s lomovými bodmi</p>
+      <p class="v-aplikacii">V aplikácii: ľubovoľné územie, vrstvy aj podrobnosť; sťahovanie na pozadí, aktualizácia a prenos na ďalší mobil.
+        Bez signálu máte mapy aj parcely C a E – hranice, čísla, výmery, navigáciu.</p>`;
+    karta.hidden = false;
+    hero.classList.add('karta-otvorena');
+    kameraNaObal(OFFLINE_RAM, 16.2, true);
+    // rámik rastie zo stredu
+    const svet = [[z0 - 1, j0 - 1], [v0 + 1, j0 - 1], [v0 + 1, s0 + 1], [z0 - 1, s0 + 1], [z0 - 1, j0 - 1]];
+    const rast = (t) => {
+      if (!ide()) return;
+      const q = Math.min(1, Math.max(0, (t - t0 - 500) / 1300)), e = 1 - (1 - q) ** 3;
+      const cx = (z0 + v0) / 2, cy = (j0 + s0) / 2;
+      const a = [cx + (z0 - cx) * e, cy + (j0 - cy) * e], b = [cx + (v0 - cx) * e, cy + (s0 - cy) * e];
+      const k = [[a[0], a[1]], [b[0], a[1]], [b[0], b[1]], [a[0], b[1]], [a[0], a[1]]];
+      map.getSource('offline-maska').setData({ type: 'Feature', properties: {}, geometry: { type: 'Polygon', coordinates: [svet, [...k].reverse()] } });
+      map.getSource('offline-ram').setData({ type: 'FeatureCollection', features: [
+        { type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: k } },
+        ...k.slice(0, 4).map((c) => ({ type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: c } }))] });
+      if (q < 1) requestAnimationFrame(rast);
+    };
+    requestAnimationFrame(rast);
+    // vrstvy sa zaškrtávajú jedna po druhej, odhad rastie; zapnú sa aj na mape
+    let dlazdic = 0, bajtov = 0;
+    const odhad = obsahKarty.querySelector('.off-odhad');
+    OFFLINE_VRSTVY.forEach((v, i) => setTimeout(() => {
+      if (!ide()) return;
+      const [n, b] = odhadVrstvy(v);
+      dlazdic += n; bajtov += b;
+      obsahKarty.querySelectorAll('.off-vrstvy li')[i].classList.add('ano');
+      odhad.textContent = `${cislo(dlazdic)} dlaždíc · ≈ ${velkost(bajtov)}`;
+      if (v[1]) vrstva(v[1], true);
+    }, 1900 + i * 520));
+    // sťahovanie na pozadí
+    const start = 1900 + OFFLINE_VRSTVY.length * 520 + 300, trvanie = 3200;
+    setTimeout(() => {
+      if (!ide()) return;
+      const pr = obsahKarty.querySelector('.off-priebeh'), stav = obsahKarty.querySelector('.off-stav');
+      pr.hidden = false;
+      const t1 = performance.now();
+      const krok = (t) => {
+        if (!ide()) return;
+        const q = Math.min(1, (t - t1) / trvanie);
+        pr.firstElementChild.style.width = `${q * 100}%`;
+        stav.textContent = q < 1 ? `Sťahujem na pozadí… ${Math.round(q * 100)} % · ${cislo(Math.round(dlazdic * q))} z ${cislo(dlazdic)} dlaždíc`
+          : `Offline mapa je stiahnutá · ${velkost(bajtov)} · pripravené na použitie bez internetu`;
+        stav.classList.toggle('hotovo', q === 1);
+        if (q < 1) { requestAnimationFrame(krok); return; }
+        const d = document.createElement('div');
+        d.className = 'offline-znacka';
+        d.innerHTML = '<span aria-hidden="true">✈</span> Offline mapa · bez signálu';
+        offlineZnacka = new maplibregl.Marker({ element: d, anchor: 'bottom-left', offset: [4, -8] }).setLngLat([z0, s0]).addTo(map);
+      };
+      requestAnimationFrame(krok);
+    }, start);
+  }
+
   // ---------------------------------------------------------------- meranie
   const tlacidloMerania = document.getElementById('meranie');
   const panelMerania = document.getElementById('meranie-panel');
@@ -790,22 +946,27 @@ async function mapa() {
   const LUKA2 = [19.6644, 48.81619];       // lúka Roľníckeho družstva Ďumbier: C 7509, E 5817/1, diel 8206/3, revír Devana
   const PRED_LESOM = [19.66344, 48.816911]; // lúka pred lesom – štart navigácie k lesnej parcele E 5813/2 (len cez lúku a les)
   const VSETKO_VYP = { c: false, e: false, lesy: false, moje: false, bpej: false, diely: false, uzivanie: false, reviry: false };
+  // volby = ktoré voľby sa v scéne samy prepínajú (bez nich všetky); trvanie = pevná dĺžka scény v ms
   const SCENY = [
-    { rola: 0, nazov: 'Vlastník a dedič', popis: 'Na jednom mieste parcela C aj E s rozmermi ako v geometrickom pláne, vlastníci a podiely z listu vlastníctva, bonita pôdy, kto hospodári a obvyklé nájomné.',
+    { rola: 0, nazov: 'Vlastník a dedič', popis: 'Parcela C aj E na jednom mieste: rozmery ako v geometrickom pláne, vlastníci a podiely z listu vlastníctva, bonita pôdy, kto na nej hospodári a nájomné.',
       podklad: 'orto', vrstvy: { ...VSETKO_VYP, c: true, e: true, bpej: true, diely: true, uzivanie: true }, akcia: () => ukazBod(LUKA, 'E', true) },
-    { rola: 0, nazov: 'Ako sa dostanete k parcele', popis: 'Stojíte na lúke pred lesom a hľadáte svoju lesnú parcelu: Parcelko ukáže smer a vzdialenosť a navedie vás až na pozemok – keď na ňom stojíte, povie to.',
-      podklad: 'orto', vrstvy: { ...VSETKO_VYP, e: true, lesy: true }, akcia: () => ukazNavigaciu(PRED_LESOM, ['E', '5813/2']) },
+    { rola: 0, nazov: 'Ako sa dostanete k parcele', popis: 'Parcelu nájdete podľa čísla alebo z listu vlastníctva – aj parcelu E, ktorú v teréne nevidno. Parcelko ukáže smer a vzdialenosť a navedie vás až na pozemok.',
+      podklad: 'orto', vrstvy: { ...VSETKO_VYP, e: true, lesy: true }, akcia: () => ukazNavigaciu(PRED_LESOM, ['E', '5813/2']), trvanie: 9000 },
+    { rola: 6, nazov: 'Majiteľ lesa', popis: 'Vaša parcela E v lese: hranice v poraste, vlastníci, kto váš les obhospodaruje a kto je odborný lesný hospodár, lesný celok a revír.',
+      podklad: 'porastova', vrstvy: { ...VSETKO_VYP, e: true, lesy: true, reviry: true }, akcia: () => ukazBod(LES, 'E', true), volby: ['E', 'LES', 'REVIR'] },
     { rola: 0, nazov: 'Moje portfólio', popis: 'Svoje pozemky si označíte farbou a menom – dom a záhrada, lúky, pole, les. Ručne, zoznamom čísel z listu vlastníctva alebo z KMZ.',
       podklad: 'orto', vrstvy: { ...VSETKO_VYP, moje: true }, akcia: () => ukazPortfolio() },
-    { rola: 1, nazov: 'Kupujúci a maklér', popis: 'Pred kúpou aj pri predaji: rozmery a výmera, bonita pôdy (BPEJ), Natura 2000 a mapa pre klienta v PDF.',
-      podklad: 'orto', vrstvy: { ...VSETKO_VYP, c: true, bpej: true }, akcia: () => najdiParcelu('C', '5401') },
+    { rola: 1, nazov: 'Kupujúci a maklér', popis: 'Rozmery pozemku ako v geometrickom pláne – dĺžky strán a očíslované lomové body –, výmera, BPEJ a export pre klienta: PDF v mierke, DXF, KMZ či CSV.',
+      podklad: 'orto', vrstvy: { ...VSETKO_VYP, c: true, bpej: true }, akcia: () => najdiParcelu('C', '5401'), export: true, volby: ['C', 'BPEJ'] },
     { rola: 2, nazov: 'Majiteľ lúky a poľa', popis: 'Kto na vašom poli hospodári – firma aj s IČO a plodinou – a obvyklé nájomné v katastrálnom území. Viete, koho žiadať o nájom.',
       podklad: 'orto', vrstvy: { ...VSETKO_VYP, c: true, e: true, diely: true, uzivanie: true }, akcia: () => ukazBod(POLE, 'UZIVANIE', true) },
     { rola: 3, nazov: 'Poľnohospodár', popis: 'Presné hranice kultúrnych dielov v teréne, BPEJ, krajinné prvky a hranice užívania susedov – so zlatou výplňou ako v ZBGIS.',
       podklad: 'orto', vrstvy: { ...VSETKO_VYP, bpej: true, diely: true, uzivanie: true }, akcia: () => ukazBod(LUKA2, 'DIEL', true) },
-    { rola: 4, nazov: 'Lesník a lesný hospodár', popis: 'Najprv len lesné dielce – potom naskočia parcely C a E. V poraste 454 je deväť súkromných parciel E: pri ťažbe hneď vidíte, kde začína cudzia parcela.',
-      podklad: 'porastova', vrstvy: { ...VSETKO_VYP, lesy: true }, akcia: () => ukazBod(LES, 'LES', true),
+    { rola: 4, nazov: 'Lesník a lesný hospodár', popis: 'Najprv len lesné dielce – potom naskočia parcely C a E. V poraste 454 ležia parcely E iných vlastníkov: pri ťažbe hneď vidíte, kde začína cudzia parcela.',
+      podklad: 'porastova', vrstvy: { ...VSETKO_VYP, lesy: true }, akcia: () => ukazBod(LES, 'LES', true), volby: ['LES', 'E'],
       potom: { po: 3600, vrstvy: { c: true, e: true }, akcia: () => ukazBod(LES, 'LES') } },
+    { rola: -1, nazov: 'Offline územie', popis: 'Vyznačíte si ľubovoľné územie a vyberiete vrstvy – Parcelko ich stiahne do mobilu. V teréne máte mapy aj parcely C a E aj bez signálu.',
+      podklad: 'orto', vrstvy: { ...VSETKO_VYP }, akcia: () => ukazOffline(), trvanie: 14500 },
     { rola: 5, nazov: 'Poľovník', popis: 'Revíry Čertovica, Jasienok a Devana s užívateľom a rozhodnutím – na ortofotomape aj na porastovej mape NLC.',
       podklad: 'orto', vrstvy: { ...VSETKO_VYP, reviry: true }, akcia: () => ukazBod(LUKA, 'REVIR', { center: [19.6668, 48.8236], zoom: male ? 13.4 : 13.85 }),
       potom: { po: 3800, podklad: 'porastova' } },
@@ -822,13 +983,17 @@ async function mapa() {
     clearInterval(casovacVolieb);
     if (karta.hidden || polozky.length < 2 || !obsahKarty.querySelector('.registre')) return 0;
     const z = polozky, start = aktualna;
-    let k = 1;
+    // poradie volieb od vybranej ďalej (len povolené v scéne), nakoniec späť na prvú
+    const poradie = [];
+    for (let k = 1; k < z.length; k++) { const j = (start + k) % z.length; if (!sc.volby || sc.volby.includes(z[j].typ)) poradie.push(j); }
+    if (sc.volby && poradie.length) poradie.push(start);
+    let k = 0;
     casovacVolieb = setInterval(() => {
-      if (!bezi || SCENY[scenaI] !== sc || polozky !== z || k >= z.length) { clearInterval(casovacVolieb); return; }
-      ukazMiesto(z, (start + k) % z.length, 'ukazka');
+      if (!bezi || SCENY[scenaI] !== sc || polozky !== z || k >= poradie.length) { clearInterval(casovacVolieb); return; }
+      ukazMiesto(z, poradie[k], 'ukazka');
       k++;
     }, KROK_VOLBY);
-    return z.length;
+    return poradie.length + 1;
   }
   const roly = document.querySelectorAll('.som .rola');
   const boxPrehliadky = document.getElementById('prehliadka');
@@ -843,6 +1008,7 @@ async function mapa() {
     document.getElementById('sc-popis').textContent = sc.popis;
     bodky.querySelectorAll('i').forEach((b, j) => b.classList.toggle('aktivna', j === scenaI));
     roly.forEach((b) => b.setAttribute('aria-pressed', String(+b.dataset.rola === sc.rola)));
+    ukazExport = !!sc.export;
     podklad(sc.podklad);
     Object.entries(sc.vrstvy).forEach(([k, v]) => vrstva(k, v));
     clearTimeout(casovac); clearTimeout(casovacPotom); clearInterval(casovacVolieb);
@@ -850,7 +1016,7 @@ async function mapa() {
       if (SCENY[scenaI] !== sc) return;
       sc.akcia();
       const n = bezi ? prepinajVolby(sc) : 0;
-      const dalsia = (ms) => { clearTimeout(casovac); casovac = setTimeout(() => { if (bezi && vidiet) ukazScenu(scenaI + 1); }, ms); };
+      const dalsia = (ms) => { clearTimeout(casovac); if (!stojScena) casovac = setTimeout(() => { if (bezi && vidiet) ukazScenu(scenaI + 1); }, ms); };
       if (sc.potom) {
         casovacPotom = setTimeout(() => {
           if (!bezi || SCENY[scenaI] !== sc) return;
@@ -859,7 +1025,7 @@ async function mapa() {
           if (sc.potom.akcia) { sc.potom.akcia(); dalsia(Math.max(5000, prepinajVolby(sc) * KROK_VOLBY + 2000)); }
         }, sc.potom.po);
       }
-      dalsia(Math.max(7500, n * KROK_VOLBY + 1800, sc.potom ? sc.potom.po + 6000 : 0));
+      dalsia(sc.trvanie || Math.max(7500, n * KROK_VOLBY + 1800, sc.potom ? sc.potom.po + 6000 : 0));
     });
   }
   function nastavPrehliadku(zap) {
@@ -896,14 +1062,17 @@ async function mapa() {
   }, 2000);
   ['mousedown', 'touchstart', 'wheel'].forEach((ev) => map.getCanvas().addEventListener(ev, () => odloz(), { passive: true }));
   if ('IntersectionObserver' in window) {
+    // ďalšia scéna len po návrate mapy do obrazu (prvé hlásenie pri spustení scénu neskracuje)
     new IntersectionObserver((z) => {
+      const predtym = vidiet;
       vidiet = z[0].isIntersecting;
-      if (vidiet && bezi && spustena) { clearTimeout(casovac); casovac = setTimeout(() => ukazScenu(scenaI + 1), 2000); }
+      if (vidiet && !predtym && bezi && spustena && !stojScena) { clearTimeout(casovac); casovac = setTimeout(() => ukazScenu(scenaI + 1), 2000); }
     }).observe(el);
   }
   // prehliadka sa spustí raz – po načítaní mapy, najneskôr o 2,5 s (pomalé ortofoto ju nezdrží ani nevráti na začiatok)
   let spustena = false;
   const prvaScena = Math.max(0, +(new URLSearchParams(location.search).get('scena')) || 0);
+  const stojScena = new URLSearchParams(location.search).has('stoj');          // len na testovanie snímkami
   const spusti = () => { if (spustena) return; spustena = true; if (bezi) ukazScenu(prvaScena); else nastavPrehliadku(false); };
   map.once('load', () => setTimeout(spusti, 300));
   setTimeout(spusti, 2500);

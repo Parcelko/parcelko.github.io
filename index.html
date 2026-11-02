@@ -254,7 +254,7 @@
      "name": "Funguje Parcelko bez internetu?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Áno. Vyznačte územie a stiahnite si mapy aj parcely vopred – v lese bez signálu potom vidíte hranice, čísla parciel, výmery aj svoju polohu. Bez internetu nefunguje len aktivácia licencie, hľadanie parcely podľa čísla a portál katastra; uložené výpisy LV máte aj offline."
+      "text": "Áno. Vyznačte územie a stiahnite si mapy aj parcely vopred – v lese bez signálu potom vidíte hranice, čísla parciel, výmery aj svoju polohu. Bez internetu nefunguje aktivácia licencie, hľadanie parcely podľa čísla, portál katastra a podrobnosti, ktoré sa zisťujú ťuknutím (BPEJ, diel, užívateľ, revír) – mapy týchto vrstiev však v stiahnutom území vidíte. Uložené výpisy LV máte aj offline."
      }
     },
     {
@@ -301,6 +301,7 @@
 
 <header class="lista" id="lista">
   <a class="znacka" href="#" aria-label="Parcelko – úvod"><img src="obrazky/ikona.svg" alt="" width="34" height="34"><span>Parcelko</span></a>
+  <span class="heslo-lista" aria-hidden="true">Kde práve stojíte, všetko si zistíte.</span>
   <nav id="hlavna-ponuka" aria-label="Hlavná ponuka">
     <a href="#pre-koho">Pre koho</a>
     <a href="#z-jedneho-miesta">Jedno miesto</a>
@@ -341,10 +342,12 @@
     <p class="suradnice" id="suradnice" aria-label="Stred mapy"><span>48,8188° s. š.</span><span>19,6670° v. d.</span><span>Brezno – Zadné Halny</span></p>
     <h1>Jedno ťuknutie.<br><span class="zvyraznene">Všetko o pozemku.</span></h1>
     <p class="podtitul">Čí je, aký je veľký a kade vedú hranice. Aká je pôda, kto na nej hospodári a komu pýtať nájom.
-      V akom je revíri a lesnom poraste. <strong>Na mape doma aj v teréne – aj bez signálu.</strong></p>
+      V akom je revíri a lesnom poraste.</p>
+    <p class="heslo">Kde práve stojíte, všetko si zistíte.</p>
     <div class="som" role="group" aria-label="Ukážka podľa toho, kto ste">
       <span class="som-nadpis">Som</span>
       <button type="button" class="rola" data-rola="0" aria-pressed="false">vlastník a dedič</button>
+      <button type="button" class="rola" data-rola="6" aria-pressed="false">majiteľ lesa</button>
       <button type="button" class="rola" data-rola="1" aria-pressed="false">kupujúci a maklér</button>
       <button type="button" class="rola" data-rola="2" aria-pressed="false">majiteľ lúky a poľa</button>
       <button type="button" class="rola" data-rola="3" aria-pressed="false">poľnohospodár</button>
@@ -390,20 +393,31 @@
   <p class="nadtitul">Pre koho</p>
   <h2>Od vlastníka záhrady po lesníka a poľovníka</h2>
   <p class="uvod">Každý sa na to isté miesto pozerá inak. Parcelko má pre každého jeho vrstvy – a pri ťuknutí ukáže všetko naraz.
-    Vyberte si, kto ste, a pozrite si to na živej mape hore.</p>
+    Nepotrebujete poznať kataster ani mapy: aj vlastník či dedič, ktorý svoj pozemok nikdy nevidel, ho nájde, dôjde naň a zistí
+    o ňom všetko ako profesionál. Vyberte si, kto ste, a pozrite si to na živej mape hore.</p>
   <div class="mriezka roly-karty">
     <article class="rola-karta odhal" style="--farba-roly: var(--c)">
       <h3>Vlastník a dedič</h3>
-      <ul><li>Kde presne sú moje parcely – v lese, na lúke, na ornej pôde či v záhrade</li>
+      <ul><li>Kde presne je moja parcela – aj parcela E, ktorú v teréne nevidno; v lese, na lúke, na poli či v záhrade</li>
+        <li>Navigácia až na pozemok – mobil povie, keď na ňom stojíte</li>
+        <li>Rozmery, výmera, vlastníci a podiely z listu vlastníctva</li>
         <li>Kto na mojej pôde hospodári a komu pýtať nájom – <a href="#najom">postup</a></li>
-        <li>Rozmery, výmera a vlastníci z listu vlastníctva</li>
-        <li>Navigácia až na pozemok a prehľad všetkých pozemkov</li></ul>
+        <li>Všetko jedným ťuknutím – jednoducho, ako profesionál</li></ul>
       <button type="button" class="ukaz-rolu" data-rola="0">Ukázať na mape</button>
+    </article>
+    <article class="rola-karta odhal" style="--farba-roly: #66BB6A">
+      <h3>Majiteľ lesa</h3>
+      <ul><li>Kde leží moja lesná parcela a v ktorom poraste – hranice v lese aj bez signálu</li>
+        <li>Lesný celok a platnosť lesného hospodárskeho plánu</li>
+        <li>Navigácia k parcele v lese a revír, v ktorom leží</li>
+        <li>Kto môj les obhospodaruje a kto je odborný lesný hospodár – z registra NLC</li></ul>
+      <button type="button" class="ukaz-rolu" data-rola="6">Ukázať na mape</button>
     </article>
     <article class="rola-karta odhal" style="--farba-roly: #FFD600">
       <h3>Kupujúci a maklér</h3>
-      <ul><li>Rozmery a dĺžky strán bez merania</li><li>Bonita pôdy (BPEJ), Natura 2000, kto na pozemku hospodári</li>
-        <li>Mapa pre klienta v PDF v mierke</li></ul>
+      <ul><li>Rozmery ako v geometrickom pláne – dĺžky strán a očíslované lomové body, bez merania</li>
+        <li>Bonita pôdy (BPEJ), Natura 2000, kto na pozemku hospodári</li>
+        <li>Export: mapa pre klienta v PDF v mierke, DXF, KMZ či CSV so súradnicami S-JTSK</li></ul>
       <button type="button" class="ukaz-rolu" data-rola="1">Ukázať na mape</button>
     </article>
     <article class="rola-karta odhal" style="--farba-roly: #FF5252">
@@ -420,7 +434,7 @@
     </article>
     <article class="rola-karta odhal" style="--farba-roly: var(--les)">
       <h3>Lesník a lesný hospodár</h3>
-      <ul><li>Porastová mapa NLC a lesné porasty</li><li>Parcely E v lese – čia je parcela v poraste</li>
+      <ul><li>Porastová mapa NLC a lesné porasty</li><li>Parcely C a E v poraste – hneď vidíte, kde začína súkromná parcela a čia je</li>
         <li>Body ťažby, offline územie a prenos na mobily kolegov</li></ul>
       <button type="button" class="ukaz-rolu" data-rola="4">Ukázať na mape</button>
     </article>
@@ -429,6 +443,13 @@
       <ul><li>Hranice poľovných revírov v teréne</li><li>Užívateľ revíru, rozhodnutie a poľovná oblasť</li>
         <li>Revír aj tam, kde nie je signál</li></ul>
       <button type="button" class="ukaz-rolu" data-rola="5">Ukázať na mape</button>
+    </article>
+    <article class="rola-karta rola-karta-kazdy odhal" style="--farba-roly: var(--zelena-svetla)">
+      <h3>Jednoducho, ako profesionál</h3>
+      <ul><li>Zadáte číslo parcely z listu vlastníctva alebo ťuknete do mapy</li>
+        <li>Parcelko ukáže všetko na jednom mieste – vlastníkov, rozmery, pôdu, les aj revír</li>
+        <li>Pojmy ako parcela E, BPEJ či kultúrny diel vysvetľujeme <a href="#pojmy">jednoducho</a></li></ul>
+      <button type="button" class="ukaz-rolu" data-rola="0">Spustiť ukážku</button>
     </article>
   </div>
 </section>
@@ -440,39 +461,51 @@
   <p class="uvod">Na tom istom mieste je parcela C aj E, bonita pôdy, kultúrny diel, užívateľ pôdy, poľovný revír či lesný porast.
     Parcelko ich ukáže v jednom rade – ako parcely C a E – a ťuknutím si vyberiete, čo chcete vidieť na mape. Ktoré voľby sa ukážu,
     určujú vrstvy, ktoré máte zapnuté. Dve skutočné miesta zo Zadných Halien pri Brezne:</p>
-  <div class="miesto odhal">
+  <div class="miesto odhal" data-striedaj>
     <div class="miesto-text">
       <h3>Na lúke</h3>
       <ul class="volby-legenda">
-        <li><b class="v-c">C 5669</b> súčasná parcela – rozmery, výmera, vlastníci z listu vlastníctva</li>
-        <li><b class="v-e">E 15363</b> pôvodná parcela pod ňou – iný vlastník, iné hranice</li>
-        <li><b class="v-bpej">BPEJ 0976461</b> bonita pôdy – skupina kvality, pôdny typ, hĺbka a zrnitosť</li>
-        <li><b class="v-diel">Diel 9114/1</b> kultúrny diel – trvalý trávny porast, 34,22 ha</li>
-        <li><b class="v-uziv">Hranica užívania</b> Poľnohospodárske družstvo Ďumbier, 8,25 ha – a obvyklé nájomné 23,25 €/ha ročne</li>
-        <li><b class="v-revir">Revír Čertovica</b> užívateľ, rozhodnutie a poľovná oblasť</li>
+        <li data-i="0" role="button" tabindex="0" aria-pressed="true" data-popis="C 5669 – súčasná parcela s rozmermi"><b class="v-c">C 5669</b> súčasná parcela – rozmery, výmera, vlastníci z listu vlastníctva</li>
+        <li data-i="1" role="button" tabindex="0" aria-pressed="false" data-popis="E 15363 – pôvodná parcela pod ňou"><b class="v-e">E 15363</b> pôvodná parcela pod ňou – iný vlastník, iné hranice</li>
+        <li data-i="2" role="button" tabindex="0" aria-pressed="false" data-popis="BPEJ 0976461 – bonita pôdy"><b class="v-bpej">BPEJ 0976461</b> bonita pôdy – skupina kvality, pôdny typ, hĺbka a zrnitosť</li>
+        <li data-i="3" role="button" tabindex="0" aria-pressed="false" data-popis="Diel 9114/1 – kultúrny diel"><b class="v-diel">Diel 9114/1</b> kultúrny diel – trvalý trávny porast, 34,22 ha</li>
+        <li data-i="4" role="button" tabindex="0" aria-pressed="false" data-popis="Kto na lúke hospodári a nájomné"><b class="v-uziv">Hranica užívania</b> Poľnohospodárske družstvo Ďumbier, 8,25 ha – a obvyklé nájomné 23,25 €/ha ročne</li>
+        <li data-i="5" role="button" tabindex="0" aria-pressed="false" data-popis="Revír Čertovica"><b class="v-revir">Revír Čertovica</b> užívateľ, rozhodnutie a poľovná oblasť</li>
       </ul>
+      <p class="poznamka">Snímky z aplikácie sa striedajú samy – ťuknutím na riadok si vyberiete.</p>
     </div>
-    <div class="miesto-snimky" role="list">
-      <figure role="listitem"><img src="obrazky/miesto-luka-diel.webp" alt="Parcelko: vybraný kultúrny diel 9114/1 so zlatou výplňou" width="720" height="1600" loading="lazy" decoding="async"><figcaption>Diel – hranica v teréne</figcaption></figure>
-      <figure role="listitem"><img src="obrazky/miesto-luka-uzivanie.webp" alt="Parcelko: hranica užívania – kto na lúke hospodári a obvyklé nájomné" width="720" height="1600" loading="lazy" decoding="async"><figcaption>Kto hospodári</figcaption></figure>
-      <figure role="listitem"><img src="obrazky/miesto-luka-revir.webp" alt="Parcelko: poľovný revír Čertovica so žltou výplňou" width="720" height="1600" loading="lazy" decoding="async"><figcaption>Poľovný revír</figcaption></figure>
-    </div>
+    <figure class="miesto-telefon">
+      <div class="telefon-snimky">
+        <img class="aktivna" src="obrazky/miesto-luka-c.webp" alt="Parcelko na lúke: vybraná parcela C 5669 s dĺžkami strán" width="720" height="1600" loading="lazy" decoding="async">
+        <img src="obrazky/miesto-luka-e.webp" alt="Parcelko na lúke: vybraná pôvodná parcela E 15363" width="720" height="1600" loading="lazy" decoding="async">
+        <img src="obrazky/miesto-luka-bpej.webp" alt="Parcelko na lúke: bonita pôdy BPEJ 0976461" width="720" height="1600" loading="lazy" decoding="async">
+        <img src="obrazky/miesto-luka-diel.webp" alt="Parcelko: vybraný kultúrny diel 9114/1 so zlatou výplňou" width="720" height="1600" loading="lazy" decoding="async">
+        <img src="obrazky/miesto-luka-uzivanie.webp" alt="Parcelko: hranica užívania – kto na lúke hospodári a obvyklé nájomné" width="720" height="1600" loading="lazy" decoding="async">
+        <img src="obrazky/miesto-luka-revir.webp" alt="Parcelko: poľovný revír Čertovica so žltou výplňou" width="720" height="1600" loading="lazy" decoding="async">
+      </div>
+      <figcaption class="miesto-popis">C 5669 – súčasná parcela s rozmermi</figcaption>
+    </figure>
   </div>
-  <div class="miesto obratene odhal">
+  <div class="miesto obratene odhal" data-striedaj>
     <div class="miesto-text">
       <h3>V lese</h3>
       <ul class="volby-legenda">
-        <li><b class="v-les">Porast 454</b> porastová mapa NLC, lesný hospodársky celok Brezno</li>
-        <li><b class="v-e">E 5946</b> parcela registra E v poraste – kto je jej vlastník</li>
-        <li><b class="v-c">C 7511</b> parcela C, na ktorej porast leží</li>
-        <li><b class="v-revir">Revír Devana</b> v ktorom revíri ste a kto ho užíva</li>
+        <li data-i="0" role="button" tabindex="0" aria-pressed="true" data-popis="Lesné dielce a parcely C a E"><b class="v-les">Porast 454</b> porastová mapa NLC – lesné dielce a v nich parcely C a E</li>
+        <li data-i="1" role="button" tabindex="0" aria-pressed="false" data-popis="E 5946 – súkromná parcela v poraste"><b class="v-e">E 5946</b> parcela registra E v poraste – vlastník, rozmery, kto les obhospodaruje, lesný celok a platnosť LHP</li>
+        <li data-i="2" role="button" tabindex="0" aria-pressed="false" data-popis="C 7511 – parcela C pod porastom"><b class="v-c">C 7511</b> parcela C, na ktorej porast leží</li>
+        <li data-i="3" role="button" tabindex="0" aria-pressed="false" data-popis="Revír Devana"><b class="v-revir">Revír Devana</b> v ktorom revíri ste a kto ho užíva</li>
       </ul>
       <p class="poznamka">Lesník vidí porasty a parcely, poľovník revíry, vlastník svoju parcelu – na tej istej mape, aj bez signálu.</p>
     </div>
-    <div class="miesto-snimky" role="list">
-      <figure role="listitem"><img src="obrazky/miesto-les-e.webp" alt="Parcelko: parcela E v lesnom poraste na porastovej mape" width="720" height="1600" loading="lazy" decoding="async"><figcaption>Parcela E v poraste</figcaption></figure>
-      <figure role="listitem"><img src="obrazky/miesto-les-revir.webp" alt="Parcelko: poľovný revír Devana v lese" width="720" height="1600" loading="lazy" decoding="async"><figcaption>Revír v lese</figcaption></figure>
-    </div>
+    <figure class="miesto-telefon">
+      <div class="telefon-snimky">
+        <img class="aktivna" src="obrazky/miesto-les-porasty.webp" alt="Parcelko v lese: porastová mapa NLC s lesnými dielcami a parcelami C a E" width="720" height="1600" loading="lazy" decoding="async">
+        <img src="obrazky/miesto-les-e.webp" alt="Parcelko: parcela E 5946 v lesnom poraste na porastovej mape" width="720" height="1600" loading="lazy" decoding="async">
+        <img src="obrazky/miesto-les-c.webp" alt="Parcelko: parcela C 7511 pod lesným porastom" width="720" height="1600" loading="lazy" decoding="async">
+        <img src="obrazky/miesto-les-revir.webp" alt="Parcelko: poľovný revír Devana v lese" width="720" height="1600" loading="lazy" decoding="async">
+      </div>
+      <figcaption class="miesto-popis">Lesné dielce a parcely C a E</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -843,7 +876,8 @@
         <h3>Offline mapy bez signálu</h3>
         <p>Rámikom si vyznačíte ľubovoľný výsek mapy – od pár parciel po celý chotár, les či obec – a stiahnete ho s vrstvami,
         ktoré chcete: mapy, parcely, lesné mapy, BPEJ, kultúrne diely, hranice užívania aj poľovné revíry. Území môžete mať,
-        koľko potrebujete; v teréne bez signálu potom vidíte hranice, čísla parciel aj svoju polohu a navigácia funguje ďalej.</p>
+        koľko potrebujete, a pošlete ich aj na ďalší mobil súborom. V teréne bez signálu potom vidíte hranice, čísla parciel aj svoju polohu
+        a navigácia funguje ďalej.</p>
       </article>
       <article class="funkcia odhal">
         <span class="ikona"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"/><path d="M18 3v4h-4M6 21v-4h4"/></svg></span>
@@ -1108,7 +1142,7 @@
         CSV (Excel) a TXT so súradnicami v S-JTSK (JTSK), JTSK03, WGS84 alebo UTM 34N.</p></details>
     <details><summary>Funguje Parcelko bez internetu?</summary>
       <p>Áno. Vyznačte územie a stiahnite si mapy aj parcely vopred – v lese bez signálu potom vidíte hranice, čísla parciel,
-        výmery aj svoju polohu. Bez internetu nefunguje len aktivácia licencie, hľadanie parcely podľa čísla a portál katastra; uložené výpisy LV máte aj offline.</p></details>
+        výmery aj svoju polohu. Bez internetu nefunguje aktivácia licencie, hľadanie parcely podľa čísla, portál katastra a podrobnosti, ktoré sa zisťujú ťuknutím (BPEJ, diel, užívateľ, revír) – mapy týchto vrstiev však v stiahnutom území vidíte. Uložené výpisy LV máte aj offline.</p></details>
     <details><summary>Ako presné sú súradnice a merania?</summary>
       <p>Súradnice lomových bodov zodpovedajú katastrálnej mape – prevod súradníc je overený s odchýlkou najviac 6 milimetrov
         (0,006 m) a výmera sa počíta rovnako ako v katastri. Presnosť samotnej katastrálnej mapy závisí od územia – pri nečíselných
