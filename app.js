@@ -956,7 +956,7 @@ ${blokObhospodarovatel(p)}${(() => {
       podklad: 'porastova', vrstvy: { ...VSETKO_VYP, e: true, lesy: true, reviry: true }, akcia: () => ukazBod(LES, 'E', true), volby: ['E', 'LES', 'REVIR'] },
     { rola: 0, nazov: 'Moje portfólio', popis: 'Svoje pozemky si označíte farbou a menom – dom a záhrada, lúky, pole, les. Ručne, zoznamom čísel z listu vlastníctva alebo z KMZ.',
       podklad: 'orto', vrstvy: { ...VSETKO_VYP, moje: true }, akcia: () => ukazPortfolio() },
-    { rola: 1, nazov: 'Kupujúci a maklér', popis: 'Rozmery pozemku ako v geometrickom pláne – dĺžky strán a očíslované lomové body –, výmera, BPEJ a export pre klienta: PDF v mierke, DXF, KMZ či CSV.',
+    { rola: 1, nazov: 'Kupujúci a maklér', popis: 'Rozmery pozemku ako v geometrickom pláne (dĺžky strán a očíslované lomové body), výmera, BPEJ a export pre klienta: PDF v mierke, DXF, KMZ či CSV.',
       podklad: 'orto', vrstvy: { ...VSETKO_VYP, c: true, bpej: true }, akcia: () => najdiParcelu('C', '5401'), export: true, volby: ['C', 'BPEJ'] },
     { rola: 2, nazov: 'Majiteľ lúky a poľa', popis: 'Kto na vašom poli hospodári – firma aj s IČO a plodinou – a obvyklé nájomné v katastrálnom území. Viete, koho žiadať o nájom.',
       podklad: 'orto', vrstvy: { ...VSETKO_VYP, c: true, e: true, diely: true, uzivanie: true }, akcia: () => ukazBod(POLE, 'UZIVANIE', true) },
