@@ -217,7 +217,7 @@ p { margin: 0 0 1em; }
 .prehliadka.nahodna .sc-spodok { margin: 0; }
 .hero.meria .prehliadka, .hero.karta-otvorena .prehliadka.nahodna { opacity: 0; pointer-events: none; }
 /* počas prehliadky karta končí nad oknom prehliadky */
-.hero.prehliadka-bezi .karta-mapy { max-height: calc(100% - 390px); min-height: 0; }
+.hero.prehliadka-bezi .karta-mapy { max-height: calc(100% - 412px); min-height: 0; }
 .mapa-zdroje { position: absolute; right: 8px; bottom: 6px; z-index: 2; margin: 0; font-size: .68rem; color: rgba(255,255,255,.62); text-align: right; max-width: 92%; }
 .maplibregl-ctrl-attrib, .maplibregl-ctrl-logo { display: none !important; }
 .hero .maplibregl-ctrl-top-right { top: 78px; right: max(6px, 1.4vw); }

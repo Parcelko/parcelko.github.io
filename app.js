@@ -1001,6 +1001,7 @@ ${blokObhospodarovatel(p)}${(() => {
   const bodky = document.getElementById('sc-bodky');
   bodky.innerHTML = SCENY.map(() => '<i></i>').join('');
   let bezi = true, casovac = null, casovacPotom = null, scenaI = -1, vidiet = true;          // prehliadka beží vždy sama (pri obmedzených animáciách bez preletov)
+  hero.classList.add('prehliadka-bezi');                     // prehliadka beží od začiatku (výška karty, okno prehliadky)
   function ukazScenu(i) {
     scenaI = ((i % SCENY.length) + SCENY.length) % SCENY.length;
     const sc = SCENY[scenaI];
