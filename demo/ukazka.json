@@ -31,6 +31,78 @@
   "Parcely: © ÚGKK SR, INSPIRE (CC BY 4.0)",
   "Lesné porasty: © NLC Zvolen (CC BY-SA 4.0)",
   "Terén: Mapzen/Tilezen, SRTM, EU-DEM © Copernicus",
-  "Ortofoto: © GKÚ Bratislava, NLC (služba WMS)"
+  "Ortofoto: © GKÚ Bratislava, NLC (služba WMS)",
+  "Kultúrne diely, hranice užívania, krajinné prvky: © MPRV SR, PPA (LPIS, CC BY 4.0)",
+  "BPEJ: © NPPC (CC0)",
+  "Poľovné revíry: © NLC Zvolen (INSPIRE, CC BY-SA 4.0), užívateľ revíru ISLHP (NLC)",
+  "Obvyklá výška nájomného: © MPRV SR"
+ ],
+ "najomne": {
+  "806528": {
+   "ku": "Brezno",
+   "eurNaHa": 23.25
+  },
+  "802689": {
+   "ku": "Braväcovo",
+   "eurNaHa": 28.8
+  }
+ },
+ "portfolio": [
+  {
+   "nazov": "Dom a záhrada",
+   "farba": "#FF4FD8",
+   "parcely": [
+    [
+     "C",
+     "5401"
+    ],
+    [
+     "C",
+     "5575/5"
+    ],
+    [
+     "C",
+     "5575/6"
+    ]
+   ]
+  },
+  {
+   "nazov": "Lúky",
+   "farba": "#C6FF00",
+   "parcely": [
+    [
+     "E",
+     "15363"
+    ],
+    [
+     "E",
+     "15362"
+    ]
+   ]
+  },
+  {
+   "nazov": "Pole",
+   "farba": "#00E5FF",
+   "parcely": [
+    [
+     "C",
+     "7415"
+    ]
+   ]
+  },
+  {
+   "nazov": "Les",
+   "farba": "#448AFF",
+   "parcely": [
+    [
+     "E",
+     "5946"
+    ],
+    [
+     "E",
+     "15635"
+    ]
+   ]
+  }
  ]
 }
