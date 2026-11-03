@@ -490,6 +490,8 @@ body.bez-mapy .hero { background: radial-gradient(900px 500px at 75% 35%, rgba(2
 .formular textarea { resize: vertical; }
 .formular input:focus, .formular select:focus, .formular textarea:focus { outline: 2px solid var(--zelena); outline-offset: 1px; }
 .formular .cely { grid-column: 1 / -1; }
+.formular label.suhlas { flex-direction: row; align-items: flex-start; gap: 10px; font-weight: 500; }
+.formular label.suhlas input { min-height: 0; width: 20px; height: 20px; margin: 2px 0 0; padding: 0; flex: none; accent-color: var(--zelena); }
 .formular .odoslat { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 .stav-formulara { margin: 0; font-weight: 650; }
 .medovnik { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
