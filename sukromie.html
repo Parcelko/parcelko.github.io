@@ -17,16 +17,17 @@
 
 <h2>Údaje v mobile</h2>
 <p>Všetko, čo v aplikácii vytvoríte alebo načítate – vrstvy, merania, body s fotkami, výpisy z listov vlastníctva, offline mapy –
-je uložené <b>len vo vašom mobile</b>. Na naše servery sa nič neodosiela. Poloha z GPS sa používa len v mobile na zobrazenie
-a meranie.</p>
+je uložené <b>len vo vašom mobile</b>. Na naše servery sa neodosiela nič okrem zašifrovaných správ pri zdieľaní polohy, ak si ho
+zapnete (pozri nižšie). Poloha z GPS sa používa v mobile na zobrazenie a meranie; mimo mobilu ide len pri zapnutom zdieľaní polohy.</p>
 
 <h2>Spojenia s internetom</h2>
 <ul>
   <li><b>Mapy a kataster</b> – aplikácia sťahuje mapové dlaždice a údaje o parcelách z verejných služieb ÚGKK SR a GKÚ Bratislava;
   lesné porasty, poľovné revíry a údaje o obhospodarovaní lesa (ISLHP) z Národného lesníckeho centra; bonitu pôdy, kultúrne diely
   a hranice užívania zo služieb MPRV SR na serveri Národného lesníckeho centra (gis.nlcsk.org); územia Natura 2000 zo služby
-  ŠOP SR (gis.geocloud.gov.sk). Pri hľadaní parcely sa týmto službám odošle katastrálne územie a číslo parcely, pri ťuknutí
-  do mapy súradnice miesta.</li>
+  ŠOP SR (gis.geocloud.gov.sk); geologickú mapu a údaje o horninách, podloží a radónovom riziku zo služieb Štátneho geologického
+  ústavu Dionýza Štúra (ags.geology.sk). Pri hľadaní parcely sa týmto službám odošle katastrálne územie a číslo parcely, pri ťuknutí
+  do mapy súradnice miesta. Úplný zoznam mapových služieb a ich poskytovateľov je v aplikácii v okne ©.</li>
   <li><b>Výpis z listu vlastníctva</b> sa preberá na katastrálnom portáli ÚGKK (eskn-portal.skgeodesy.sk), ktorý sa otvára v aplikácii;
   platia pre neho podmienky ÚGKK. Aplikácia prečíta výpis zobrazený na portáli priamo v mobile a uloží ho do mobilu celý, tak ako ho
   vydal portál (stránka alebo PDF, teda aj s údajmi o vlastníkoch, ktoré výpis obsahuje); pri parcele potom ukazuje mená vlastníkov,
@@ -37,6 +38,12 @@ a meranie.</p>
   <li><b>Licencia a aktualizácie</b> – pri spustení aplikácia overí presný čas (api.github.com), raz denne stiahne
   zoznam zrušených licencií (parcelko.github.io) a zistí, či je nová verzia (api.github.com). Neposielajú sa pritom žiadne osobné
   údaje ani kód zariadenia; servery vidia len IP adresu, ako pri každom spojení.</li>
+  <li><b>Zdieľanie polohy</b> – ak sa s iným používateľom Parcelka spárujete pozvánkou a zdieľanie zapnete, vaša poloha (súradnice,
+  presnosť, výška, stav batérie a meno, ktoré ste si v pozvánke zvolili) sa posiela druhej strane cez náš prenosový server na platforme
+  Cloudflare (Cloudflare, Inc., USA; server beží a údaje drží v EÚ). Správy sú šifrované už v mobile kľúčom z pozvánky – prečítať ich
+  vie len druhá strana, nie server ani my; server vidí IP adresu a nečitateľný obsah a správy drží najviac 12 hodín. Zdieľanie zapínate
+  vy na zvolený čas, kedykoľvek ho pozastavíte alebo vypnete; druhá strana vidí vašu polohu len počas neho (právny základ: súhlas
+  prejavený zapnutím, čl. 6 ods. 1 písm. a GDPR).</li>
 </ul>
 
 <h2>Táto webová stránka</h2>
@@ -74,6 +81,7 @@ faktúry uchovávame podľa zákona o účtovníctve.</p>
   <li><b>FormSubmit</b> (USA) – kontaktný formulár</li>
   <li><b>Poskytovateľ anonymnej štatistiky návštevnosti</b> (USA, bez cookies)</li>
   <li><b>GitHub</b> (USA) – web, súbor aplikácie a zoznam odvolaných licencií</li>
+  <li><b>Cloudflare</b> (USA, server v EÚ) – prenos zašifrovaných správ pri zdieľaní polohy</li>
   <li><b>Proton</b> (Švajčiarsko) – e-mail</li>
 </ul>
 <p>Prenos údajov do tretích krajín prebieha na základe záruk podľa GDPR (rozhodnutie o primeranosti alebo štandardné zmluvné doložky).</p>

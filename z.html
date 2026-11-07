@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Pozvánka na zdieľanie polohy – Parcelko</title>
+<link rel="icon" href="obrazky/ikona.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styl.css">
+</head>
+<body class="podstranka">
+<header class="lista plna"><a class="znacka" href="index.html" aria-label="Parcelko – úvod"><img src="obrazky/ikona.svg" alt="" width="34" height="34"><span>Parcelko</span></a>
+  <a class="tlacidlo male" href="index.html#stiahnut">Stiahnuť</a></header>
+<main>
+<h1>Pozvánka na zdieľanie polohy</h1>
+<!-- Pozvánka (šifrovací kľúč dvojice) je v časti odkazu za „#“ – prehliadač ju na server neposiela, stránka ju len odovzdá aplikácii. -->
+<div id="s-pozvankou" hidden>
+  <p>Niekto vás pozýva, aby ste si v aplikácii Parcelko mohli navzájom zdieľať polohu – každý len vtedy, keď to sám zapne.
+  Ťuknite na tlačidlo v mobile, kde máte Parcelko nainštalované.</p>
+  <p><a id="otvorit" class="tlacidlo" href="#">Otvoriť v aplikácii Parcelko</a></p>
+  <p class="tlmeny">Aplikáciu ešte nemáte? <a href="index.html#stiahnut">Stiahnite si ju</a> a potom znova ťuknite na odkaz z pozvánky.
+  Pozvánku neposielajte ďalej – kto ju otvorí, môže sa s pozývajúcim spárovať (pozývajúci ho ešte musí potvrdiť).</p>
+</div>
+<div id="bez-pozvanky" hidden>
+  <p>Tento odkaz neobsahuje pozvánku. Pozvánku na zdieľanie polohy vytvoríte v aplikácii Parcelko v časti <b>Zdieľanie polohy</b> → <b>Pozvať človeka</b>
+  a pošlete ju správou (SMS, WhatsApp…).</p>
+  <p><a class="tlacidlo" href="index.html">Parcelko – úvod</a></p>
+</div>
+<script>
+(function () {
+  var data = (location.hash || "").slice(1).replace(/\s+/g, "") || (new URLSearchParams(location.search).get("d") || "");
+  if (!/^[A-Za-z0-9_-]{40,2000}$/.test(data)) { document.getElementById("bez-pozvanky").hidden = false; return; }
+  document.getElementById("s-pozvankou").hidden = false;
+  var android = /Android/i.test(navigator.userAgent);
+  document.getElementById("otvorit").href = android
+    ? "intent://z?d=" + data + "#Intent;scheme=parcelko;package=sk.luberit.parcelko;end"
+    : "parcelko://z?d=" + data;
+})();
+</script>
+</main>
+</body>
+</html>
