@@ -76,13 +76,15 @@
    "url": "https://parcelko.github.io/",
    "inLanguage": "sk",
    "operatingSystem": "Android 8 a novší",
-   "softwareVersion": "0.5.7",
+   "softwareVersion": "0.5.8",
    "applicationCategory": "UtilitiesApplication",
    "applicationSubCategory": "Kataster nehnuteľností, mapy a meranie pozemkov",
    "downloadUrl": "https://github.com/Parcelko/parcelko.github.io/releases/latest/download/Parcelko.apk",
    "image": "https://parcelko.github.io/obrazky/nahlad-zdielanie.jpg",
    "screenshot": [
     "https://parcelko.github.io/obrazky/app-hladanie.webp",
+    "https://parcelko.github.io/obrazky/app-zdielanie.webp",
+    "https://parcelko.github.io/obrazky/app-ovladanie.webp",
     "https://parcelko.github.io/obrazky/app-rozmery.webp",
     "https://parcelko.github.io/obrazky/app-porastova.webp",
     "https://parcelko.github.io/obrazky/app-parcela-e-tmava.webp",
@@ -97,8 +99,11 @@
     "Vlastníci z listu vlastníctva (výpis z LV)",
     "Meranie plochy, vzdialenosti a meranie chôdzou s GPS",
     "Lesné porasty a porastová mapa NLC",
+    "Geologická mapa – horniny, podložie a radónové riziko v mieste ťuknutia",
+    "Prelínanie dvoch máp posuvníkom a porovnanie s treťou mapou",
     "Pešia navigácia k parcele a k bodu s upozornením pri odchode z pozemku",
     "Obchôdzka hranice po lomových bodoch",
+    "Zdieľanie polohy s ďalšími používateľmi Parcelka – šifrované, so stopou a navigáciou k nim",
     "Zadanie súradníc a zoznamu bodov z geometrického plánu, navigácia na ne",
     "Mapa pre klienta v mierke ako PDF alebo obrázok (A4, A3)",
     "Offline mapy bez signálu",
@@ -158,7 +163,7 @@
      "name": "Čo všetko zistím z jedného miesta na mape?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Ťuknite kamkoľvek alebo sa postavte na miesto v teréne – Parcelko ukáže v jednom rade parcelu C aj E, a pri zapnutých vrstvách aj BPEJ, kultúrny diel, hranicu užívania, krajinný prvok, poľovný revír a lesný porast. Ťuknutím vyberiete, čo sa zvýrazní na mape; pri parcele máte rozmery, výmeru a vlastníkov, pri ostatných ich údaje."
+      "text": "Ťuknite kamkoľvek alebo sa postavte na miesto v teréne – Parcelko ukáže v jednom rade parcelu C aj E, a pri zapnutých vrstvách aj BPEJ, kultúrny diel, hranicu užívania, krajinný prvok, poľovný revír, lesný porast a horniny z geologickej mapy. Ťuknutím vyberiete, čo sa zvýrazní na mape; pri parcele máte rozmery, výmeru a vlastníkov, pri ostatných ich údaje."
      }
     },
     {
@@ -243,6 +248,14 @@
     },
     {
      "@type": "Question",
+     "name": "Môžem zdieľať polohu s kolegom, hájnikom alebo rodinou?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Áno, s každým, kto má Parcelko. Pošlete mu pozvánku odkazom (WhatsApp, SMS…), on ju prijme a vy potvrdíte. Zdieľanie zapínate vy na zvolený čas (30 minút až 8 hodín), kedykoľvek ho pozastavíte alebo zastavíte. Druhý vás vidí na mape medzi parcelami a porastmi – so stopou, časom, presnosťou GPS a batériou – a vie k vám navigovať. Poloha je šifrovaná priamo v mobile, server ani my ju neprečítame. Obe strany potrebujú internet."
+     }
+    },
+    {
+     "@type": "Question",
      "name": "Aké súradnice a formáty vie aplikácia exportovať?",
      "acceptedAnswer": {
       "@type": "Answer",
@@ -286,7 +299,7 @@
      "name": "Ukladáte moje údaje?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Údaje, ktoré v aplikácii vytvoríte – parcely, merania, fotky, výpisy z LV – sú len vo vašom mobile; aplikácia ich nikam neposiela. Evidujeme len údaje potrebné na licenciu (meno, kód zariadenia, platnosť) a pri službe Portfólio pozemkov na mieru podklady na jeho prípravu. Podrobnosti v zásadách ochrany osobných údajov."
+      "text": "Údaje, ktoré v aplikácii vytvoríte – parcely, merania, fotky, výpisy z LV – sú len vo vašom mobile; aplikácia ich nikam neposiela. Ak si zapnete zdieľanie polohy, vaša poloha ide zašifrovaná len tomu, s kým ste sa spárovali – server ani my ju neprečítame. Evidujeme len údaje potrebné na licenciu (meno, kód zariadenia, platnosť) a pri službe Portfólio pozemkov na mieru podklady na jeho prípravu. Podrobnosti v zásadách ochrany osobných údajov."
      }
     }
    ]
@@ -307,6 +320,7 @@
     <a href="#z-jedneho-miesta">Jedno miesto</a>
     <a href="#funkcie">Funkcie</a>
     <a href="#les">Les a revíry</a>
+    <a href="#zdielanie">Zdieľanie</a>
     <a href="#sluzba">Služba</a>
     <a href="#cennik">Cenník</a>
     <a href="#otazky">Otázky</a>
@@ -704,8 +718,8 @@
   <h2>Všetko, čo potrebujete o pozemku, v jednom mobile</h2>
   <p class="uvod">S Parcelkom máte svoje pozemky vždy pri sebe – presne podľa katastra: katastrálna mapa a parcely registra C aj E, hľadanie
     parcely podľa čísla a katastrálneho územia, vlastníci z listu vlastníctva (výpis z LV), rozmery a výmera pozemku, súradnice
-    v S-JTSK, lesné porasty a porastová mapa NLC a offline mapy bez signálu – pre vlastníkov pozemkov, dedičov, lesníkov,
-    urbariáty aj realitných maklérov.</p>
+    v S-JTSK, lesné porasty a porastová mapa NLC, geologická mapa, zdieľanie polohy s kolegom a offline mapy bez signálu – pre
+    vlastníkov pozemkov, dedičov, lesníkov, urbariáty aj realitných maklérov.</p>
   <h3 class="skupina odhal">Nájdite a prezrite si</h3>
   <div class="mriezka funkcie">
       <article class="funkcia odhal">
@@ -731,21 +745,25 @@
       <article class="funkcia odhal">
         <span class="ikona"><svg viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Z"/><path d="M9 4v14M15 6v14"/></svg></span>
         <h3>Mapy a podklady</h3>
-        <p>Ortofoto, katastrálna mapa, mapa určeného operátu, základná mapa ZBGIS, tieňovaný reliéf a porastová mapa – prepnete jedným ťuknutím.</p>
+        <p>Ortofoto, katastrálna mapa, mapa určeného operátu, základná mapa ZBGIS, tieňovaný reliéf a porastová mapa – prepnete jedným ťuknutím.
+        Dve mapy prelínate posuvníkom (napr. ortofoto a ZBGIS) a výsledok porovnáte s treťou mapou. Načítate aj vlastné mapy zo súborov
+        (SQLite pre Locus, MBTiles) – aj do offline bez signálu.</p>
       </article>
       <article class="funkcia odhal">
         <span class="ikona"><svg viewBox="0 0 24 24"><path d="M4 4h6M4 4v6M20 4h-6M20 4v6M4 20h6M4 20v-6M20 20h-6M20 20v-6"/></svg></span>
-        <h3>Celá obrazovka a naklonenie</h3>
-        <p>Mapa cez celý displej bez ponúk, naklonený pohľad a mapa sa otvorí tam, kde ste skončili.</p>
+        <h3>Ovládanie mapy na jeden pohľad</h3>
+        <p>Všetky vrstvy v prehľadných farebných skupinách – kataster, orientácia, les, poľnohospodárstvo a príroda, geológia a vaše
+        vrstvy – a hneď vidno, čo je zapnuté. Rovnaký výber pod tlačidlom Vrstvy aj na celej obrazovke: mapa cez celý displej,
+        ovládanie vysuniete potiahnutím zdola. Naklonený pohľad a mapa sa otvorí tam, kde ste skončili.</p>
       </article>
   </div>
-  <h3 class="skupina odhal">Pôda, poľovníctvo a príroda</h3>
+  <h3 class="skupina odhal">Pôda, geológia, poľovníctvo a príroda</h3>
   <div class="mriezka funkcie">
       <article class="funkcia odhal">
         <span class="ikona"><svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11Z"/></svg></span>
         <h3>Všetko na mieste jedným ťuknutím</h3>
         <p>Na mieste ťuknutia sa v rade ukážu voľby ako pri parcelách C a E – BPEJ, kultúrny diel, hranica užívania, krajinný prvok,
-          poľovný revír. Ťuknutím vyberiete, čo sa zvýrazní na mape; ktoré sa ukážu, určujú zapnuté vrstvy.</p>
+          poľovný revír, horniny. Ťuknutím vyberiete, čo sa zvýrazní na mape; ktoré sa ukážu, určujú zapnuté vrstvy.</p>
       </article>
       <article class="funkcia odhal">
         <span class="ikona"><svg viewBox="0 0 24 24"><path d="M3 18h18M5 18c1-4 3-6 7-6s6 2 7 6"/><path d="M12 12V5m0 0-3 3m3-3 3 3"/></svg></span>
@@ -776,6 +794,13 @@
         <h3>Natura 2000</h3>
         <p>Územia európskeho významu a chránené vtáčie územia na mape – a po ťuknutí, či pozemok leží v niektorom z nich.</p>
       </article>
+      <article class="funkcia odhal">
+        <span class="ikona"><svg viewBox="0 0 24 24"><path d="M3 20h18L15 8l-3 4-2-2z"/><path d="M6 15h12M8.5 12.5h3"/></svg></span>
+        <h3>Geológia – horniny a podložie</h3>
+        <p>Geologická mapa Slovenska 1&nbsp;:&nbsp;50&nbsp;000 (ŠGÚDŠ) a po ťuknutí zloženie hornín, geologický útvar a vek,
+          inžinierskogeologický rajón (podložie) a radónové riziko v mieste – pri stavbe, studni či kúpe pozemku. Orientačne –
+          hranice hornín sedia na desiatky metrov.</p>
+      </article>
   </div>
   <h3 class="skupina odhal">Navigácia v teréne</h3>
   <div class="mriezka funkcie">
@@ -802,6 +827,12 @@
         <h3>Súradnice z geometrického plánu</h3>
         <p>Zadajte alebo vložte súradnice v S-JTSK, JTSK03, WGS84 či UTM – aj celý zoznam bodov z geometrického plánu či
         vytyčovacieho náčrtu. Parcelko ich ukáže na mape, dovedie vás k nim bod po bode a uloží ich ako vrstvu.</p>
+      </article>
+      <article class="funkcia odhal">
+        <span class="ikona"><svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="2.5"/><circle cx="16" cy="15" r="2.5"/><path d="M8 13s-4-3.4-4-6.5a4 4 0 0 1 8 0C12 9.6 8 13 8 13Z"/><path d="M10.5 18.5c2 .8 3.5.5 5.5-1"/></svg></span>
+        <h3>Zdieľanie polohy</h3>
+        <p>S kolegom, hájnikom či rodinou si zdieľate polohu: druhého vidíte na mape medzi parcelami a porastmi, so stopou,
+        a navigujete k nemu. Zapínate na čas, pozastavíte jedným ťuknutím, šifrované. <a href="#zdielanie">Viac o zdieľaní</a></p>
       </article>
   </div>
   <h3 class="skupina odhal">Merajte a počítajte</h3>
@@ -942,6 +973,28 @@
   </div>
 </section>
 
+<!-- ============================================================ zdieľanie polohy -->
+<section class="sekcia jemna" id="zdielanie">
+  <div class="dve-stlpce">
+    <div class="odhal">
+      <p class="nadtitul">Novinka · Zdieľanie polohy</p>
+      <h2>Viete, kde je kolega – priamo medzi parcelami</h2>
+      <p>V lese, na poli či pri obchôdzke pozemkov si s ďalšími používateľmi Parcelka navzájom zdieľate polohu. Druhého vidíte
+        na tej istej mape ako parcely C a E, porasty a revíry – aj s trasou, ktorou prešiel – a jedným ťuknutím vás k nemu
+        Parcelko dovedie.</p>
+      <ul class="zoznam">
+        <li>pozvánku pošlete odkazom (WhatsApp, SMS, e-mail) – spárujete sa raz, prijatie potvrdíte vy</li>
+        <li>zdieľanie zapínate vy, na 30 minút až 8 hodín; kedykoľvek ho pozastavíte – vtedy sa nič neposiela – a zase zapnete</li>
+        <li>na mape meno, stopa (dá sa vypnúť), čas poslednej polohy, presnosť GPS a batéria druhého</li>
+        <li>navigácia k človeku – cieľ sa posúva s ním</li>
+        <li>šifrované priamo v mobile – polohu nevidí server ani my; bez poplatkov navyše</li>
+      </ul>
+      <p class="poznamka">Funguje, kým majú oba mobily internet; kto sa pozerá, má Parcelko otvorené.</p>
+    </div>
+    <figure class="mobil odhal naklon-vpravo" data-snimka="zdielanie"><img src="obrazky/app-zdielanie.webp" alt="Parcelko: zdieľaná poloha hájnika so stopou v lese a jeho karta" loading="lazy" width="720" height="1600"></figure>
+  </div>
+</section>
+
 <!-- ============================================================ pre koho -->
 <!-- ============================================================ v mobile -->
 <section class="sekcia jemna" id="v-mobile">
@@ -952,7 +1005,9 @@
     <button type="button" class="galeria-sipka vlavo" aria-label="Predchádzajúce">‹</button>
     <div class="galeria" tabindex="0" aria-label="Ukážky obrazoviek aplikácie – Brezno">
       <figure class="mobil odhal" data-snimka="hladanie"><img src="obrazky/app-hladanie.webp" alt="Hľadanie parcely podľa čísla" loading="lazy" width="720" height="1600"><figcaption>Nájdete parcelu podľa čísla – aj registra E</figcaption></figure>
-      <figure class="mobil odhal" data-snimka="cela-obrazovka"><img src="obrazky/app-cela-obrazovka.webp" alt="Celá obrazovka – len mapa a ikonka" loading="lazy" width="720" height="1600"><figcaption>Celá obrazovka – len mapa a zelená ikonka</figcaption></figure>
+      <figure class="mobil odhal" data-snimka="ovladanie"><img src="obrazky/app-ovladanie.webp" alt="Celá obrazovka s ovládaním mapy – skupiny vrstiev a prelínanie máp" loading="lazy" width="720" height="1600"><figcaption>Celá obrazovka – vrstvy na jeden pohľad a prelínanie máp</figcaption></figure>
+      <figure class="mobil odhal" data-snimka="zdielanie-galeria"><img src="obrazky/app-zdielanie.webp" alt="Zdieľanie polohy – kolega na mape so stopou" loading="lazy" width="720" height="1600"><figcaption>Zdieľanie polohy – kolega na mape</figcaption></figure>
+      <figure class="mobil odhal" data-snimka="geologia"><img src="obrazky/app-geologia.webp" alt="Geologická mapa a horniny v mieste ťuknutia" loading="lazy" width="720" height="1600"><figcaption>Geológia – horniny, podložie, radón</figcaption></figure>
       <figure class="mobil odhal" data-snimka="porastova"><img src="obrazky/app-porastova.webp" alt="Porastová mapa NLC s parcelami" loading="lazy" width="720" height="1600"><figcaption>Porastová mapa NLC s parcelami</figcaption></figure>
       <figure class="mobil odhal" data-snimka="rozmery"><img src="obrazky/app-rozmery.webp" alt="Rozmery parcely – dĺžky strán, výmera, obvod" loading="lazy" width="720" height="1600"><figcaption>Rozmery ako v geometrickom pláne</figcaption></figure>
       <figure class="mobil odhal" data-snimka="parcela-e-tmava"><img src="obrazky/app-parcela-e-tmava.webp" alt="Parcela E v tmavom režime" loading="lazy" width="720" height="1600"><figcaption>Parcela E – výmera a „na pozemku“</figcaption></figure>
@@ -963,7 +1018,7 @@
       <figure class="mobil odhal" data-snimka="suradnice"><img src="obrazky/app-suradnice.webp" alt="Súradnice bodu v S-JTSK, JTSK03, WGS84 a UTM" loading="lazy" width="720" height="1600"><figcaption>Súradnice bodu dlhým stlačením</figcaption></figure>
       <figure class="mobil odhal" data-snimka="parcela"><img src="obrazky/app-parcela.webp" alt="Parcela C pri dome" loading="lazy" width="720" height="1600"><figcaption>Parcela C pri dome – na ortofote</figcaption></figure>
       <figure class="mobil odhal" data-snimka="rozmery-tmava"><img src="obrazky/app-rozmery-tmava.webp" alt="Rozmery v tmavom režime" loading="lazy" width="720" height="1600"><figcaption>Tmavý režim – meranie</figcaption></figure>
-      <figure class="mobil odhal" data-snimka="vrstvy"><img src="obrazky/app-vrstvy.webp" alt="Moje parcely a podklady" loading="lazy" width="720" height="1600"><figcaption>Moje parcely z KMZ a podklady</figcaption></figure>
+      <figure class="mobil odhal" data-snimka="vrstvy"><img src="obrazky/app-vrstvy.webp" alt="Tlačidlo Vrstvy – skupiny vrstiev na jeden pohľad" loading="lazy" width="720" height="1600"><figcaption>Vrstvy – všetko na jeden pohľad</figcaption></figure>
       <figure class="mobil odhal" data-snimka="les-e"><img src="obrazky/app-les-e.webp" alt="Parcela E na okraji lesa" loading="lazy" width="720" height="1600"><figcaption>Parcely C a E pri lese</figcaption></figure>
       <figure class="mobil odhal" data-snimka="offline"><img src="obrazky/app-offline.webp" alt="Offline mapy" loading="lazy" width="720" height="1600"><figcaption>Offline mapy bez signálu</figcaption></figure>
       <figure class="mobil odhal" data-snimka="export"><img src="obrazky/app-export.webp" alt="Export súradníc" loading="lazy" width="720" height="1600"><figcaption>Export – S-JTSK, KMZ, DXF…</figcaption></figure>
@@ -1116,7 +1171,7 @@
     <details><summary>Vidím v Parcelku poľovný revír a jeho užívateľa?</summary>
       <p>Áno. Po zapnutí vrstvy Poľovné revíry vidíte na mape hranice a názvy revírov, zverníc a nepoľovných plôch. Po ťuknutí Parcelko ukáže užívateľa revíru (poľovnícke združenie), obdobie užívania, rozhodnutie o uznaní, okres a poľovnú oblasť; vybraný revír sa vyplní žltou. Hranice máte aj v teréne bez signálu, ak si územie stiahnete.</p></details>
     <details><summary>Čo všetko zistím z jedného miesta na mape?</summary>
-      <p>Ťuknite kamkoľvek alebo sa postavte na miesto v teréne – Parcelko ukáže v jednom rade parcelu C aj E, a pri zapnutých vrstvách aj BPEJ, kultúrny diel, hranicu užívania, krajinný prvok, poľovný revír a lesný porast. Ťuknutím vyberiete, čo sa zvýrazní na mape; pri parcele máte rozmery, výmeru a vlastníkov, pri ostatných ich údaje.</p></details>
+      <p>Ťuknite kamkoľvek alebo sa postavte na miesto v teréne – Parcelko ukáže v jednom rade parcelu C aj E, a pri zapnutých vrstvách aj BPEJ, kultúrny diel, hranicu užívania, krajinný prvok, poľovný revír, lesný porast a horniny z geologickej mapy. Ťuknutím vyberiete, čo sa zvýrazní na mape; pri parcele máte rozmery, výmeru a vlastníkov, pri ostatných ich údaje.</p></details>
     <details><summary>Pripravíte mi prehľad všetkých mojich pozemkov?</summary>
       <p>Áno – službou Portfólio pozemkov na mieru. Podľa vašich požiadaviek vyhľadáme všetky vaše parcely vo vybraných katastrálnych územiach (register C aj E), farebne ich rozlíšime podľa druhu pozemku alebo vašich kritérií a pri každej uvedieme váš podiel zlomkom aj v percentách, výmeru, ktorá naň pripadá, a spoluvlastníkov. Portfólio otvoríte v Parcelku v mobile, súhrn dostanete aj ako tabuľku (Excel, PDF). Pri licencii na mesiac, polrok alebo rok je príprava portfólia v cene licencie.</p></details>
     <details><summary>Ako nájsť parcelu podľa čísla?</summary>
@@ -1137,6 +1192,11 @@
       <p>Áno. V ponuke zvoľte Zadať súradnice a zadajte alebo vložte súradnice v S-JTSK, JTSK03, WGS84 či UTM – aj celý zoznam bodov z geometrického plánu (číslo bodu, Y a X na riadok). Parcelko body ukáže na mape, navigáciou vás k nim dovedie bod po bode a uloží ich ako vrstvu. Poloha je z GPS mobilu (spravidla 2 – 10 m), takže ide o orientačné hľadanie, nie o vytýčenie – to robí geodet.</p></details>
     <details><summary>Upozorní ma aplikácia, keď vyjdem zo svojho pozemku?</summary>
       <p>Áno. Počas navigácie k parcele Parcelko ukáže, kedy stojíte na pozemku, a keď z neho vyjdete, mobil zavibruje a aplikácia ukáže, kam sa vrátiť – napríklad pri ťažbe dreva či kosení. Funguje, kým máte Parcelko otvorené na obrazovke (počas navigácie displej nezhasne).</p></details>
+    <details><summary>Môžem zdieľať polohu s kolegom, hájnikom alebo rodinou?</summary>
+      <p>Áno, s každým, kto má Parcelko. Pošlete mu pozvánku odkazom (WhatsApp, SMS…), on ju prijme a vy potvrdíte. Zdieľanie
+        zapínate vy na zvolený čas (30 minút až 8 hodín), kedykoľvek ho pozastavíte alebo zastavíte. Druhý vás vidí na mape medzi
+        parcelami a porastmi – so stopou, časom, presnosťou GPS a batériou – a vie k vám navigovať. Poloha je šifrovaná priamo
+        v mobile, server ani my ju neprečítame. Obe strany potrebujú internet.</p></details>
     <details><summary>Aké súradnice a formáty vie aplikácia exportovať?</summary>
       <p>Formáty KMZ a KML (Google Earth), GPX (GPS prístroje) a GeoJSON (GIS) – tie sú vždy vo WGS84, ako to vyžaduje formát – a DXF (CAD),
         CSV (Excel) a TXT so súradnicami v S-JTSK (JTSK), JTSK03, WGS84 alebo UTM 34N.</p></details>
@@ -1156,7 +1216,8 @@
         Kolega potrebuje vlastnú licenciu.</p></details>
     <details><summary>Ukladáte moje údaje?</summary>
       <p>Údaje, ktoré v aplikácii vytvoríte – parcely, merania, fotky, výpisy z LV – sú len vo vašom mobile; aplikácia ich nikam
-        neposiela. Evidujeme len údaje potrebné na licenciu (meno, kód zariadenia, platnosť) a pri službe Portfólio pozemkov na mieru
+        neposiela. Ak si zapnete zdieľanie polohy, vaša poloha ide zašifrovaná len tomu, s kým ste sa spárovali – server ani my ju
+        neprečítame. Evidujeme len údaje potrebné na licenciu (meno, kód zariadenia, platnosť) a pri službe Portfólio pozemkov na mieru
         podklady na jeho prípravu. Podrobnosti v <a href="sukromie.html">zásadách ochrany osobných údajov</a>.</p></details>
   </div>
 </section>
